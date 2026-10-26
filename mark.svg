@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" role="img" aria-label="VibeGov">
+  <rect width="40" height="40" rx="9" fill="#232a6b"/>
+  <path d="M9 12h22v2.6H9z" fill="#e3b14c"/>
+  <path d="M12.5 17h4v12h-4zM18 17h4v12h-4zM23.5 17h4v12h-4z" fill="#fbf9f4"/>
+  <path d="M9 30.5h22V33H9z" fill="#e3b14c"/>
+</svg>

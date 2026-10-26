@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<title>治理室 · VibeGov</title>
+<meta name="description" content="在一个虚构的样本组织上走一轮治理：提案，按权重与理由投票，依据宪法审计漂移，并阅读合议庭的裁决。">
+<link rel="alternate" hreflang="en" href="https://vibegov.commandagi.app/demo.html">
+<link rel="alternate" hreflang="es" href="https://vibegov.commandagi.app/es/demo.html">
+<link rel="alternate" hreflang="zh-Hans" href="https://vibegov.commandagi.app/zh/demo.html">
+<link rel="alternate" hreflang="x-default" href="https://vibegov.commandagi.app/demo.html">
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" href="../mark.svg" type="image/svg+xml">
+<script src="../lang.js" defer></script>
+<script src="../demo.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">跳到正文</a>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="../mark.svg" alt="" width="30" height="30">VibeGov</a>
+    <nav class="site-nav" aria-label="站点">
+      <a href="constitution.html">宪法</a>
+      <a href="demo.html" aria-current="page">治理室</a>
+      <a href="about.html">关于</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+  <section style="padding-top:36px">
+    <p class="eyebrow" data-i18n="eyebrow"></p>
+    <h1 data-i18n="title"></h1>
+    <p class="lede" data-i18n="lede"></p>
+  </section>
+
+  <div class="room">
+    <nav aria-label="本轮">
+      <ol class="steps" id="steps"></ol>
+    </nav>
+    <section class="panel" id="panel" aria-live="polite"></section>
+  </div>
+
+  <h2 data-i18n="recordTitle"></h2>
+  <p class="note" data-i18n="recordNote"></p>
+  <ul class="record" id="record"></ul>
+  <div class="btn-row">
+    <button class="btn small" id="reset" type="button" data-i18n="reset"></button>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p id="lang-hint" hidden data-template="用 {language} 阅读本页"><a href="#">用另一种语言阅读本页</a></p>
+    <nav aria-label="页脚">
+      <a href="constitution.html">宪法</a>
+      <a href="demo.html">治理室</a>
+      <a href="about.html">关于</a>
+      <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>
+    </nav>
+    <button class="lang-button" type="button" data-lang-open commandfor="lang-dialog" command="show-modal" aria-haspopup="dialog" aria-label="语言">A/文</button>
+    <dialog class="lang-dialog" id="lang-dialog" aria-labelledby="lang-title">
+      <div class="inner">
+        <h2 id="lang-title">选择语言</h2>
+        <ul>
+          <li><a href="../demo.html" hreflang="en" lang="en" data-name="English">English</a></li>
+          <li><a href="../es/demo.html" hreflang="es" lang="es" data-name="Español">Español</a></li>
+          <li><a href="demo.html" hreflang="zh-Hans" lang="zh-Hans" aria-current="true" data-name="简体中文">简体中文</a></li>
+        </ul>
+        <button class="btn small close" type="button" commandfor="lang-dialog" command="close">关闭</button>
+      </div>
+    </dialog>
+    <p>© 2026 VibeGov · CommandAGI 旗下公司</p>
+  </div>
+</footer>
+</body>
+</html>

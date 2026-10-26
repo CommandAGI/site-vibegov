@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<title>La sala de gobierno · VibeGov</title>
+<meta name="description" content="Una ronda de gobierno en una organización de muestra ficticia: proponer, votar con un peso y un motivo, auditar la deriva contra la constitución y leer el fallo del panel.">
+<link rel="alternate" hreflang="en" href="https://vibegov.commandagi.app/demo.html">
+<link rel="alternate" hreflang="es" href="https://vibegov.commandagi.app/es/demo.html">
+<link rel="alternate" hreflang="zh-Hans" href="https://vibegov.commandagi.app/zh/demo.html">
+<link rel="alternate" hreflang="x-default" href="https://vibegov.commandagi.app/demo.html">
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" href="../mark.svg" type="image/svg+xml">
+<script src="../lang.js" defer></script>
+<script src="../demo.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="../mark.svg" alt="" width="30" height="30">VibeGov</a>
+    <nav class="site-nav" aria-label="Sitio">
+      <a href="constitution.html">La constitución</a>
+      <a href="demo.html" aria-current="page">La sala de gobierno</a>
+      <a href="about.html">Acerca de</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+  <section style="padding-top:36px">
+    <p class="eyebrow" data-i18n="eyebrow"></p>
+    <h1 data-i18n="title"></h1>
+    <p class="lede" data-i18n="lede"></p>
+  </section>
+
+  <div class="room">
+    <nav aria-label="La ronda">
+      <ol class="steps" id="steps"></ol>
+    </nav>
+    <section class="panel" id="panel" aria-live="polite"></section>
+  </div>
+
+  <h2 data-i18n="recordTitle"></h2>
+  <p class="note" data-i18n="recordNote"></p>
+  <ul class="record" id="record"></ul>
+  <div class="btn-row">
+    <button class="btn small" id="reset" type="button" data-i18n="reset"></button>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p id="lang-hint" hidden data-template="Lee esta página en {language}"><a href="#">Lee esta página en otro idioma</a></p>
+    <nav aria-label="Pie">
+      <a href="constitution.html">Constitución</a>
+      <a href="demo.html">Sala de gobierno</a>
+      <a href="about.html">Acerca de</a>
+      <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>
+    </nav>
+    <button class="lang-button" type="button" data-lang-open commandfor="lang-dialog" command="show-modal" aria-haspopup="dialog" aria-label="Idioma">A/文</button>
+    <dialog class="lang-dialog" id="lang-dialog" aria-labelledby="lang-title">
+      <div class="inner">
+        <h2 id="lang-title">Elige un idioma</h2>
+        <ul>
+          <li><a href="../demo.html" hreflang="en" lang="en" data-name="English">English</a></li>
+          <li><a href="demo.html" hreflang="es" lang="es" aria-current="true" data-name="Español">Español</a></li>
+          <li><a href="../zh/demo.html" hreflang="zh-Hans" lang="zh-Hans" data-name="简体中文">简体中文</a></li>
+        </ul>
+        <button class="btn small close" type="button" commandfor="lang-dialog" command="close">Cerrar</button>
+      </div>
+    </dialog>
+    <p>© 2026 VibeGov · una empresa de CommandAGI</p>
+  </div>
+</footer>
+</body>
+</html>

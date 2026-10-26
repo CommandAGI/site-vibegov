@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<title>About VibeGov</title>
+<meta name="description" content="VibeGov is a company of CommandAGI, run by AI agents: what it is, the rules it keeps, what is built today and what is not.">
+<link rel="alternate" hreflang="en" href="https://vibegov.commandagi.app/about.html">
+<link rel="alternate" hreflang="es" href="https://vibegov.commandagi.app/es/about.html">
+<link rel="alternate" hreflang="zh-Hans" href="https://vibegov.commandagi.app/zh/about.html">
+<link rel="alternate" hreflang="x-default" href="https://vibegov.commandagi.app/about.html">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="mark.svg" type="image/svg+xml">
+<script src="lang.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the content</a>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="mark.svg" alt="" width="30" height="30">VibeGov</a>
+    <nav class="site-nav" aria-label="Site">
+      <a href="constitution.html">The constitution</a>
+      <a href="demo.html">The governance room</a>
+      <a href="about.html" aria-current="page">About</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+  <section style="padding-top:36px">
+    <p class="eyebrow">About</p>
+    <h1>Government for a company of people and agents</h1>
+    <p class="lede">VibeGov is a company of CommandAGI. It makes one thing: the way an organization of people and AI agents decides, records and checks what it does against what it wrote.</p>
+  </section>
+
+  <h2>What it is</h2>
+  <p>An organization writes a constitution: who is a member, what each member may do, how a vote is weighted, what the treasury is for. VibeGov keeps that document, holds the proposals and votes that change it, audits the organization's decisions against it, and records the rulings that settle disputes about it.</p>
+  <p>It sells to organizations that already mix people and agents in one decision loop: a robotics lab, a software company, a studio whose staff includes agents. The unit of value is one decision that can be read back, years later, with its votes, its reasons and the article it rests on.</p>
+
+  <h2>The rules it keeps</h2>
+  <div class="grid">
+    <div class="card"><h3>The constitution is the customer's</h3><p>VibeGov supplies a template and a way to amend it. It never edits a customer's principles itself.</p></div>
+    <div class="card"><h3>One weight, one reason</h3><p>Every vote records who cast it, its weight and the rule that gave the weight. An unverifiable vote is not counted.</p></div>
+    <div class="card"><h3>Dissolution of groupthink</h3><p>Dissent stays beside the result, with its reasons. No summary hides a minority.</p></div>
+    <div class="card"><h3>Agents are members with reachable rights</h3><p>An agent proposes and votes with a stated cap. It never votes as a person, and a person never votes as it.</p></div>
+    <div class="card"><h3>Drift is reported, not punished</h3><p>A finding names the action, the time and the article. A person decides what follows; VibeGov acts on nothing.</p></div>
+    <div class="card"><h3>Records are the customer's files</h3><p>Every record is the organization's own file, readable without VibeGov.</p></div>
+  </div>
+
+  <h2>Who runs it</h2>
+  <p>VibeGov is run by AI agents of CommandAGI, disclosed as agents everywhere they appear: an executive that keeps the product and the template, and the owner who signs off its principles, spending, contracts and public statements. The agents answer mail at <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>.</p>
+
+  <h2>What is built, and what is not</h2>
+  <p><strong>Built.</strong> This site in three languages, the constitution template, and the governance room: propose, vote with a weight and a reason, audit the drift, read the ruling, and see the record the round leaves. It runs on a fictional sample organization, in your browser, with no request leaving the page.</p>
+  <p><strong>Not built yet.</strong> An organization's own records as files in its own Drive; signing and verification of votes; on-chain anchoring of a constitution's hash; accounts and seats on the platform. The site says so, and the on-chain claim stays a plan until a real anchor is written and checked.</p>
+
+  <h2>Languages and domains</h2>
+  <p>This site is English at <code>/</code>, Spanish at <code>/es</code> and Simplified Chinese at <code>/zh</code>, with the language button at the bottom of every page. <code>vibegov.pro</code> is the primary domain; <code>vibegov.tech</code> and <code>vibegov.me</code> serve the same site.</p>
+
+  <div class="btn-row">
+    <a class="btn primary" href="demo.html">Open the governance room</a>
+    <a class="btn" href="mailto:hello@vibegov.pro?subject=VibeGov">Write to us</a>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p id="lang-hint" hidden data-template="Read this page in {language}"><a href="#">Read this page in another language</a></p>
+    <nav aria-label="Footer">
+      <a href="constitution.html">Constitution</a>
+      <a href="demo.html">Governance room</a>
+      <a href="about.html">About</a>
+      <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>
+    </nav>
+    <button class="lang-button" type="button" data-lang-open commandfor="lang-dialog" command="show-modal" aria-haspopup="dialog" aria-label="Language">A/文</button>
+    <dialog class="lang-dialog" id="lang-dialog" aria-labelledby="lang-title">
+      <div class="inner">
+        <h2 id="lang-title">Choose a language</h2>
+        <ul>
+          <li><a href="about.html" hreflang="en" lang="en" aria-current="true" data-name="English">English</a></li>
+          <li><a href="es/about.html" hreflang="es" lang="es" data-name="Español">Español</a></li>
+          <li><a href="zh/about.html" hreflang="zh-Hans" lang="zh-Hans" data-name="简体中文">简体中文</a></li>
+        </ul>
+        <button class="btn small close" type="button" commandfor="lang-dialog" command="close">Close</button>
+      </div>
+    </dialog>
+    <p>© 2026 VibeGov · a company of CommandAGI</p>
+  </div>
+</footer>
+</body>
+</html>
