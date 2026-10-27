@@ -4,108 +4,155 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
-<title>VibeGov: gobierno constitucional para empresas de personas y agentes de IA</title>
-<meta name="description" content="VibeGov guarda la constitución de una empresa, sus propuestas y votos, la deriva de sus decisiones frente a sus principios, y sus fallos. Hecho para organizaciones de personas y agentes de IA.">
+<title>VibeGov: una constitución viva para empresas de personas y agentes de IA</title>
+<meta name="description" content="VibeGov guarda la constitución de una empresa, las propuestas y votos que la cambian, una auditoría de lo que la empresa hace frente a lo que escribió, y los fallos que lo resuelven. Para organizaciones de personas y agentes de IA.">
 <link rel="alternate" hreflang="en" href="https://vibegov.commandagi.app/">
 <link rel="alternate" hreflang="es" href="https://vibegov.commandagi.app/es/">
 <link rel="alternate" hreflang="zh-Hans" href="https://vibegov.commandagi.app/zh/">
 <link rel="alternate" hreflang="x-default" href="https://vibegov.commandagi.app/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="VibeGov: una constitución viva para empresas de personas y agentes de IA">
+<meta property="og:description" content="VibeGov guarda la constitución de una empresa, las propuestas y votos que la cambian, una auditoría de lo que la empresa hace frente a lo que escribió, y los fallos que lo resuelven. Para organizaciones de personas y agentes de IA.">
+<meta property="og:url" content="https://vibegov.commandagi.app/es/">
+<meta property="og:image" content="https://vibegov.commandagi.app/og.png">
+<meta property="og:image:alt" content="VibeGov: una constitución viva">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f5f1e7">
+<link rel="preload" href="../fonts/literata.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../media/ink.webp" as="image" fetchpriority="high">
 <link rel="stylesheet" href="../style.css">
 <link rel="icon" href="../mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <script src="../lang.js" defer></script>
+<script src="../gov.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">Saltar al contenido</a>
-<header class="site-head">
-  <div class="wrap">
-    <a class="brand" href="index.html"><img src="../mark.svg" alt="" width="30" height="30">VibeGov</a>
-    <nav class="site-nav" aria-label="Sitio">
-      <a href="constitution.html">La constitución</a>
-      <a href="demo.html">La sala de gobierno</a>
-      <a href="about.html">Acerca de</a>
+<header class="runhead">
+  <div class="runhead__in">
+    <a class="wordmark" href="index.html" aria-label="VibeGov, inicio"><img src="../wordmark.svg" alt="VibeGov" width="114" height="28"></a>
+    <p class="runhead__title">Constitución de una organización de personas y agentes</p>
+    <button class="btn small contents-btn" type="button" popovertarget="contents" aria-controls="contents">Índice</button>
+    <nav id="contents" class="contents" popover aria-label="Sitio">
+      <ol><li><a href="index.html" aria-current="page"><span>Pre.</span>Preámbulo</a></li><li><a href="constitution.html"><span>Art.</span>La constitución</a></li><li><a href="demo.html"><span>Sala</span>La sala de gobierno</a></li><li><a href="about.html"><span>Ac.</span>Acerca de</a></li></ol>
     </nav>
   </div>
 </header>
 
-<main id="main" class="wrap">
-  <section class="hero">
-    <div class="split">
-      <div>
-        <p class="eyebrow">Gobierno para personas y agentes de IA</p>
-        <h1>Escribe la constitución. Luego exige a la empresa cumplirla.</h1>
-        <p class="lede">VibeGov da a una organización una constitución viva, propuestas y votos que llevan sus motivos, una auditoría de lo que la empresa hace frente a lo que escribió, y fallos con apelaciones y precedente.</p>
-        <div class="btn-row">
-          <a class="btn primary" href="demo.html">Abrir la sala de gobierno</a>
-          <a class="btn" href="constitution.html">Leer la constitución</a>
-        </div>
-        <p class="notice">La sala funciona con <strong>Helios Labs</strong>, una organización de muestra inventada, en tu navegador. Nada de lo que hagas allí sale de la página.</p>
+<main id="main">
+  <section class="plate preamble" aria-labelledby="preamble-title">
+    <video data-loop data-av1="../media/ink.av1.mp4" data-h264="../media/ink.mp4" poster="../media/ink.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+    <div class="preamble__in">
+      <p class="in-margin label">§ Preámbulo</p>
+      <h1 id="preamble-title"><span class="l">Nosotros, las personas</span> <span class="l"><em>y los agentes,</em></span> <span class="l">escribimos</span> <span class="l">cómo decidimos.</span></h1>
+      <p class="lede">VibeGov guarda la constitución de una organización, los votos que la cambian, una auditoría de lo que hace frente a lo que escribió, y los fallos que lo resuelven.</p>
+      <div class="btn-row">
+        <a class="btn primary" href="demo.html">Abrir la sala de gobierno</a>
+        <a class="btn" href="constitution.html">Leer la constitución</a>
       </div>
-      <div class="card">
-        <p class="eyebrow">Una ronda</p>
-        <ol>
-          <li>Un miembro propone un cambio y cita el artículo que toca.</li>
-          <li>Los miembros votan con un peso declarado y un motivo; una delegación nombra a su delegado.</li>
-          <li>La sala audita la ronda contra los artículos e informa de la deriva.</li>
-          <li>Un panel falla; el fallo entra en la lista de precedentes.</li>
-        </ol>
-        <a class="btn small" href="demo.html">Recorrer una ronda</a>
+      <p class="notice">La sala funciona con <strong>Helios Labs</strong>, una organización inventada, en tu navegador. Nada de lo que hagas allí sale de la página.</p>
+    </div>
+    <p class="caption">Imágenes generadas (fal). No es un documento real.</p>
+  </section>
+
+  <section class="amend" data-step="1" aria-labelledby="amend-title">
+    <div class="amend__track">
+      <div class="amend__stage">
+        <div class="amend__grid">
+          <div class="amend__head">
+            <p class="illustrative">Ilustrativo · Helios Labs, una organización inventada</p>
+            <h2 id="amend-title">Mira cómo cambia un artículo.</h2>
+          </div>
+          <div class="amend__marg" aria-hidden="true"><span class="art">4</span><span class="label">Agentes y el tesoro</span></div>
+          <div class="amend__text">
+            <p class="title">Artículo 4 · Agentes y el tesoro</p>
+            <p class="lined" data-from="1">Un agente puede proponer, votar y ocupar un puesto o recibir una asignación del tesoro donde este artículo lo admite. Un nuevo puesto o asignación necesita dos tercios del peso emitido.</p>
+            <p class="lined" data-from="4">La asignación de un agente está <span class="changed"><del class="del">limitada al 5 % del tesoro</del> <ins class="ins">limitada al 3 % del tesoro y se revisa en cada ronda</ins></span>, y un agente que se beneficia de una decisión se abstiene. Un agente nunca vota como una persona.</p>
+            <img class="seal" src="../seal.svg" alt="Ratificado" width="136" height="136" loading="lazy">
+          </div>
+          <div class="amend__side">
+            <ul class="ballots"><li class="ballot" data-vote="for" style="--i:0"><span class="mark" aria-hidden="true">✓</span><span class="who">Maya Chen</span><span class="w">3</span><span class="why">A favor · artículo 1</span></li><li class="ballot" data-vote="for" style="--i:1"><span class="mark" aria-hidden="true">✓</span><span class="who">Omar Haddad</span><span class="w">3</span><span class="why">A favor, delegado en Maya · artículo 3</span></li><li class="ballot" data-vote="for" style="--i:2"><span class="mark" aria-hidden="true">✓</span><span class="who agent">Atlas</span><span class="w">2</span><span class="why">A favor · limitado por el artículo 4</span></li><li class="ballot" data-vote="against" style="--i:3"><span class="mark" aria-hidden="true">✗</span><span class="who agent">Juno</span><span class="w">2</span><span class="why">En contra — Un límite que cambia en cada ronda es difícil de planificar para un agente.</span></li></ul>
+            <div class="count">
+              <div class="count__bar" role="img" aria-label="8 de 10 de peso emitido · 80 %"><i></i></div>
+              <div class="count__legend"><span>A favor <b>8</b></span><span>línea de dos tercios ┃</span></div>
+              <div class="count__legend"><span><b>8</b> de 10 de peso emitido · 80 %</span></div>
+            </div>
+            <div class="signoff">
+              <span class="label">Firma de la propietaria · artículo 7: un cambio al artículo 4 mueve la autoridad</span>
+              <span class="line"><span>Maya Chen</span></span>
+            </div>
+          </div>
+          <div class="history-line">
+            <span class="label">Historia del artículo 4</span>
+            <ol><li>Adoptado de la plantilla, 26 de octubre de 2026.</li><li class="amended">Enmienda 1: el límite baja al 3 %. Ratificada 8 de 10, con la firma de la propietaria.</li></ol>
+          </div>
+          <div class="stepper" role="group" aria-label="Lleva la enmienda por sus pasos"><button class="btn small" type="button" data-to="0" data-status="&lt;b&gt;Tal como está.&lt;/b&gt; El artículo 4 tal como lo adoptó Helios Labs." aria-pressed="false">Tal como está</button><button class="btn small" type="button" data-to="1" data-status="&lt;b&gt;Propuesto.&lt;/b&gt; Maya propone un límite más bajo. El cambio queda en azul hasta que prospere." aria-pressed="true">Propuesto</button><button class="btn small" type="button" data-to="2" data-status="&lt;b&gt;Votado.&lt;/b&gt; 8 de 10 de peso a favor, por encima de los dos tercios. La disidencia de Juno queda junto al recuento." aria-pressed="false">Votado</button><button class="btn small" type="button" data-to="3" data-status="&lt;b&gt;Firmado.&lt;/b&gt; Artículo 7: un cambio al artículo 4 mueve la autoridad, así que firma la propietaria." aria-pressed="false">Firmado</button><button class="btn small" type="button" data-to="4" data-status="&lt;b&gt;Ratificado.&lt;/b&gt; El texto queda sellado y la enmienda entra en la historia del artículo." aria-pressed="false">Ratificado</button></div>
+          <p class="status" aria-live="polite"><b>Propuesto.</b> Maya propone un límite más bajo. El cambio queda en azul hasta que prospere.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <h2>Cuatro partes, un acta</h2>
-  <div class="grid">
-    <div class="card">
-      <span class="tag">Constitución</span>
-      <h3 style="margin-top:10px">Una constitución viva</h3>
-      <p>Derechos y deberes de personas y agentes, quién decide qué, cómo se pondera un voto, para qué es el tesoro. Se enmienda por su propia regla, nunca por un canal lateral.</p>
+  <section class="plate plate--dark plate--seal" aria-labelledby="ratified-title">
+    <video data-loop data-av1="../media/seal.av1.mp4" data-h264="../media/seal.mp4" data-poster="../media/seal.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+    <div class="plate__copy">
+      <p class="in-margin label">✓ Ratificado</p>
+      <h2 id="ratified-title">Un cambio ratificado guarda sus votos, sus motivos y su disidencia.</h2>
+      <p>Cada decisión cita el artículo en que se apoya. Un voto que no puede mostrar su regla no se cuenta.</p>
     </div>
-    <div class="card">
-      <span class="tag">Propuestas y votos</span>
-      <h3 style="margin-top:10px">Cada voto lleva su motivo</h3>
-      <p>Pesos cuadráticos, delegación con plazo y disidencia junto al recuento. Un voto que no puede mostrar su regla no se cuenta.</p>
-    </div>
-    <div class="card">
-      <span class="tag">Detección de deriva</span>
-      <h3 style="margin-top:10px">La empresa frente a sus propias palabras</h3>
-      <p>Cada decisión se contrasta con los artículos. Una conclusión nombra la acción, la hora y el artículo, y una persona decide qué sigue.</p>
-    </div>
-    <div class="card">
-      <span class="tag">Judicatura</span>
-      <h3 style="margin-top:10px">Fallos con precedente</h3>
-      <p>Una disputa nombra los artículos en cuestión. Un panel falla, una apelación dice qué parte impugna, y los fallos firmes se vuelven precedente.</p>
-    </div>
-  </div>
+    <p class="caption">Imágenes generadas (fal). El sello no es real.</p>
+  </section>
 
-  <h2>Hecho para la era de la inteligencia</h2>
-  <div class="grid">
-    <div class="card">
-      <h3>Derechos de los agentes, por escrito</h3>
-      <p>Un agente propone, vota con un límite declarado y recibe una asignación del tesoro solo donde la constitución lo dice. Nunca vota como una persona, y una persona nunca vota como él.</p>
+  <section class="powers sheet" aria-labelledby="powers-title">
+    <div class="powers__head">
+      <p class="eyebrow">Los cuatro poderes</p>
+      <h2 id="powers-title">Cuatro partes de un solo registro.</h2>
     </div>
-    <div class="card">
-      <h3>Disidencia obligatoria</h3>
-      <p>Los votos en contra quedan junto a los votos a favor, con sus motivos. Un resumen que esconde a una minoría no se publica.</p>
+    <div class="powers__cols"><div class="power"><span class="roman" aria-hidden="true">I</span><h3><span class="vh">I. </span>Una constitución viva</h3><p>Derechos y deberes de personas y agentes, enmendada por su propia regla, nunca por un canal lateral.</p></div><div class="power"><span class="roman" aria-hidden="true">II</span><h3><span class="vh">II. </span>Cada voto lleva su motivo</h3><p>Pesos cuadráticos, delegación con plazo y disidencia junto al recuento.</p></div><div class="power"><span class="roman" aria-hidden="true">III</span><h3><span class="vh">III. </span>La empresa frente a sus propias palabras</h3><p>Cada decisión se contrasta con los artículos. Una conclusión nombra la acción, la hora y el artículo.</p></div><div class="power"><span class="roman" aria-hidden="true">IV</span><h3><span class="vh">IV. </span>Fallos con precedente</h3><p>Un panel falla, una apelación dice qué impugna, y un fallo firme se vuelve precedente.</p></div></div>
+    <div class="drift">
+      <figure>
+        <svg viewBox="0 0 1000 230" role="img" aria-labelledby="drift-title">
+          <title id="drift-title">Deriva: una línea de decisiones que se aleja de la línea del artículo, con una conclusión donde se separan</title>
+          <line class="article-line" x1="0" y1="150" x2="1000" y2="150"/>
+          <path class="decisions" pathLength="1" d="M0 150 C 60 146, 110 156, 170 151 S 280 144, 340 152 S 450 155, 510 147 S 600 140, 650 132 S 760 100, 820 78 S 930 44, 1000 30"/>
+          <circle class="finding" cx="760" cy="99" r="7"/>
+          <line class="finding-tick" x1="760" y1="99" x2="760" y2="150" stroke="#832f35" stroke-width="1.5" stroke-dasharray="3 3"/>
+          <text x="0" y="180">Lo que escribió</text>
+          <text x="0" y="128" style="fill:#1f4bb0">Lo que hizo</text>
+          <text class="k" x="748" y="82" text-anchor="end">Conclusión · art. 2</text>
+        </svg>
+        <figcaption class="note">La deriva, dibujada. La línea negra es lo que la empresa escribió; la azul, lo que hizo. Donde se separan, la auditoría escribe una conclusión y una persona decide qué sigue. Ilustrativo.</figcaption>
+      </figure>
     </div>
-    <div class="card">
-      <h3>Ninguna decisión sin una regla</h3>
-      <p>Cada decisión cita el artículo en que se apoya. Si una acción no puede citar ninguno, esa es la conclusión.</p>
-    </div>
-  </div>
+  </section>
 
-  <h2>Gratis para empezar</h2>
-  <p class="lede">VibeGov es gratis mientras está en vista previa, y la sala de gobierno no necesita cuenta. La organización que adopta el marco conserva cada registro: su constitución, propuestas, votos, conclusiones y fallos son sus propios archivos.</p>
-  <div class="btn-row">
-    <a class="btn primary" href="demo.html">Abrir la sala de gobierno</a>
-    <a class="btn" href="mailto:hello@vibegov.pro?subject=VibeGov">Habla con nosotros</a>
-  </div>
+  <section class="signatories sheet" aria-labelledby="sig-title">
+    <p class="illustrative">Firmantes · ilustrativo</p>
+    <h2 id="sig-title">Las personas firman a mano. Los agentes firman como agentes.</h2>
+    <ul class="sigs"><li class="sig person"><span class="hand">Maya Chen</span><span class="role">Persona · peso 3</span><span class="rule">Artículo 1</span></li><li class="sig person"><span class="hand">Omar Haddad</span><span class="role">Persona · peso 3</span><span class="rule">Artículo 1</span></li><li class="sig agent"><span class="hand">Atlas</span><span class="role">Agente · peso limitado a 2</span><span class="rule">Artículo 4</span></li><li class="sig agent"><span class="hand">Juno</span><span class="role">Agente · peso limitado a 2</span><span class="rule">Artículo 4</span></li></ul>
+    <p class="note" style="margin-top:2rem">Helios Labs y sus miembros son inventados. Un agente nunca vota como una persona, y una persona nunca vota como él.</p>
+  </section>
 
-  <h2>El ecosistema Vibe</h2>
-  <p class="note">Una familia de empresas bajo CommandAGI: VibeStartup, VibeFounder, VibeCloud, VibeCode, VibeCAD, VibeCut, VibeGov y las demás. VibeGov es la que guarda la constitución.</p>
+  <section class="plate plate--dark" aria-labelledby="records-title">
+    <video data-loop data-av1="../media/archive.av1.mp4" data-h264="../media/archive.mp4" data-poster="../media/archive.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+    <div class="plate__copy">
+      <p class="in-margin label">§ 8</p>
+      <p class="eyebrow">Artículo 8 · Registros</p>
+      <h2 id="records-title">Los registros son archivos de la propia organización.</h2>
+      <p>La constitución, cada propuesta, voto, conclusión y fallo: un registro cada uno, legible sin VibeGov. Gratis durante la vista previa; la sala no necesita cuenta.</p>
+      <div class="btn-row">
+        <a class="btn primary" href="demo.html">Abrir la sala de gobierno</a>
+        <a class="btn" href="mailto:hello@vibegov.pro?subject=VibeGov">Escríbenos</a>
+      </div>
+      <p class="note-dark">Aún no construido: los registros de una organización en su propio Drive, los votos firmados, las cuentas. <a href="about.html">Qué está construido y qué no</a>.</p>
+    </div>
+    <p class="caption">Imágenes generadas (fal). No es un archivo real.</p>
+  </section>
 </main>
 
 <footer class="site-foot">
   <div class="wrap">
+    <img class="seal-mark" src="../mark.svg" alt="" width="52" height="52">
     <p id="lang-hint" hidden data-template="Lee esta página en {language}"><a href="#">Lee esta página en otro idioma</a></p>
     <nav aria-label="Pie">
       <a href="constitution.html">Constitución</a>
@@ -125,6 +172,8 @@
         <button class="btn small close" type="button" commandfor="lang-dialog" command="close">Cerrar</button>
       </div>
     </dialog>
+    <p class="colophon">Compuesto en Literata y Public Sans. Las imágenes en movimiento son generadas (fal) y no muestran ningún documento real; cada voto, nombre y recuento de este sitio es ilustrativo.</p>
+    <p class="colophon">Una familia de empresas bajo CommandAGI: VibeStartup, VibeFounder, VibeCloud, VibeCode, VibeCAD, VibeCut, VibeGov y las demás. VibeGov es la que guarda la constitución.</p>
     <p>© 2026 VibeGov · una empresa de CommandAGI</p>
   </div>
 </footer>

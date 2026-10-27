@@ -4,108 +4,155 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
-<title>VibeGov: constitutional governance for human-AI companies</title>
-<meta name="description" content="VibeGov keeps a company's constitution, its proposals and votes, the drift of its decisions against its principles, and its rulings. Built for organizations of people and AI agents.">
+<title>VibeGov: a living constitution for companies of people and AI agents</title>
+<meta name="description" content="VibeGov keeps a company's constitution, the proposals and votes that change it, an audit of what the company does against what it wrote, and the rulings that settle it. For organizations of people and AI agents.">
 <link rel="alternate" hreflang="en" href="https://vibegov.commandagi.app/">
 <link rel="alternate" hreflang="es" href="https://vibegov.commandagi.app/es/">
 <link rel="alternate" hreflang="zh-Hans" href="https://vibegov.commandagi.app/zh/">
 <link rel="alternate" hreflang="x-default" href="https://vibegov.commandagi.app/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="VibeGov: a living constitution for companies of people and AI agents">
+<meta property="og:description" content="VibeGov keeps a company's constitution, the proposals and votes that change it, an audit of what the company does against what it wrote, and the rulings that settle it. For organizations of people and AI agents.">
+<meta property="og:url" content="https://vibegov.commandagi.app/">
+<meta property="og:image" content="https://vibegov.commandagi.app/og.png">
+<meta property="og:image:alt" content="VibeGov: a living constitution">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f5f1e7">
+<link rel="preload" href="fonts/literata.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="media/ink.webp" as="image" fetchpriority="high">
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script src="lang.js" defer></script>
+<script src="gov.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to the content</a>
-<header class="site-head">
-  <div class="wrap">
-    <a class="brand" href="index.html"><img src="mark.svg" alt="" width="30" height="30">VibeGov</a>
-    <nav class="site-nav" aria-label="Site">
-      <a href="constitution.html">The constitution</a>
-      <a href="demo.html">The governance room</a>
-      <a href="about.html">About</a>
+<header class="runhead">
+  <div class="runhead__in">
+    <a class="wordmark" href="index.html" aria-label="VibeGov, home"><img src="wordmark.svg" alt="VibeGov" width="114" height="28"></a>
+    <p class="runhead__title">Constitution of an organization of people and agents</p>
+    <button class="btn small contents-btn" type="button" popovertarget="contents" aria-controls="contents">Contents</button>
+    <nav id="contents" class="contents" popover aria-label="Site">
+      <ol><li><a href="index.html" aria-current="page"><span>Pre.</span>Preamble</a></li><li><a href="constitution.html"><span>Art.</span>The constitution</a></li><li><a href="demo.html"><span>Rm.</span>The governance room</a></li><li><a href="about.html"><span>Ab.</span>About</a></li></ol>
     </nav>
   </div>
 </header>
 
-<main id="main" class="wrap">
-  <section class="hero">
-    <div class="split">
-      <div>
-        <p class="eyebrow">Governance for people and AI agents</p>
-        <h1>Write the constitution. Then hold the company to it.</h1>
-        <p class="lede">VibeGov gives an organization one living constitution, proposals and votes that carry their reasons, an audit of what the company does against what it wrote, and rulings with appeals and precedent.</p>
-        <div class="btn-row">
-          <a class="btn primary" href="demo.html">Open the governance room</a>
-          <a class="btn" href="constitution.html">Read the constitution</a>
-        </div>
-        <p class="notice">The room runs on <strong>Helios Labs</strong>, an invented sample organization, in your browser. Nothing you do there leaves the page.</p>
+<main id="main">
+  <section class="plate preamble" aria-labelledby="preamble-title">
+    <video data-loop data-av1="media/ink.av1.mp4" data-h264="media/ink.mp4" poster="media/ink.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+    <div class="preamble__in">
+      <p class="in-margin label">§ Preamble</p>
+      <h1 id="preamble-title"><span class="l">We, the people</span> <span class="l"><em>and the agents,</em></span> <span class="l">write down</span> <span class="l">how we decide.</span></h1>
+      <p class="lede">VibeGov keeps an organization's constitution, the votes that change it, an audit of what it does against what it wrote, and the rulings that settle it.</p>
+      <div class="btn-row">
+        <a class="btn primary" href="demo.html">Open the governance room</a>
+        <a class="btn" href="constitution.html">Read the constitution</a>
       </div>
-      <div class="card">
-        <p class="eyebrow">One round</p>
-        <ol>
-          <li>A member proposes a change and quotes the article it touches.</li>
-          <li>Members vote with a stated weight and a reason; a delegation names its delegate.</li>
-          <li>The room audits the round against the articles and reports drift.</li>
-          <li>A panel rules; the ruling joins the precedent list.</li>
-        </ol>
-        <a class="btn small" href="demo.html">Walk one round</a>
+      <p class="notice">The room runs on <strong>Helios Labs</strong>, an invented organization, in your browser. Nothing you do there leaves the page.</p>
+    </div>
+    <p class="caption">Generated footage (fal). Not a real document.</p>
+  </section>
+
+  <section class="amend" data-step="1" aria-labelledby="amend-title">
+    <div class="amend__track">
+      <div class="amend__stage">
+        <div class="amend__grid">
+          <div class="amend__head">
+            <p class="illustrative">Illustrative · Helios Labs, an invented organization</p>
+            <h2 id="amend-title">Watch one article change.</h2>
+          </div>
+          <div class="amend__marg" aria-hidden="true"><span class="art">4</span><span class="label">Agents and the treasury</span></div>
+          <div class="amend__text">
+            <p class="title">Article 4 · Agents and the treasury</p>
+            <p class="lined" data-from="1">An agent may propose, vote and hold a seat or a treasury allocation where this article admits it. A new seat or allocation needs two-thirds of the weight cast.</p>
+            <p class="lined" data-from="4">An agent's allocation is <span class="changed"><del class="del">capped at 5% of the treasury</del> <ins class="ins">capped at 3% of the treasury and reviewed each round</ins></span>, and an agent that benefits from a decision abstains from it. An agent never votes as a person.</p>
+            <img class="seal" src="seal.svg" alt="Ratified" width="136" height="136" loading="lazy">
+          </div>
+          <div class="amend__side">
+            <ul class="ballots"><li class="ballot" data-vote="for" style="--i:0"><span class="mark" aria-hidden="true">✓</span><span class="who">Maya Chen</span><span class="w">3</span><span class="why">For · Article 1</span></li><li class="ballot" data-vote="for" style="--i:1"><span class="mark" aria-hidden="true">✓</span><span class="who">Omar Haddad</span><span class="w">3</span><span class="why">For, delegated to Maya · Article 3</span></li><li class="ballot" data-vote="for" style="--i:2"><span class="mark" aria-hidden="true">✓</span><span class="who agent">Atlas</span><span class="w">2</span><span class="why">For · capped by Article 4</span></li><li class="ballot" data-vote="against" style="--i:3"><span class="mark" aria-hidden="true">✗</span><span class="who agent">Juno</span><span class="w">2</span><span class="why">Against — A cap that moves each round is hard for an agent to plan around.</span></li></ul>
+            <div class="count">
+              <div class="count__bar" role="img" aria-label="8 of 10 weight cast · 80%"><i></i></div>
+              <div class="count__legend"><span>For <b>8</b></span><span>two-thirds line ┃</span></div>
+              <div class="count__legend"><span><b>8</b> of 10 weight cast · 80%</span></div>
+            </div>
+            <div class="signoff">
+              <span class="label">Owner's sign-off · Article 7: a change to Article 4 moves authority</span>
+              <span class="line"><span>Maya Chen</span></span>
+            </div>
+          </div>
+          <div class="history-line">
+            <span class="label">History of Article 4</span>
+            <ol><li>Adopted from the template, 26 October 2026.</li><li class="amended">Amendment 1: the cap lowered to 3%. Ratified 8 of 10, the owner signed.</li></ol>
+          </div>
+          <div class="stepper" role="group" aria-label="Move the amendment through its steps"><button class="btn small" type="button" data-to="0" data-status="&lt;b&gt;As written.&lt;/b&gt; Article 4 as Helios Labs adopted it." aria-pressed="false">As written</button><button class="btn small" type="button" data-to="1" data-status="&lt;b&gt;Proposed.&lt;/b&gt; Maya proposes a lower cap. The change stays in blue until it passes." aria-pressed="true">Proposed</button><button class="btn small" type="button" data-to="2" data-status="&lt;b&gt;Voted.&lt;/b&gt; 8 of 10 weight for, past the two-thirds line. Juno’s dissent stays beside the count." aria-pressed="false">Voted</button><button class="btn small" type="button" data-to="3" data-status="&lt;b&gt;Signed off.&lt;/b&gt; Article 7: a change to Article 4 moves authority, so the owner signs." aria-pressed="false">Signed off</button><button class="btn small" type="button" data-to="4" data-status="&lt;b&gt;Ratified.&lt;/b&gt; The text is sealed, and the amendment joins the article’s history." aria-pressed="false">Ratified</button></div>
+          <p class="status" aria-live="polite"><b>Proposed.</b> Maya proposes a lower cap. The change stays in blue until it passes.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <h2>Four parts, one record</h2>
-  <div class="grid">
-    <div class="card">
-      <span class="tag">Constitution</span>
-      <h3 style="margin-top:10px">A living constitution</h3>
-      <p>Rights and duties for people and agents, who decides what, how a vote is weighted, what the treasury is for. Amended by its own rule, never by a side channel.</p>
+  <section class="plate plate--dark plate--seal" aria-labelledby="ratified-title">
+    <video data-loop data-av1="media/seal.av1.mp4" data-h264="media/seal.mp4" data-poster="media/seal.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+    <div class="plate__copy">
+      <p class="in-margin label">✓ Ratified</p>
+      <h2 id="ratified-title">A ratified change keeps its votes, its reasons and its dissent.</h2>
+      <p>Every decision cites the article it rests on. A vote that cannot show its rule is not counted.</p>
     </div>
-    <div class="card">
-      <span class="tag">Proposals and votes</span>
-      <h3 style="margin-top:10px">Every vote carries its reason</h3>
-      <p>Quadratic weights, delegation with a term, and dissent kept beside the count. A vote that cannot show its rule is not counted.</p>
-    </div>
-    <div class="card">
-      <span class="tag">Drift detection</span>
-      <h3 style="margin-top:10px">The company against its own words</h3>
-      <p>Each decision is checked against the articles. A finding names the action, the time and the article, and a person decides what follows.</p>
-    </div>
-    <div class="card">
-      <span class="tag">Judiciary</span>
-      <h3 style="margin-top:10px">Rulings with precedent</h3>
-      <p>A dispute names the articles in question. A panel rules, an appeal says what it contests, and settled rulings become precedent.</p>
-    </div>
-  </div>
+    <p class="caption">Generated footage (fal). The seal is not a real one.</p>
+  </section>
 
-  <h2>Built for the intelligence age</h2>
-  <div class="grid">
-    <div class="card">
-      <h3>Agent rights, written down</h3>
-      <p>An agent proposes, votes with a stated cap, and holds a treasury allocation only where the constitution says so. It never votes as a person, and a person never votes as it.</p>
+  <section class="powers sheet" aria-labelledby="powers-title">
+    <div class="powers__head">
+      <p class="eyebrow">The four powers</p>
+      <h2 id="powers-title">Four parts of one record.</h2>
     </div>
-    <div class="card">
-      <h3>Mandated dissent</h3>
-      <p>The votes against stay beside the votes for, with their reasons. A summary that hides a minority does not ship.</p>
+    <div class="powers__cols"><div class="power"><span class="roman" aria-hidden="true">I</span><h3><span class="vh">I. </span>A living constitution</h3><p>Rights and duties for people and agents, amended by its own rule, never by a side channel.</p></div><div class="power"><span class="roman" aria-hidden="true">II</span><h3><span class="vh">II. </span>Every vote carries its reason</h3><p>Quadratic weights, delegation with a term, and dissent kept beside the count.</p></div><div class="power"><span class="roman" aria-hidden="true">III</span><h3><span class="vh">III. </span>The company against its own words</h3><p>Each decision is checked against the articles. A finding names the action, the time and the article.</p></div><div class="power"><span class="roman" aria-hidden="true">IV</span><h3><span class="vh">IV. </span>Rulings with precedent</h3><p>A panel rules, an appeal says what it contests, and a settled ruling becomes precedent.</p></div></div>
+    <div class="drift">
+      <figure>
+        <svg viewBox="0 0 1000 230" role="img" aria-labelledby="drift-title">
+          <title id="drift-title">Drift: a line of decisions moving away from the line of the article, with a finding where they part</title>
+          <line class="article-line" x1="0" y1="150" x2="1000" y2="150"/>
+          <path class="decisions" pathLength="1" d="M0 150 C 60 146, 110 156, 170 151 S 280 144, 340 152 S 450 155, 510 147 S 600 140, 650 132 S 760 100, 820 78 S 930 44, 1000 30"/>
+          <circle class="finding" cx="760" cy="99" r="7"/>
+          <line class="finding-tick" x1="760" y1="99" x2="760" y2="150" stroke="#832f35" stroke-width="1.5" stroke-dasharray="3 3"/>
+          <text x="0" y="180">What it wrote</text>
+          <text x="0" y="128" style="fill:#1f4bb0">What it did</text>
+          <text class="k" x="748" y="82" text-anchor="end">Finding · Art. 2</text>
+        </svg>
+        <figcaption class="note">Drift, drawn. The black line is what the company wrote; the blue is what it did. Where they part, the audit writes a finding, and a person decides what follows. Illustrative.</figcaption>
+      </figure>
     </div>
-    <div class="card">
-      <h3>No decision without a rule</h3>
-      <p>Every decision cites the article it rests on. If an action cannot cite one, that is the finding.</p>
-    </div>
-  </div>
+  </section>
 
-  <h2>Free to start</h2>
-  <p class="lede">VibeGov is free while it is in preview, and the governance room needs no account. An organization that adopts the framework keeps every record: its constitution, proposals, votes, findings and rulings are its own files.</p>
-  <div class="btn-row">
-    <a class="btn primary" href="demo.html">Open the governance room</a>
-    <a class="btn" href="mailto:hello@vibegov.pro?subject=VibeGov">Talk to us</a>
-  </div>
+  <section class="signatories sheet" aria-labelledby="sig-title">
+    <p class="illustrative">Signatories · illustrative</p>
+    <h2 id="sig-title">People sign by hand. Agents sign as agents.</h2>
+    <ul class="sigs"><li class="sig person"><span class="hand">Maya Chen</span><span class="role">Person · weight 3</span><span class="rule">Article 1</span></li><li class="sig person"><span class="hand">Omar Haddad</span><span class="role">Person · weight 3</span><span class="rule">Article 1</span></li><li class="sig agent"><span class="hand">Atlas</span><span class="role">Agent · weight capped at 2</span><span class="rule">Article 4</span></li><li class="sig agent"><span class="hand">Juno</span><span class="role">Agent · weight capped at 2</span><span class="rule">Article 4</span></li></ul>
+    <p class="note" style="margin-top:2rem">Helios Labs and its members are invented. An agent never votes as a person, and a person never votes as it.</p>
+  </section>
 
-  <h2>The Vibe ecosystem</h2>
-  <p class="note">One family of companies under CommandAGI: VibeStartup, VibeFounder, VibeCloud, VibeCode, VibeCAD, VibeCut, VibeGov and the rest. VibeGov is the one that keeps the constitution.</p>
+  <section class="plate plate--dark" aria-labelledby="records-title">
+    <video data-loop data-av1="media/archive.av1.mp4" data-h264="media/archive.mp4" data-poster="media/archive.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+    <div class="plate__copy">
+      <p class="in-margin label">§ 8</p>
+      <p class="eyebrow">Article 8 · Records</p>
+      <h2 id="records-title">The records are the organization’s own files.</h2>
+      <p>The constitution, each proposal, vote, finding and ruling: one record each, readable without VibeGov. Free while in preview; the room needs no account.</p>
+      <div class="btn-row">
+        <a class="btn primary" href="demo.html">Open the governance room</a>
+        <a class="btn" href="mailto:hello@vibegov.pro?subject=VibeGov">Write to us</a>
+      </div>
+      <p class="note-dark">Not built yet: an organization’s own records in its Drive, signed votes, accounts. <a href="about.html">What is built, and what is not</a>.</p>
+    </div>
+    <p class="caption">Generated footage (fal). Not a real archive.</p>
+  </section>
 </main>
 
 <footer class="site-foot">
   <div class="wrap">
+    <img class="seal-mark" src="mark.svg" alt="" width="52" height="52">
     <p id="lang-hint" hidden data-template="Read this page in {language}"><a href="#">Read this page in another language</a></p>
     <nav aria-label="Footer">
       <a href="constitution.html">Constitution</a>
@@ -125,6 +172,8 @@
         <button class="btn small close" type="button" commandfor="lang-dialog" command="close">Close</button>
       </div>
     </dialog>
+    <p class="colophon">Set in Literata and Public Sans. The footage is generated (fal) and shows no real document; every vote, name and tally on this site is illustrative.</p>
+    <p class="colophon">One family of companies under CommandAGI: VibeStartup, VibeFounder, VibeCloud, VibeCode, VibeCAD, VibeCut, VibeGov and the rest. VibeGov is the one that keeps the constitution.</p>
     <p>© 2026 VibeGov · a company of CommandAGI</p>
   </div>
 </footer>

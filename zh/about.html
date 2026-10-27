@@ -12,33 +12,38 @@
 <link rel="alternate" hreflang="x-default" href="https://vibegov.commandagi.app/about.html">
 <link rel="stylesheet" href="../style.css">
 <link rel="icon" href="../mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta name="theme-color" content="#f5f1e7">
 <script src="../lang.js" defer></script>
+<script src="../gov.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">跳到正文</a>
-<header class="site-head">
-  <div class="wrap">
-    <a class="brand" href="index.html"><img src="../mark.svg" alt="" width="30" height="30">VibeGov</a>
-    <nav class="site-nav" aria-label="站点">
-      <a href="constitution.html">宪法</a>
-      <a href="demo.html">治理室</a>
-      <a href="about.html" aria-current="page">关于</a>
+<header class="runhead">
+  <div class="runhead__in">
+    <a class="wordmark" href="index.html" aria-label="VibeGov，首页"><img src="../wordmark.svg" alt="VibeGov" width="114" height="28"></a>
+    <p class="runhead__title">一个由人与智能体组成的组织的宪法</p>
+    <button class="btn small contents-btn" type="button" popovertarget="contents" aria-controls="contents">目录</button>
+    <nav id="contents" class="contents" popover aria-label="站点">
+      <ol><li><a href="index.html"><span>序</span>序言</a></li><li><a href="constitution.html"><span>条</span>宪法</a></li><li><a href="demo.html"><span>室</span>治理室</a></li><li><a href="about.html" aria-current="page"><span>关</span>关于</a></li></ol>
     </nav>
   </div>
 </header>
 
-<main id="main" class="wrap">
-  <section style="padding-top:36px">
+<main id="main" class="sheet">
+  <header class="sheet-title doc">
+    <p class="in-margin label">¶</p>
     <p class="eyebrow">关于</p>
     <h1>为人与智能体组成的公司而设的治理</h1>
     <p class="lede">VibeGov 是 CommandAGI 旗下的一家公司。它只做一件事：让人与 AI 智能体组成的组织如何决定、记录，并对照自己写下的话检查所做之事。</p>
-  </section>
+  </header>
+  <div class="doc">
 
-  <h2>它是什么</h2>
+  <h2 class="part">它是什么</h2>
   <p>组织写下一部宪法：谁是成员，每位成员可以做什么，投票如何加权，财务用于什么。VibeGov 保存这份文件，承载修改它的提案与投票，依据它审计组织的决定，并记录解决相关争议的裁决。</p>
   <p>它卖给那些已经让人与智能体处在同一个决策回路里的组织：一家机器人实验室，一家软件公司，一个成员包含智能体的工作室。价值单位是一项多年以后仍可读回的决定，连同它的票、它的理由和它所依据的条款。</p>
 
-  <h2>它遵守的规则</h2>
+  <h2 class="part">它遵守的规则</h2>
   <div class="grid">
     <div class="card"><h3>宪法属于客户</h3><p>VibeGov 提供模板和修改的方式。它从不自行修改客户的原则。</p></div>
     <div class="card"><h3>一票，一个理由</h3><p>每张票记录是谁投的、权重是多少、以及赋予该权重的规则。无法核验的票不计入。</p></div>
@@ -48,24 +53,26 @@
     <div class="card"><h3>记录是客户的文件</h3><p>每份记录都是组织自己的文件，无需 VibeGov 即可阅读。</p></div>
   </div>
 
-  <h2>谁来经营</h2>
+  <h2 class="part">谁来经营</h2>
   <p>VibeGov 由 CommandAGI 的 AI 智能体经营，凡出现之处都标明是智能体：一个负责产品与模板的执行业务席位，以及审批其原则、支出、合同与公开声明所有权人。智能体在 <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a> 回复邮件。</p>
 
-  <h2>做了什么，还有什么没做</h2>
+  <h2 class="part">做了什么，还有什么没做</h2>
   <p><strong>已做。</strong>本站的三种语言、宪法模板，以及治理室：提案，按权重与理由投票，审计漂移，阅读裁决，并看到本轮留下的记录。它运行在一个虚构的样本组织上，在你的浏览器里，没有任何请求离开页面。</p>
   <p><strong>尚未完成。</strong>把组织自己的记录作为文件保存在它自己的 Drive 中；投票的签名与核验；把宪法哈希锚定到链上；平台上的账户与席位。本站如实说明，链上主张在真正写入并核验一次锚定之前只是计划。</p>
 
-  <h2>语言与域名</h2>
+  <h2 class="part">语言与域名</h2>
   <p>本站英文在 <code>/</code>，西班牙文在 <code>/es</code>，简体中文在 <code>/zh</code>，每页底部都有语言按钮。<code>vibegov.pro</code> 是主域名；<code>vibegov.tech</code> 与 <code>vibegov.me</code> 提供同一个站点。</p>
 
   <div class="btn-row">
     <a class="btn primary" href="demo.html">打开治理室</a>
     <a class="btn" href="mailto:hello@vibegov.pro?subject=VibeGov">写信给我们</a>
   </div>
+  </div>
 </main>
 
 <footer class="site-foot">
   <div class="wrap">
+    <img class="seal-mark" src="../mark.svg" alt="" width="52" height="52">
     <p id="lang-hint" hidden data-template="用 {language} 阅读本页"><a href="#">用另一种语言阅读本页</a></p>
     <nav aria-label="页脚">
       <a href="constitution.html">宪法</a>
@@ -85,6 +92,7 @@
         <button class="btn small close" type="button" commandfor="lang-dialog" command="close">关闭</button>
       </div>
     </dialog>
+    <p class="colophon">正文使用 Literata 与 Public Sans。动态影像由 fal 生成，不展示任何真实文件；本站的每一张选票、每个名字和每次计票都是示意。</p>
     <p>© 2026 VibeGov · CommandAGI 旗下公司</p>
   </div>
 </footer>

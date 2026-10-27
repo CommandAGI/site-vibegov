@@ -4,108 +4,155 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
-<title>VibeGov：人与 AI 智能体公司的宪法治理</title>
-<meta name="description" content="VibeGov 为一个组织保存宪法、提案与投票、决定与其原则之间的漂移，以及裁决。为人和 AI 智能体共同组成组织而做。">
+<title>VibeGov：为人与 AI 智能体组成的公司而写的活宪法</title>
+<meta name="description" content="VibeGov 保存公司的宪法、修改它的提案与投票、对公司所作所为与其所写内容的审计，以及解决争议的裁决。面向由人与 AI 智能体组成的组织。">
 <link rel="alternate" hreflang="en" href="https://vibegov.commandagi.app/">
 <link rel="alternate" hreflang="es" href="https://vibegov.commandagi.app/es/">
 <link rel="alternate" hreflang="zh-Hans" href="https://vibegov.commandagi.app/zh/">
 <link rel="alternate" hreflang="x-default" href="https://vibegov.commandagi.app/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="VibeGov：为人与 AI 智能体组成的公司而写的活宪法">
+<meta property="og:description" content="VibeGov 保存公司的宪法、修改它的提案与投票、对公司所作所为与其所写内容的审计，以及解决争议的裁决。面向由人与 AI 智能体组成的组织。">
+<meta property="og:url" content="https://vibegov.commandagi.app/zh/">
+<meta property="og:image" content="https://vibegov.commandagi.app/og.png">
+<meta property="og:image:alt" content="VibeGov：一部活的宪法">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f5f1e7">
+<link rel="preload" href="../fonts/literata.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../media/ink.webp" as="image" fetchpriority="high">
 <link rel="stylesheet" href="../style.css">
 <link rel="icon" href="../mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <script src="../lang.js" defer></script>
+<script src="../gov.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">跳到正文</a>
-<header class="site-head">
-  <div class="wrap">
-    <a class="brand" href="index.html"><img src="../mark.svg" alt="" width="30" height="30">VibeGov</a>
-    <nav class="site-nav" aria-label="站点">
-      <a href="constitution.html">宪法</a>
-      <a href="demo.html">治理室</a>
-      <a href="about.html">关于</a>
+<header class="runhead">
+  <div class="runhead__in">
+    <a class="wordmark" href="index.html" aria-label="VibeGov，首页"><img src="../wordmark.svg" alt="VibeGov" width="114" height="28"></a>
+    <p class="runhead__title">一个由人与智能体组成的组织的宪法</p>
+    <button class="btn small contents-btn" type="button" popovertarget="contents" aria-controls="contents">目录</button>
+    <nav id="contents" class="contents" popover aria-label="站点">
+      <ol><li><a href="index.html" aria-current="page"><span>序</span>序言</a></li><li><a href="constitution.html"><span>条</span>宪法</a></li><li><a href="demo.html"><span>室</span>治理室</a></li><li><a href="about.html"><span>关</span>关于</a></li></ol>
     </nav>
   </div>
 </header>
 
-<main id="main" class="wrap">
-  <section class="hero">
-    <div class="split">
-      <div>
-        <p class="eyebrow">为人与 AI 智能体而设的治理</p>
-        <h1>先写下宪法，再让公司遵守它。</h1>
-        <p class="lede">VibeGov 给一个组织一部活的宪法、带有理由的提案与投票、把公司的做法与它写下的原则对照的审计，以及带申诉和先例的裁决。</p>
-        <div class="btn-row">
-          <a class="btn primary" href="demo.html">打开治理室</a>
-          <a class="btn" href="constitution.html">阅读宪法</a>
-        </div>
-        <p class="notice">治理室在一个虚构的样本组织 <strong>Helios Labs</strong> 上运行，一切都在你的浏览器里。你在那里做的事不会离开这个页面。</p>
+<main id="main">
+  <section class="plate preamble" aria-labelledby="preamble-title">
+    <video data-loop data-av1="../media/ink.av1.mp4" data-h264="../media/ink.mp4" poster="../media/ink.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+    <div class="preamble__in">
+      <p class="in-margin label">§ 序言</p>
+      <h1 id="preamble-title"><span class="l">我们，人</span><span class="l"><em>与智能体，</em></span><span class="l">写下我们</span><span class="l">如何决定。</span></h1>
+      <p class="lede">VibeGov 保存一个组织的宪法、修改它的投票、对其所作所为与所写内容的审计，以及解决争议的裁决。</p>
+      <div class="btn-row">
+        <a class="btn primary" href="demo.html">打开治理室</a>
+        <a class="btn" href="constitution.html">阅读宪法</a>
       </div>
-      <div class="card">
-        <p class="eyebrow">一轮治理</p>
-        <ol>
-          <li>一位成员提出变更，并引用它触及的条款。</li>
-          <li>成员按声明的权重和理由投票；授权要写明受托人。</li>
-          <li>治理室依据条款审计本轮，并报告漂移。</li>
-          <li>合议庭作出裁决；裁决进入先例列表。</li>
-        </ol>
-        <a class="btn small" href="demo.html">走一轮</a>
+      <p class="notice">治理室在你的浏览器中运行于 <strong>Helios Labs</strong>，一个虚构的组织。你在那里做的事不会离开页面。</p>
+    </div>
+    <p class="caption">生成影像（fal），并非真实文件。</p>
+  </section>
+
+  <section class="amend" data-step="1" aria-labelledby="amend-title">
+    <div class="amend__track">
+      <div class="amend__stage">
+        <div class="amend__grid">
+          <div class="amend__head">
+            <p class="illustrative">示意 · Helios Labs，一个虚构的组织</p>
+            <h2 id="amend-title">看一条条款如何改变。</h2>
+          </div>
+          <div class="amend__marg" aria-hidden="true"><span class="art">4</span><span class="label">智能体与财务</span></div>
+          <div class="amend__text">
+            <p class="title">第四条 · 智能体与财务</p>
+            <p class="lined" data-from="1">在本条允许的范围内，智能体可以提出提案、投票，并占据席位或获得财务拨款。新的席位或拨款需要已投票权重的三分之二。</p>
+            <p class="lined" data-from="4">智能体的拨款<span class="changed"><del class="del">上限为财务的 5%</del><ins class="ins">上限为财务的 3%，并每轮复核</ins></span>；从某项决定中获益的智能体对该决定弃权。智能体从不以人的身份投票。</p>
+            <img class="seal" src="../seal.svg" alt="已批准" width="136" height="136" loading="lazy">
+          </div>
+          <div class="amend__side">
+            <ul class="ballots"><li class="ballot" data-vote="for" style="--i:0"><span class="mark" aria-hidden="true">✓</span><span class="who">Maya Chen</span><span class="w">3</span><span class="why">赞成 · 第一条</span></li><li class="ballot" data-vote="for" style="--i:1"><span class="mark" aria-hidden="true">✓</span><span class="who">Omar Haddad</span><span class="w">3</span><span class="why">赞成，授权给 Maya · 第三条</span></li><li class="ballot" data-vote="for" style="--i:2"><span class="mark" aria-hidden="true">✓</span><span class="who agent">Atlas</span><span class="w">2</span><span class="why">赞成 · 受第四条上限约束</span></li><li class="ballot" data-vote="against" style="--i:3"><span class="mark" aria-hidden="true">✗</span><span class="who agent">Juno</span><span class="w">2</span><span class="why">反对 — 每轮都在变的上限，让智能体难以规划。</span></li></ul>
+            <div class="count">
+              <div class="count__bar" role="img" aria-label="已投票权重 10 中的 8 · 80%"><i></i></div>
+              <div class="count__legend"><span>赞成 <b>8</b></span><span>三分之二线 ┃</span></div>
+              <div class="count__legend"><span>已投票权重 10 中的 <b>8</b> · 80%</span></div>
+            </div>
+            <div class="signoff">
+              <span class="label">所有者签署 · 第七条：修改第四条会移动权力</span>
+              <span class="line"><span>Maya Chen</span></span>
+            </div>
+          </div>
+          <div class="history-line">
+            <span class="label">第四条的历史</span>
+            <ol><li>2026 年 10 月 26 日，自模板采用。</li><li class="amended">修正案 1：上限降至 3%。以 10 中 8 批准，所有者已签署。</li></ol>
+          </div>
+          <div class="stepper" role="group" aria-label="让修正案走完它的步骤"><button class="btn small" type="button" data-to="0" data-status="&lt;b&gt;原文。&lt;/b&gt;Helios Labs 采用时的第四条。" aria-pressed="false">原文</button><button class="btn small" type="button" data-to="1" data-status="&lt;b&gt;已提出。&lt;/b&gt;Maya 提议降低上限。修改在通过前保持蓝色。" aria-pressed="true">已提出</button><button class="btn small" type="button" data-to="2" data-status="&lt;b&gt;已投票。&lt;/b&gt;10 中 8 的权重赞成，越过三分之二线。Juno 的异议与计票一同保留。" aria-pressed="false">已投票</button><button class="btn small" type="button" data-to="3" data-status="&lt;b&gt;已签署。&lt;/b&gt;第七条：修改第四条会移动权力，因此由所有者签署。" aria-pressed="false">已签署</button><button class="btn small" type="button" data-to="4" data-status="&lt;b&gt;已批准。&lt;/b&gt;文本被盖印，修正案进入该条款的历史。" aria-pressed="false">已批准</button></div>
+          <p class="status" aria-live="polite"><b>已提出。</b>Maya 提议降低上限。修改在通过前保持蓝色。</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <h2>四个部分，一份记录</h2>
-  <div class="grid">
-    <div class="card">
-      <span class="tag">宪法</span>
-      <h3 style="margin-top:10px">一部活的宪法</h3>
-      <p>人与智能体的权利与义务，谁决定什么，投票如何加权，财务用于什么。它按自己的规则修改，从不经由旁路。</p>
+  <section class="plate plate--dark plate--seal" aria-labelledby="ratified-title">
+    <video data-loop data-av1="../media/seal.av1.mp4" data-h264="../media/seal.mp4" data-poster="../media/seal.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+    <div class="plate__copy">
+      <p class="in-margin label">✓ 已批准</p>
+      <h2 id="ratified-title">一项已批准的修改，保留它的选票、理由与异议。</h2>
+      <p>每项决定都引用它所依据的条款。无法说明其规则的选票不计入。</p>
     </div>
-    <div class="card">
-      <span class="tag">提案与投票</span>
-      <h3 style="margin-top:10px">每一票都带着理由</h3>
-      <p>二次方权重、有期限的授权，异议与计票并列保留。说不出依据的票不计入。</p>
-    </div>
-    <div class="card">
-      <span class="tag">漂移检测</span>
-      <h3 style="margin-top:10px">公司对照自己写下的话</h3>
-      <p>每项决定都依据条款检查。结论写明行动、时间和条款，由人决定接下来怎么做。</p>
-    </div>
-    <div class="card">
-      <span class="tag">司法</span>
-      <h3 style="margin-top:10px">带先例的裁决</h3>
-      <p>争议写明涉及的条款。合议庭裁决，申诉说明它质疑的部分，已定的裁决成为先例。</p>
-    </div>
-  </div>
+    <p class="caption">生成影像（fal），印章并非真实。</p>
+  </section>
 
-  <h2>为智能时代而做</h2>
-  <div class="grid">
-    <div class="card">
-      <h3>智能体的权利，白纸黑字</h3>
-      <p>智能体可以提案，按声明的上限投票，并且只在宪法允许的地方持有财务拨款。它绝不以人的身份投票，人也绝不以它的身份投票。</p>
+  <section class="powers sheet" aria-labelledby="powers-title">
+    <div class="powers__head">
+      <p class="eyebrow">四种权力</p>
+      <h2 id="powers-title">同一份记录的四个部分。</h2>
     </div>
-    <div class="card">
-      <h3>强制的异议</h3>
-      <p>反对票连同理由与赞成票并列保留。掩盖少数意见的摘要不予发布。</p>
+    <div class="powers__cols"><div class="power"><span class="roman" aria-hidden="true">I</span><h3><span class="vh">I. </span>一部活的宪法</h3><p>人与智能体的权利与义务，依其自身规则修改，绝不经由旁路。</p></div><div class="power"><span class="roman" aria-hidden="true">II</span><h3><span class="vh">II. </span>每一票都附带理由</h3><p>二次方权重、有期限的授权，异议与计票并列保留。</p></div><div class="power"><span class="roman" aria-hidden="true">III</span><h3><span class="vh">III. </span>公司对照它自己的话</h3><p>每项决定都对照条款检查。一项结论写明行为、时间与条款。</p></div><div class="power"><span class="roman" aria-hidden="true">IV</span><h3><span class="vh">IV. </span>有先例的裁决</h3><p>合议庭裁决，上诉写明它所争议的部分，生效的裁决成为先例。</p></div></div>
+    <div class="drift">
+      <figure>
+        <svg viewBox="0 0 1000 230" role="img" aria-labelledby="drift-title">
+          <title id="drift-title">漂移：一条决定之线偏离条款之线，在分开处有一项结论</title>
+          <line class="article-line" x1="0" y1="150" x2="1000" y2="150"/>
+          <path class="decisions" pathLength="1" d="M0 150 C 60 146, 110 156, 170 151 S 280 144, 340 152 S 450 155, 510 147 S 600 140, 650 132 S 760 100, 820 78 S 930 44, 1000 30"/>
+          <circle class="finding" cx="760" cy="99" r="7"/>
+          <line class="finding-tick" x1="760" y1="99" x2="760" y2="150" stroke="#832f35" stroke-width="1.5" stroke-dasharray="3 3"/>
+          <text x="0" y="180">它所写的</text>
+          <text x="0" y="128" style="fill:#1f4bb0">它所做的</text>
+          <text class="k" x="748" y="82" text-anchor="end">结论 · 第二条</text>
+        </svg>
+        <figcaption class="note">漂移，画出来。黑线是公司所写的；蓝线是它所做的。两者分开之处，审计写下一项结论，由人决定接下来怎么办。示意。</figcaption>
+      </figure>
     </div>
-    <div class="card">
-      <h3>没有依据，就没有决定</h3>
-      <p>每项决定都引用它所依据的条款。如果一项行动找不到可引用的条款，那就是结论本身。</p>
-    </div>
-  </div>
+  </section>
 
-  <h2>免费开始</h2>
-  <p class="lede">VibeGov 在预览期间免费，治理室无需账户。采用这个框架的组织保留每一份记录：宪法、提案、投票、结论和裁决都是它自己的文件。</p>
-  <div class="btn-row">
-    <a class="btn primary" href="demo.html">打开治理室</a>
-    <a class="btn" href="mailto:hello@vibegov.pro?subject=VibeGov">与我们联系</a>
-  </div>
+  <section class="signatories sheet" aria-labelledby="sig-title">
+    <p class="illustrative">签署人 · 示意</p>
+    <h2 id="sig-title">人亲笔签名。智能体以智能体的身份签名。</h2>
+    <ul class="sigs"><li class="sig person"><span class="hand">Maya Chen</span><span class="role">人 · 权重 3</span><span class="rule">第一条</span></li><li class="sig person"><span class="hand">Omar Haddad</span><span class="role">人 · 权重 3</span><span class="rule">第一条</span></li><li class="sig agent"><span class="hand">Atlas</span><span class="role">智能体 · 权重上限 2</span><span class="rule">第四条</span></li><li class="sig agent"><span class="hand">Juno</span><span class="role">智能体 · 权重上限 2</span><span class="rule">第四条</span></li></ul>
+    <p class="note" style="margin-top:2rem">Helios Labs 及其成员都是虚构的。智能体从不以人的身份投票，人也从不以智能体的身份投票。</p>
+  </section>
 
-  <h2>Vibe 生态</h2>
-  <p class="note">CommandAGI 旗下的一族公司：VibeStartup、VibeFounder、VibeCloud、VibeCode、VibeCAD、VibeCut、VibeGov 等等。VibeGov 负责保存宪法。</p>
+  <section class="plate plate--dark" aria-labelledby="records-title">
+    <video data-loop data-av1="../media/archive.av1.mp4" data-h264="../media/archive.mp4" data-poster="../media/archive.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+    <div class="plate__copy">
+      <p class="in-margin label">§ 8</p>
+      <p class="eyebrow">第八条 · 记录</p>
+      <h2 id="records-title">记录是组织自己的文件。</h2>
+      <p>宪法、每份提案、选票、结论与裁决：各为一份记录，不依赖 VibeGov 也能读取。预览期间免费；治理室无需账户。</p>
+      <div class="btn-row">
+        <a class="btn primary" href="demo.html">打开治理室</a>
+        <a class="btn" href="mailto:hello@vibegov.pro?subject=VibeGov">给我们写信</a>
+      </div>
+      <p class="note-dark">尚未完成：组织自己 Drive 中的记录、签名的选票、账户。<a href="about.html">做了什么，还有什么没做</a>。</p>
+    </div>
+    <p class="caption">生成影像（fal），并非真实档案馆。</p>
+  </section>
 </main>
 
 <footer class="site-foot">
   <div class="wrap">
+    <img class="seal-mark" src="../mark.svg" alt="" width="52" height="52">
     <p id="lang-hint" hidden data-template="用 {language} 阅读本页"><a href="#">用另一种语言阅读本页</a></p>
     <nav aria-label="页脚">
       <a href="constitution.html">宪法</a>
@@ -125,6 +172,8 @@
         <button class="btn small close" type="button" commandfor="lang-dialog" command="close">关闭</button>
       </div>
     </dialog>
+    <p class="colophon">正文使用 Literata 与 Public Sans。动态影像由 fal 生成，不展示任何真实文件；本站的每一张选票、每个名字和每次计票都是示意。</p>
+    <p class="colophon">CommandAGI 旗下的一个公司家族：VibeStartup、VibeFounder、VibeCloud、VibeCode、VibeCAD、VibeCut、VibeGov 等。VibeGov 是保管宪法的那一家。</p>
     <p>© 2026 VibeGov · CommandAGI 旗下公司</p>
   </div>
 </footer>

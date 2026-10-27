@@ -12,28 +12,33 @@
 <link rel="alternate" hreflang="x-default" href="https://vibegov.commandagi.app/demo.html">
 <link rel="stylesheet" href="../style.css">
 <link rel="icon" href="../mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta name="theme-color" content="#f5f1e7">
 <script src="../lang.js" defer></script>
+<script src="../gov.js" defer></script>
 <script src="../demo.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">跳到正文</a>
-<header class="site-head">
-  <div class="wrap">
-    <a class="brand" href="index.html"><img src="../mark.svg" alt="" width="30" height="30">VibeGov</a>
-    <nav class="site-nav" aria-label="站点">
-      <a href="constitution.html">宪法</a>
-      <a href="demo.html" aria-current="page">治理室</a>
-      <a href="about.html">关于</a>
+<header class="runhead">
+  <div class="runhead__in">
+    <a class="wordmark" href="index.html" aria-label="VibeGov，首页"><img src="../wordmark.svg" alt="VibeGov" width="114" height="28"></a>
+    <p class="runhead__title">一个由人与智能体组成的组织的宪法</p>
+    <button class="btn small contents-btn" type="button" popovertarget="contents" aria-controls="contents">目录</button>
+    <nav id="contents" class="contents" popover aria-label="站点">
+      <ol><li><a href="index.html"><span>序</span>序言</a></li><li><a href="constitution.html"><span>条</span>宪法</a></li><li><a href="demo.html" aria-current="page"><span>室</span>治理室</a></li><li><a href="about.html"><span>关</span>关于</a></li></ol>
     </nav>
   </div>
 </header>
 
-<main id="main" class="wrap">
-  <section style="padding-top:36px">
+<main id="main" class="sheet">
+  <header class="sheet-title doc">
+    <p class="in-margin label proposed">◇</p>
     <p class="eyebrow" data-i18n="eyebrow"></p>
     <h1 data-i18n="title"></h1>
     <p class="lede" data-i18n="lede"></p>
-  </section>
+  </header>
+  <div class="doc">
 
   <div class="room">
     <nav aria-label="本轮">
@@ -42,16 +47,18 @@
     <section class="panel" id="panel" aria-live="polite"></section>
   </div>
 
-  <h2 data-i18n="recordTitle"></h2>
+  <h2 class="part" data-i18n="recordTitle"></h2>
   <p class="note" data-i18n="recordNote"></p>
   <ul class="record" id="record"></ul>
   <div class="btn-row">
     <button class="btn small" id="reset" type="button" data-i18n="reset"></button>
   </div>
+  </div>
 </main>
 
 <footer class="site-foot">
   <div class="wrap">
+    <img class="seal-mark" src="../mark.svg" alt="" width="52" height="52">
     <p id="lang-hint" hidden data-template="用 {language} 阅读本页"><a href="#">用另一种语言阅读本页</a></p>
     <nav aria-label="页脚">
       <a href="constitution.html">宪法</a>
@@ -71,6 +78,7 @@
         <button class="btn small close" type="button" commandfor="lang-dialog" command="close">关闭</button>
       </div>
     </dialog>
+    <p class="colophon">正文使用 Literata 与 Public Sans。动态影像由 fal 生成，不展示任何真实文件；本站的每一张选票、每个名字和每次计票都是示意。</p>
     <p>© 2026 VibeGov · CommandAGI 旗下公司</p>
   </div>
 </footer>

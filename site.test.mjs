@@ -2,7 +2,7 @@
 // page. Run: node --test site.test.mjs
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, statSync } from 'node:fs';
 import { dirname, join, posix, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -143,4 +143,45 @@ test('the pages that are not the demo say what is not built', () => {
     assert.match(read(pagePath(locale, 'about.html')), /not built|no construido|尚未完成|no hecho/i, `${locale}: about says what is not built`);
     assert.match(read(pagePath(locale, 'constitution.html')), /Article 8|Artículo 8|第八条/, `${locale}: the constitution's records article`);
   }
+});
+
+test('every loop is muted, poster-first, light, and says it is generated', () => {
+  for (const locale of LOCALES) {
+    const path = pagePath(locale, 'index.html');
+    const html = read(path);
+    const sections = [...html.matchAll(/<section[^>]*>[\s\S]*?<\/section>/g)].map(m => m[0]).filter(s => s.includes('<video'));
+    assert.equal(sections.length, 3, `${path}: three full-bleed loops`);
+    for (const section of sections) {
+      const video = section.match(/<video[^>]*>/)[0];
+      for (const attribute of ['muted', 'loop', 'playsinline', 'preload="none"', 'aria-hidden="true"']) assert.ok(video.includes(attribute), `${path}: ${video} has ${attribute}`);
+      assert.doesNotMatch(video, /autoplay|controls/, `${path}: a loop never autoplays with sound or shows controls`);
+      for (const key of ['poster', 'data-av1', 'data-h264']) {
+        const ref = video.match(new RegExp(`${key}="([^"]+)"`))[1];
+        const file = resolve(ROOT, dirname(path), ref);
+        assert.ok(existsSync(file), `${path}: ${ref} exists`);
+        assert.ok(statSync(file).size < 3e6, `${path}: ${ref} is under 3 MB`);
+      }
+      assert.match(section, /class="caption">[^<]*\bfal\b/, `${path}: the loop's caption says it is generated`);
+    }
+  }
+});
+
+test('the amendment scene counts by the template\'s rules, the same in every locale', () => {
+  const counts = LOCALES.map(locale => {
+    const html = read(pagePath(locale, 'index.html'));
+    const ballots = [...html.matchAll(/<li class="ballot" data-vote="(for|against|abstain)"[\s\S]*?<span class="who( agent)?">[^<]*<\/span><span class="w">(\d)<\/span>/g)]
+      .map(m => ({ vote: m[1], agent: Boolean(m[2]), weight: Number(m[3]) }));
+    assert.equal(ballots.length, 4, `${locale.tag}: four ballots`);
+    for (const b of ballots) assert.equal(b.weight, b.agent ? 2 : 3, `${locale.tag}: Article 1 gives a person 3, Article 4 caps an agent at 2`);
+    const sum = vote => ballots.filter(b => b.vote === vote).reduce((t, b) => t + b.weight, 0);
+    const cast = sum('for') + sum('against');
+    assert.ok(sum('for') / cast >= 2 / 3, `${locale.tag}: the amendment carries only past two-thirds of the weight cast`);
+    const legend = html.match(/<div class="count__legend"><span>([^]*?)<\/span><\/div>\s*<\/div>/)[1].replace(/<[^>]+>/g, '');
+    assert.ok(legend.includes(String(sum('for'))) && legend.includes(String(cast)), `${locale.tag}: the legend says ${sum('for')} of ${cast}`);
+    assert.match(html, /class="illustrative"[^>]*>[^<]*Helios Labs/, `${locale.tag}: the scene is labeled illustrative and names the invented organization`);
+    assert.equal((html.match(/data-to="\d"/g) ?? []).length, 5, `${locale.tag}: five states, each a button`);
+    assert.match(html, /class="status" aria-live="polite"/, `${locale.tag}: the state is announced`);
+    return `${sum('for')}/${cast}`;
+  });
+  assert.equal(new Set(counts).size, 1, 'one count in every locale');
 });

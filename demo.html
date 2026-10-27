@@ -12,28 +12,33 @@
 <link rel="alternate" hreflang="x-default" href="https://vibegov.commandagi.app/demo.html">
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#f5f1e7">
 <script src="lang.js" defer></script>
+<script src="gov.js" defer></script>
 <script src="demo.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to the content</a>
-<header class="site-head">
-  <div class="wrap">
-    <a class="brand" href="index.html"><img src="mark.svg" alt="" width="30" height="30">VibeGov</a>
-    <nav class="site-nav" aria-label="Site">
-      <a href="constitution.html">The constitution</a>
-      <a href="demo.html" aria-current="page">The governance room</a>
-      <a href="about.html">About</a>
+<header class="runhead">
+  <div class="runhead__in">
+    <a class="wordmark" href="index.html" aria-label="VibeGov, home"><img src="wordmark.svg" alt="VibeGov" width="114" height="28"></a>
+    <p class="runhead__title">Constitution of an organization of people and agents</p>
+    <button class="btn small contents-btn" type="button" popovertarget="contents" aria-controls="contents">Contents</button>
+    <nav id="contents" class="contents" popover aria-label="Site">
+      <ol><li><a href="index.html"><span>Pre.</span>Preamble</a></li><li><a href="constitution.html"><span>Art.</span>The constitution</a></li><li><a href="demo.html" aria-current="page"><span>Rm.</span>The governance room</a></li><li><a href="about.html"><span>Ab.</span>About</a></li></ol>
     </nav>
   </div>
 </header>
 
-<main id="main" class="wrap">
-  <section style="padding-top:36px">
+<main id="main" class="sheet">
+  <header class="sheet-title doc">
+    <p class="in-margin label proposed">◇</p>
     <p class="eyebrow" data-i18n="eyebrow"></p>
     <h1 data-i18n="title"></h1>
     <p class="lede" data-i18n="lede"></p>
-  </section>
+  </header>
+  <div class="doc">
 
   <div class="room">
     <nav aria-label="The round">
@@ -42,16 +47,18 @@
     <section class="panel" id="panel" aria-live="polite"></section>
   </div>
 
-  <h2 data-i18n="recordTitle"></h2>
+  <h2 class="part" data-i18n="recordTitle"></h2>
   <p class="note" data-i18n="recordNote"></p>
   <ul class="record" id="record"></ul>
   <div class="btn-row">
     <button class="btn small" id="reset" type="button" data-i18n="reset"></button>
   </div>
+  </div>
 </main>
 
 <footer class="site-foot">
   <div class="wrap">
+    <img class="seal-mark" src="mark.svg" alt="" width="52" height="52">
     <p id="lang-hint" hidden data-template="Read this page in {language}"><a href="#">Read this page in another language</a></p>
     <nav aria-label="Footer">
       <a href="constitution.html">Constitution</a>
@@ -71,6 +78,7 @@
         <button class="btn small close" type="button" commandfor="lang-dialog" command="close">Close</button>
       </div>
     </dialog>
+    <p class="colophon">Set in Literata and Public Sans. The footage is generated (fal) and shows no real document; every vote, name and tally on this site is illustrative.</p>
     <p>© 2026 VibeGov · a company of CommandAGI</p>
   </div>
 </footer>

@@ -1,0 +1,31 @@
+<!doctype html>
+<!-- The share card (og.png, 1200×630) and the touch icon, rendered from the site's own fonts and marks:
+     python3 redesign/shoot.py og -->
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../style.css">
+<style>
+body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: #f5f1e7; }
+.card { position: relative; width: 1200px; height: 630px; display: grid; grid-template-columns: 150px 1fr 330px; border: 0; }
+.card .marg { border-right: 1px solid #a8a294; padding: 54px 28px 0 0; text-align: right; font: 300 72px/1 Literata; color: #832f35; }
+.card .body { padding: 56px 44px; display: grid; align-content: space-between; }
+.card h1 { font: 310 82px/0.95 Literata; font-variation-settings: "opsz" 72; letter-spacing: -0.03em; margin: 0; }
+.card h1 em { color: #1f4bb0; }
+.card .foot { display: flex; align-items: center; justify-content: space-between; border-top: 3px double #20252a; padding-top: 18px; }
+.card .foot img { height: 38px; }
+.card .foot span { font: 600 13px Public Sans; letter-spacing: .1em; text-transform: uppercase; color: #5f5d57; }
+.card .side { background: url(../media/seal.webp) center / cover; position: relative; }
+.card .side::after { content: ""; position: absolute; inset: 0; box-shadow: inset 1px 0 0 #20252a; }
+.card .stamp { position: absolute; left: 640px; top: 300px; width: 190px; transform: rotate(-8deg); }
+.touch { width: 180px; height: 180px; background: #832f35; display: grid; place-items: center; }
+.touch img { width: 150px; }
+</style></head>
+<body>
+<div class="card" id="og">
+  <div class="marg">§</div>
+  <div class="body">
+    <h1>We, the people <em>and the agents,</em> write down how we decide.</h1>
+    <div class="foot"><img src="../wordmark.svg" alt=""><span>A living constitution · vibegov.commandagi.app</span></div>
+  </div>
+  <div class="side"></div>
+</div>
+<div class="touch" id="touch"><img src="../mark.svg" alt=""></div>
+</body></html>
