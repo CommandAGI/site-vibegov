@@ -2,27 +2,37 @@
 
 The site of VibeGov, the home of the Coordination Contract (`seed/org-vibegov/` in the CommandAGI repository): a
 static folder served by CommandAGI's site hosting at https://vibegov.pro, with `vibegov.tech`, `vibegov.me` and
-https://vibegov.commandagi.app serving the same site.
+https://vibegov.commandagi.app serving the same site. The design and the reasons are in CommandAGI's
+`docs/vibegov.md`.
 
-- `index.html`: the front door. What the contract is (kernel, law, engine, ledger; no offices), a question climbing
-  the engine's tiers, an illustrative RFC moving through the law (opened, answered, concurred, adopted), the three
-  outcomes of a determination, five reasons it matters, and the way in.
+- `index.html`: the front door. The contract's four parts with its kernel hash recomputed in the page, the live
+  figures (open RFCs, responses counted, persons with a voice, cases, the pool, credit), the open RFCs with their
+  deadlines and a Respond link, the decided ones, the ledger's state (log, sweep, on-chain anchor), the law's windows,
+  and the acts a member can take.
+- `record.html`: the public record: every RFC, the judgments, the last 50 log entries with each hash recomputed in the
+  page, the checkpoints, the versions.
 - `contract.html`: the contract's text. Between its `<!-- contract:begin … -->` and `<!-- contract:end -->` markers,
   the clauses are **rendered from `docs/coordination-contract.md`** in the CommandAGI repository by
   `node scripts/seed/vibegov-contract.mjs`. Do not edit that region here. The repository's
   `scripts/checks/check-generated-files.mjs` refuses a page that differs from the doc.
+- `join.html`: how to take part, with links into the contract editor, and a prompt box that opens the visitor's words
+  in the CommandAGI workbench (`https://commandagi.com/app?prompt=…`).
+- `live.js`: the live record as HTML (pure: data in, escaped markup out). `page.js` fetches the public API
+  (`<meta name="vibegov-api">`, https://api.commandagi.com) and places each `data-live` part. `verify.js` recomputes
+  the kernel's hash and the log's hashes with Web Crypto, by the contract's own rules. `gov.js`: the contents popover
+  and line numbers.
 - `papers/`: the working paper and its short edition (PDF), copied by the same script from
   `docs/papers/coordination-contract/`.
-- `join.html`: how to take part: an account, a voice, an RFC answered or opened, agreements and cases; and a prompt box
-  that opens the visitor's words in the CommandAGI workbench (`https://commandagi.com/?prompt=…`).
-- `gov.js`: the document's apparatus: the phone's contents popover, line numbers in the margin, loops that play only
-  when seen (never under reduced motion), and the landing page's RFC scene (five states, driven by scroll on a wide
-  screen and by buttons everywhere, announced in `aria-live`).
-- `style.css`, `fonts/` (Literata and Public Sans, variable, OFL, self-hosted), `media/` (three generated loops, AV1
-  and H.264, with WebP posters), `wordmark.svg`, `seal.svg`, `mark.svg` (the favicon), `og.png`,
-  `apple-touch-icon.png`.
-- `redesign/`: the 2027 design (`DESIGN.md`), the media log (`NOTES.md`) and the scripts that made the media and marks.
-  None of them runs when the site is served.
+- `style.css`, `fonts/` (Literata and Public Sans, variable, OFL, self-hosted), `mark.svg`, `og.png`,
+  `apple-touch-icon.png` (drawn by `redesign/marks.py`), `fixtures/` (real entries of the public record that the test
+  recomputes).
+- `redesign/`: the design (`DESIGN.md`), the audit before the 2026-10-26 redesign (`CONTENT.md`) and `marks.py`.
+
+## acting
+
+Every act (respond to an RFC, confirm its receipt, contest a reading, open an RFC, file or follow a case, the
+anonymous voice) happens in CommandAGI's contract editor, signed in. The site links to it at the record:
+`https://commandagi.com/app?open=/app/contract?rfc=<id>` (URL-encoded) opens the editor on that RFC.
 
 ## when the contract changes
 
@@ -36,18 +46,21 @@ then commit here, push this repository's `main`, and move the gitlink in Command
 
 ## what the site keeps
 
-- Static, with no build: `site.json`, HTML, CSS, SVG, fonts, media, PDFs and JavaScript.
-- No request leaves the page. Every page's CSP is `default-src 'self'`, `script-src 'self'`, `connect-src 'none'`.
-  The one exception is the join page's form, which a visitor sends on purpose (`form-action https://commandagi.com`).
+- Static, with no build: `site.json`, HTML, CSS, SVG, fonts, PDFs and JavaScript modules (`package.json` says only
+  that they are modules).
+- Each page connects to itself and the public API only: `connect-src 'self' https://api.commandagi.com`. It reads
+  `/public/contract/*` with no credential. The join page's form is sent only on purpose (`form-action
+  https://commandagi.com`).
+- No generated picture, video or photograph. Every figure is read from the record; a zero says so in words.
 - English only, one page per address.
-- The RFC on the landing page is illustrative, and says so.
 
 ## test
 
-`node --test site.test.mjs` (Node 22 or 24, no dependencies) checks the three pages: their contents line and canonical
-address, that every relative link resolves on disk, the CSP of each page, that the contract page holds the twelve
-kernel articles and the two PDFs, that every loop is muted, poster-first, under 3 MB and captioned as generated, and
-that the RFC scene tallies as the contract does (an option scores the sum of its voices' −2 to +2).
+`node --test site.test.mjs` (Node 22 or 24, no dependencies) checks the four pages (contents line, canonical
+address, links on disk, CSP), that no picture stands in for the record, that the contract page holds the twelve
+kernel articles and the two PDFs, `live.js` against a fake API on a local port (empty states, escaping, deadlines, the
+Respond link, a refusing API), and `verify.js` against real kernel and log entries (and that a changed word or digest
+is caught).
 
 ## deploy
 

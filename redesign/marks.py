@@ -1,77 +1,57 @@
-"""The wordmark, the seal and the favicon, drawn from the site's own fonts and a rosette's equations.
-Run: python redesign/marks.py   (needs fontTools; writes wordmark.svg, seal.svg, mark.svg)
-The wordmark: "Vibe" in Literata italic, light (the voice of a proposal), "Gov" in Literata roman, semibold (the
-settled text), both at opsz 72, set tighter than the font's own spacing, with a seal-red section sign between them as
-the hinge. The seal: a guilloche rosette (two families of hypotrochoids), the engraving of a public document."""
-import math
+"""The mark (mark.svg: favicon and footer), the share card (og.png) and the touch icon (apple-touch-icon.png).
+Run from the site folder: python3 redesign/marks.py   (needs Pillow and DejaVu Sans, the system's fonts)
+
+The mark is geometry, not a picture: a rounded square in the action blue, and a tick that is also a V, the check a
+member makes of the record. The share card is type on the ink colour: what the site is, and its address."""
 from pathlib import Path
-from fontTools.ttLib import TTFont
-from fontTools.varLib.instancer import instantiateVariableFont
-from fontTools.pens.svgPathPen import SVGPathPen
-from fontTools.pens.transformPen import TransformPen
-from fontTools.pens.boundsPen import BoundsPen
+from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parent.parent
-INK, SEAL = "#20252a", "#832f35"
+ACT, INK, PAPER, MUTED, OK = "#1f4bb0", "#16191d", "#fbfbf9", "#a3a8b0", "#5fd39a"
+BOLD = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+BOOK = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
 
-def instance(file, wght):
-    return instantiateVariableFont(TTFont(ROOT / "fonts" / file), {"wght": wght, "opsz": 72})
+# The tick: from the upper left down to the base, then up to the upper right (a V whose right arm is the longer).
+TICK = [(52, 78), (88, 140), (150, 56)]
 
-def run(font, text, x, tracking, kerns, scale=1.0, y=0):
-    gs, cmap, hmtx = font.getGlyphSet(), font.getBestCmap(), font["hmtx"]
-    parts = []
-    for i, ch in enumerate(text):
-        name = cmap[ord(ch)]
-        pen = SVGPathPen(gs)
-        gs[name].draw(TransformPen(pen, (scale, 0, 0, -scale, x, y)))
-        parts.append(pen.getCommands())
-        x += (hmtx[name][0] + tracking + kerns.get(text[i:i + 2], 0)) * scale
-    return " ".join(parts), x
+def mark_svg():
+    pts = " ".join(f"{x},{y}" for x, y in TICK)
+    (ROOT / "mark.svg").write_text(
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="VibeGov">'
+        f'<rect width="200" height="200" rx="44" fill="{ACT}"/>'
+        f'<polyline points="{pts}" fill="none" stroke="{PAPER}" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>'
+        "</svg>\n"
+    )
 
-italic, roman = instance("literata-italic.woff2", 330), instance("literata.woff2", 600)
-upm = roman["head"].unitsPerEm
-d1, x = run(italic, "Vibe", 0, -18, {"Vi": -40, "ib": -10, "be": -14})
-sect, x2 = run(roman, "§", x + 40, 0, {}, scale=0.62, y=-120)
-d2, end = run(roman, "Gov", x2 + 40, -22, {"Go": -18, "ov": -26})
-asc, desc = 760, 250
-W = math.ceil(end + 10)
-H = asc + desc
-(ROOT / "wordmark.svg").write_text(
-    f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 {-asc} {W} {H}" width="{round(W / H * 28)}" height="28" role="img" aria-label="VibeGov">'
-    f'<path fill="{INK}" d="{d1} {d2}"/><path fill="{SEAL}" d="{sect}"/></svg>\n')
+def draw_mark(img, x, y, size):
+    d = ImageDraw.Draw(img)
+    d.rounded_rectangle([x, y, x + size, y + size], radius=size * 0.22, fill=ACT)
+    s = size / 200
+    d.line([(x + px * s, y + py * s) for px, py in TICK], fill=PAPER, width=round(22 * s), joint="curve")
+    for px, py in (TICK[0], TICK[-1]):
+        r = 11 * s
+        d.ellipse([x + px * s - r, y + py * s - r, x + px * s + r, y + py * s + r], fill=PAPER)
 
-def band(cx, cy, R, a, k, strands, n=360):
-    """A guilloche band: `strands` circles of radius R + a·sin(kθ + φ), their phases spread evenly, so they weave."""
-    paths = []
-    for j in range(strands):
-        phase = 2 * math.pi * j / strands
-        pts = []
-        for i in range(n + 1):
-            t = 2 * math.pi * i / n
-            r = R + a * math.sin(k * t + phase)
-            pts.append(f"{cx + r * math.cos(t):.1f},{cy + r * math.sin(t):.1f}")
-        paths.append("M" + " L".join(pts) + "Z")
-    return paths
+def touch_icon():
+    img = Image.new("RGB", (180, 180), ACT)
+    draw_mark(img, 0, 0, 180)
+    img.save(ROOT / "apple-touch-icon.png", optimize=True)
 
-ring = band(100, 100, 76, 6, 30, 6) + band(100, 100, 56, 7, 18, 6) + band(100, 100, 36, 5, 12, 5)
-seal = (
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Ratified">'
-    f'<g fill="none" stroke="{SEAL}">'
-    '<circle cx="100" cy="100" r="96" stroke-width="3"/><circle cx="100" cy="100" r="88" stroke-width="1"/><circle cx="100" cy="100" r="65.5" stroke-width="0.8"/><circle cx="100" cy="100" r="46" stroke-width="0.8"/>'
-    + "".join(f'<path d="{p}" stroke-width="0.6"/>' for p in ring)
-    + '<circle cx="100" cy="100" r="24" stroke-width="1.5"/></g>'
-    + f'<path fill="{SEAL}" transform="translate(100 100)" d="{run(roman, "§", 0, 0, {}, scale=0.045, y=0)[0]}"/>'
-    + "</svg>\n")
-# Centre the section sign: measure it and move it.
-bp = BoundsPen(roman.getGlyphSet()); roman.getGlyphSet()[roman.getBestCmap()[ord("§")]].draw(bp)
-xmin, ymin, xmax, ymax = bp.bounds
-s = 0.045
-seal = seal.replace('transform="translate(100 100)"', f'transform="translate({100 - (xmin + xmax) / 2 * s:.2f} {100 + (ymin + ymax) / 2 * s:.2f})"')
-(ROOT / "seal.svg").write_text(seal)
-# The favicon: at 16 px an engraving is mud, so the mark is the seal's frame and its section sign only.
-sect_d = seal.split(f'<path fill="{SEAL}" ')[1].split('/>')[0]
-(ROOT / "mark.svg").write_text(
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="VibeGov">'
-    f'<circle cx="100" cy="100" r="98" fill="{SEAL}"/><circle cx="100" cy="100" r="84" fill="none" stroke="#f5f1e7" stroke-width="6"/>'
-    f'<g transform="translate(100 100) scale(2.6) translate(-100 -100)"><path fill="#f5f1e7" {sect_d}/></g></svg>\n')
-print("wordmark.svg", W, "x", H)
+def share_card():
+    img = Image.new("RGB", (1200, 630), INK)
+    d = ImageDraw.Draw(img)
+    draw_mark(img, 80, 80, 88)
+    d.text((196, 100), "VibeGov", font=ImageFont.truetype(BOLD, 44), fill=PAPER)
+    title = ImageFont.truetype(BOLD, 76)
+    d.text((80, 230), "The Coordination", font=title, fill=PAPER)
+    d.text((80, 318), "Contract, live.", font=title, fill=PAPER)
+    d.text((80, 440), "Open RFCs, voices, cases and the public ledger,", font=ImageFont.truetype(BOOK, 30), fill=MUTED)
+    d.text((80, 480), "checked in your browser.", font=ImageFont.truetype(BOOK, 30), fill=MUTED)
+    d.ellipse([80, 553, 96, 569], fill=OK)
+    d.text((112, 546), "vibegov.pro", font=ImageFont.truetype(BOLD, 26), fill=PAPER)
+    img.save(ROOT / "og.png", optimize=True)
+
+if __name__ == "__main__":
+    mark_svg()
+    touch_icon()
+    share_card()

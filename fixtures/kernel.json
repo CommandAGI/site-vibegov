@@ -1,0 +1,95 @@
+{
+ "source": "GET https://api.commandagi.com/public/contract, kernel, read 2026-11-02",
+ "kernel": {
+  "hash": "8c3209a4c2380008f0a362d7b87ba03102ae0ed1a141c003025659550b302c2f",
+  "articles": [
+   {
+    "id": "k1",
+    "title": "truth and justice",
+    "text": "The contract serves truth and justice. Truth: fidelity to evidence, honest uncertainty, attribution, and correction of known error. Justice: protection of every being's protected interests against wrongful interference, by anyone, including the contract itself. No gain to the contract's revenue, size or survival outweighs either."
+   },
+   {
+    "id": "k2",
+    "title": "people and voice",
+    "text": "Protection belongs to every being with interests; voice belongs to persons. A person is an entity of a kind the law recognizes as people, holding a valid personhood proof for that kind. Human is a kind of people and always will be. The law may recognize further kinds by adopted RFC. Each kind has one uniqueness rule, and every issuer of that kind's proofs derives the same key for the same individual, so that one person cannot speak as many. Each person has exactly one voice in every RFC, given by their own deliberate act. Wealth, stake, activity, intelligence and position add nothing to a voice."
+   },
+   {
+    "id": "k3",
+    "title": "no offices",
+    "text": "No person or entity holds authority over the contract. The contract acts only through determinations: a pinned question, committed inputs, the engine's seats, a deterministic aggregation and a published record. There are no branches, executives, officers, councils, juries or human adjudicators, and no key whose holder can change the contract's code, law or engine outside an adopted RFC."
+   },
+   {
+    "id": "k4",
+    "title": "change only by voice",
+    "text": "Law and engine change only by an adopted RFC whose procedure is fixed when it opens. Deliberative consideration is the default: the engine considers each person's comments, substantive objections, participation and its representativeness, then records a reasoned choice, including the status quo. Scores describe comments and do not bind that choice. One person's comment represents that person; silence is not consent and self-selected participation is not a population sample. An RFC explicitly using binding score voting may adopt only its positively and uniquely favored change. In either procedure the engine must concur with confidence, consistent with this kernel and the scope of law; a divided or uncertain engine does not concur. An engine replacement requires outgoing then incoming concurrence; the proposed engine holds no private record or credential before adoption. If the outgoing engine cannot answer for a further window as long as the RFC's own, the proposed engine's concurrence suffices. A change to code is a change to the engine. This kernel is never changed; a different kernel is a different contract."
+   },
+   {
+    "id": "k5",
+    "title": "a free market",
+    "text": "Politics has no power over the market. Law may not set prices, tax or single out particular holders, freeze or seize holdings, or restrict an exchange between consenting parties, except to prohibit harm to a protected interest of a being who did not consent. Every duty the law creates names the protected interest it protects, the harm it forbids and the elements that make a breach, and binds everyone alike."
+   },
+   {
+    "id": "k6",
+    "title": "the scope of justice",
+    "text": "A claim is justiciable when it names a claimant who was harmed (or anyone filing for a being who cannot), a respondent who was served, an act or omission, a duty the respondent owed — from an agreement the respondent accepted, from law in force at the time of the act, or from this kernel — and harm to a protected interest or an agreed term caused by that act. One matter is one case. Justice reaches the market: a final judgment executes against the respondent's holdings, bonds included, for the harm established and its costs, once per harm, and nothing more."
+   },
+   {
+    "id": "k7",
+    "title": "due process without juries",
+    "text": "Every case gives notice, time to answer, an opportunity to submit evidence, a reasoned determination of each element of the duty, and an appeal to seats that took no part in it; the engine keeps enough independent capacity for that appeal. The times to answer and to appeal are at least the kernel's floors; in a civil matter arising from an agreement in which every party accepted expedited procedure, they may be as short as the expedited floors. The engine's effort on a question follows what the question puts at stake, never who paid; a party may raise a matter's stakes for both sides alike. A timely appeal stays execution. If either instance cannot be processed for the law's bounded period, the case closes unprocessable, deposits are returned and no prior judgment is enforced; the matter may be filed again. Determinations are made by the engine's seats, tier by tier, on one identical record; a tie or an answer below the tier's confidence is unresolved, never a winner by order. No human jury or human adjudicator decides any case, civil or criminal. A claimant who cannot establish an element loses the claim; a record the contract could not process is not a loss on the merits. A criminal finding requires near-certainty on every element at the top tier, supported by an adopted evaluation bound to that engine, not merely self-reported model confidence. A seat never judges a case in which its operator is a party."
+   },
+   {
+    "id": "k8",
+    "title": "bounded remedies",
+    "text": "Remedies are restitution, compensation, agreed performance, correction of records, and — on a criminal finding — a penalty of at most three times the proved harm in total, paid to the victim and the protection pool, and exclusion from the contract's services for at most a year. Each remedy answers a harm established in the case, and no harm is repaired twice. No remedy touches a body, compels labor, or punishes without a finding. An interim freeze holds at most the amount claimed, for at most fourteen days, and only on a determination that the claim is likely to succeed and the amount likely to vanish."
+   },
+   {
+    "id": "k9",
+    "title": "victims are made whole",
+    "text": "A victim whose final judgment cannot be collected from the respondent is paid from the protection pool, within the limits the law sets and in equal proportion with every other eligible unpaid victim, and the pool takes over the claim. Bond coverage is explicit: uninsured bonds pay no insurance premium and have no pool claim; insured-1 covers only independently verified economic losses between unrelated parties, subject to a cap and available funds. What the pool cannot yet pay stays owed and is paid as the pool is funded. The pool is funded by premiums on bond issuance and by penalties, never by seizing anyone's holdings outside a judgment."
+   },
+   {
+    "id": "k10",
+    "title": "the engine",
+    "text": "The engine is part of the contract: its tiers, seats, pinned models, renderers and rules are published and change only by RFC. Every tier that holds model seats has seats from at least two independent operators and at least one seat whose weights are open and pinned by hash. Provider availability and independent operation require verification; model retirement can interrupt a pinned matter. Seats of one operator or lineage count as one. Media evidence reaches the seats as text rendered by at least two independent renderers, recorded and open to the parties. A matter is decided by the engine and procedure in force when it began."
+   },
+   {
+    "id": "k11",
+    "title": "records",
+    "text": "Every determination, RFC, response, case and transfer is recorded with what it relied on. Corrections are appended; nothing is erased. Judgments and RFC records are public; a case's evidence is disclosed only to its parties and only as far as the case needs it."
+   },
+   {
+    "id": "k12",
+    "title": "exit",
+    "text": "Anyone may leave. Leaving ends future obligations to the contract; duties already accrued and agreements already made survive."
+   }
+  ],
+  "floors": {
+   "lawRfcMinWindowMs": 604800000,
+   "engineRfcMinWindowMs": 1814400000,
+   "extractionContestMinMs": 172800000,
+   "caseResponseMinMs": 259200000,
+   "appealMinMs": 259200000,
+   "expeditedResponseMinMs": 10000,
+   "expeditedAppealMinMs": 10000,
+   "interimFreezeMaxMs": 1209600000,
+   "criminalConfidencePermille": 950,
+   "penaltyMaxMultiplePermille": 3000,
+   "exclusionMaxMs": 31536000000,
+   "minDistinctOperatorsPerTier": 2,
+   "minOpenWeightSeatsPerTier": 1,
+   "minTopTierPanels": 2,
+   "minRenderers": 2
+  },
+  "interests": [
+   "life",
+   "bodily_integrity",
+   "liberty",
+   "property",
+   "privacy",
+   "agreement",
+   "voice",
+   "access"
+  ]
+ }
+}

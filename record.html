@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://api.commandagi.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="vibegov-api" content="https://api.commandagi.com">
+<title>The record · VibeGov</title>
+<meta name="description" content="The Coordination Contract's public record, live: every RFC, the judgments, the transparency log with each hash recomputed in your browser, its checkpoints on chain, and every contract version.">
+<link rel="canonical" href="https://vibegov.pro/record.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The record of the Coordination Contract">
+<meta property="og:description" content="Every RFC, judgment, log entry and checkpoint, read live and checked in your browser.">
+<meta property="og:url" content="https://vibegov.pro/record.html">
+<meta property="og:image" content="https://vibegov.pro/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#fbfbf9">
+<link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<script src="gov.js" defer></script>
+<script type="module" src="page.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the content</a>
+<header class="runhead">
+  <div class="runhead__in">
+    <a class="wordmark" href="index.html" aria-label="VibeGov, home"><img src="mark.svg" alt="" width="26" height="26">VibeGov</a>
+    <p class="runhead__title" data-live="pulse" aria-busy="true">The Coordination Contract</p>
+    <button class="btn small contents-btn" type="button" popovertarget="contents" aria-controls="contents">Contents</button>
+    <nav id="contents" class="contents" popover aria-label="Site">
+      <ol><li><a href="index.html">Overview</a></li><li><a href="record.html" aria-current="page">The record</a></li><li><a href="contract.html">The contract</a></li><li><a href="join.html">Take part</a></li></ol>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="sheet">
+  <section class="hero" aria-labelledby="record-title">
+    <div>
+      <p class="eyebrow">The public record · k11</p>
+      <h1 id="record-title">Everything the contract has done, <em>checkable by anyone.</em></h1>
+      <p class="lede">RFCs and judgments are public; a case's evidence stays with its parties. Every act is one entry of a hash-chained log. This page reads it from the API and recomputes the hashes itself, so you need not trust the page or the platform.</p>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="rfcs-title">
+    <div class="band__head"><div><h2 id="rfcs-title">RFCs</h2><p>Newest first. Open one in the contract editor to read its options, its clocks and, once read, its tally.</p></div><span class="cite">§ RFCs</span></div>
+    <div data-live="rfcs" aria-busy="true"><p class="note">Reading the RFCs…</p></div>
+  </section>
+
+  <section class="band" aria-labelledby="judgments-title">
+    <div class="band__head"><div><h2 id="judgments-title">Judgments</h2><p>The public projection of each case: its duty, its stage and its judgments. Never its record.</p></div><span class="cite">k7 · § justice</span></div>
+    <div data-live="judgments" aria-busy="true"><p class="note">Reading the judgments…</p></div>
+  </section>
+
+  <section class="band" aria-labelledby="log-title">
+    <div class="band__head"><div><h2 id="log-title">The transparency log</h2><p>The last 50 entries. An entry carries the digest of what the act committed, never the record and never who.</p></div><span class="cite">§ fault tolerance</span></div>
+    <div data-live="log" aria-busy="true"><p class="note">Reading the log…</p></div>
+  </section>
+
+  <section class="band" aria-labelledby="checkpoints-title">
+    <div class="band__head"><div><h2 id="checkpoints-title">Checkpoints on chain</h2><p>The log's head, anchored on the contract's registry program, or recorded as not anchored with the reason.</p></div><span class="cite">§ on-chain</span></div>
+    <div data-live="checkpoints" aria-busy="true"><p class="note">Reading the checkpoints…</p></div>
+  </section>
+
+  <section class="band" aria-labelledby="versions-title">
+    <div class="band__head"><div><h2 id="versions-title">Versions</h2><p>What each matter was decided under: the kernel, the engine and the state, by hash.</p></div><span class="cite">k4 · k10</span></div>
+    <div data-live="versions" aria-busy="true"><p class="note">Reading the versions…</p></div>
+  </section>
+
+  <p class="notice">To recompute all of it, every determination included: <code>node --import tsx scripts/contract/replica.mjs --api https://api.commandagi.com</code> in the CommandAGI repository.</p>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <img class="seal-mark" src="mark.svg" alt="" width="40" height="40">
+    <nav aria-label="Footer">
+      <a href="record.html">The record</a>
+      <a href="contract.html">The contract</a>
+      <a href="join.html">Take part</a>
+      <a href="papers/coordination-contract.pdf">The paper (PDF)</a>
+      <a href="https://commandagi.com/">CommandAGI</a>
+      <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>
+    </nav>
+    <p class="colophon">Every figure on this site is read from the contract's public record at api.commandagi.com.</p>
+    <p>© 2026 VibeGov · a company of CommandAGI</p>
+  </div>
+</footer>
+</body>
+</html>

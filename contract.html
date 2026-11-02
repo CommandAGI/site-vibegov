@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://api.commandagi.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="vibegov-api" content="https://api.commandagi.com">
 <title>The Coordination Contract · VibeGov</title>
 <meta name="description" content="The text of the Coordination Contract: its four parts, the twelve articles of its kernel, people, RFCs, the engine, evidence, justice, the pool and credit. Rendered from its source.">
 <link rel="canonical" href="https://vibegov.pro/contract.html">
@@ -14,32 +15,33 @@
 <meta property="og:image" content="https://vibegov.pro/og.png">
 <meta property="og:image:alt" content="VibeGov, the home of the Coordination Contract">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#f5f1e7">
-<link rel="preload" href="fonts/literata.woff2" as="font" type="font/woff2" crossorigin>
+<meta name="theme-color" content="#fbfbf9">
+<link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="mark.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script src="gov.js" defer></script>
+<script type="module" src="page.js"></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to the content</a>
 <header class="runhead">
   <div class="runhead__in">
-    <a class="wordmark" href="index.html" aria-label="VibeGov, home"><img src="wordmark.svg" alt="VibeGov" width="114" height="28"></a>
-    <p class="runhead__title">The Coordination Contract</p>
+    <a class="wordmark" href="index.html" aria-label="VibeGov, home"><img src="mark.svg" alt="" width="26" height="26">VibeGov</a>
+    <p class="runhead__title" data-live="pulse" aria-busy="true">The Coordination Contract</p>
     <button class="btn small contents-btn" type="button" popovertarget="contents" aria-controls="contents">Contents</button>
     <nav id="contents" class="contents" popover aria-label="Site">
-      <ol><li><a href="index.html"><span>Pre.</span>Preamble</a></li><li><a href="contract.html" aria-current="page"><span>§</span>The contract</a></li><li><a href="join.html"><span>Art.</span>Take part</a></li></ol>
+      <ol><li><a href="index.html">Overview</a></li><li><a href="record.html">The record</a></li><li><a href="contract.html" aria-current="page">The contract</a></li><li><a href="join.html">Take part</a></li></ol>
     </nav>
   </div>
 </header>
 
 <main id="main" class="sheet">
   <header class="sheet-title doc">
-    <p class="in-margin label ratified">§</p>
     <p class="eyebrow">The text, as it is in force</p>
     <h1>The Coordination Contract</h1>
     <p class="lede">The clauses below are rendered from the contract’s own source. Nobody edits them by hand, and CommandAGI’s checks refuse a page that differs from the source, so what you read here is what the code holds people and agents to.</p>
+    <div data-live="kernel" aria-live="polite" aria-busy="true"><p class="note">Checking the ledger's kernel against this text…</p></div>
   </header>
 
 <!-- contract:begin (written by node scripts/seed/vibegov-contract.mjs from docs/coordination-contract.md; do not edit) -->
@@ -423,16 +425,16 @@ account: the person or an agent key. The contract refuses a program's token.</p>
 
 <footer class="site-foot">
   <div class="wrap">
-    <img class="seal-mark" src="mark.svg" alt="" width="52" height="52">
+    <img class="seal-mark" src="mark.svg" alt="" width="40" height="40">
     <nav aria-label="Footer">
+      <a href="record.html">The record</a>
       <a href="contract.html">The contract</a>
       <a href="join.html">Take part</a>
       <a href="papers/coordination-contract.pdf">The paper (PDF)</a>
       <a href="https://commandagi.com/">CommandAGI</a>
       <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>
     </nav>
-    <p class="colophon">VibeGov is the home of the Coordination Contract, the institution CommandAGI runs on. The contract’s text on this site is rendered from its source, so it cannot drift from it.</p>
-    <p class="colophon">Set in Literata and Public Sans.</p>
+    <p class="colophon">VibeGov is the home of the Coordination Contract, the institution CommandAGI runs on. The contract's text on this site is rendered from its source, so it cannot drift from it.</p>
     <p>© 2026 VibeGov · a company of CommandAGI</p>
   </div>
 </footer>

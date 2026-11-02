@@ -1,0 +1,59 @@
+{
+ "source": "GET https://api.commandagi.com/public/contract/log?from=36170&limit=6, read 2026-11-02",
+ "entries": [
+  {
+   "seq": 36170,
+   "prev": "d5d988e18dda915a7e1fde5ebf6defae5e3843bf7fff762d60145e9c472ff698",
+   "hash": "bc159d8fd2a5feb7eb360a2f45cc5c4886ef4a1bbc68d78f69ed509dfe6d27f9",
+   "kind": "seals",
+   "subject": "seals:sb_90d8383bdea3a16663478c65",
+   "bodyDigest": "90d8383bdea3a16663478c65fd96cf3bac91b1a8d66b5a3599d878fc8057e689",
+   "at": 1793518337765
+  },
+  {
+   "seq": 36171,
+   "prev": "bc159d8fd2a5feb7eb360a2f45cc5c4886ef4a1bbc68d78f69ed509dfe6d27f9",
+   "hash": "5275d6255ace4eb2b0968be0ffa6bde07def8daf4458f767fae01661a1a95f19",
+   "kind": "seals",
+   "subject": "seals:sb_000b68c9d05eca51c3dda68b",
+   "bodyDigest": "000b68c9d05eca51c3dda68b1e79e910ca507c5d97eaeadf6e7a618bde8cc223",
+   "at": 1793518518285
+  },
+  {
+   "seq": 36172,
+   "prev": "5275d6255ace4eb2b0968be0ffa6bde07def8daf4458f767fae01661a1a95f19",
+   "hash": "5c7bff7fadc7e209e40cc8d2a6d74a38566380f5c0a77f4d266f5e13e25086eb",
+   "kind": "seals",
+   "subject": "seals:sb_6363c940db0c05b8f0aa3319",
+   "bodyDigest": "6363c940db0c05b8f0aa331902a1360e78afefb921fb4d9e628d15de55bf3847",
+   "at": 1793518578053
+  },
+  {
+   "seq": 36173,
+   "prev": "5c7bff7fadc7e209e40cc8d2a6d74a38566380f5c0a77f4d266f5e13e25086eb",
+   "hash": "9e17115c94b8d5c91bc72011548fd33a52ab5f5e4c59bda69dce1b16d41702c9",
+   "kind": "seals",
+   "subject": "seals:sb_7ed9caba18fab898175bee12",
+   "bodyDigest": "7ed9caba18fab898175bee1297ffcb09be393857e21d25fcb47832a29f2597a6",
+   "at": 1793518697680
+  },
+  {
+   "seq": 36174,
+   "prev": "9e17115c94b8d5c91bc72011548fd33a52ab5f5e4c59bda69dce1b16d41702c9",
+   "hash": "b778ac07359ec0a0f0d92ff9c885f27826f4e48bce3fca2ed333290b192d6013",
+   "kind": "seals",
+   "subject": "seals:sb_d1bdcb5d037f689cf7c24875",
+   "bodyDigest": "d1bdcb5d037f689cf7c248754338c2a9b4801055d24bfbf0b5e707f19441dd7e",
+   "at": 1793518698524
+  },
+  {
+   "seq": 36175,
+   "prev": "b778ac07359ec0a0f0d92ff9c885f27826f4e48bce3fca2ed333290b192d6013",
+   "hash": "52ff04aea98de2de0141bdef9e5bf4533012a7c6aa38efb60de72f182c087127",
+   "kind": "seals",
+   "subject": "seals:sb_f4efae6450cec56fadbfd7a0",
+   "bodyDigest": "f4efae6450cec56fadbfd7a0a0ab3fef047c1ab3bf84f46080e5100117b3099f",
+   "at": 1793518758900
+  }
+ ]
+}
