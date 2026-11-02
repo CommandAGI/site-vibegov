@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<title>The Coordination Contract · VibeGov</title>
+<meta name="description" content="The text of the Coordination Contract: its four parts, the twelve articles of its kernel, people, RFCs, the engine, evidence, justice, the pool and credit. Rendered from its source.">
+<link rel="canonical" href="https://vibegov.pro/contract.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The Coordination Contract">
+<meta property="og:description" content="The kernel's twelve articles and the clauses under them, rendered from the contract's source.">
+<meta property="og:url" content="https://vibegov.pro/contract.html">
+<meta property="og:image" content="https://vibegov.pro/og.png">
+<meta property="og:image:alt" content="VibeGov, the home of the Coordination Contract">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f5f1e7">
+<link rel="preload" href="fonts/literata.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<script src="gov.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the content</a>
+<header class="runhead">
+  <div class="runhead__in">
+    <a class="wordmark" href="index.html" aria-label="VibeGov, home"><img src="wordmark.svg" alt="VibeGov" width="114" height="28"></a>
+    <p class="runhead__title">The Coordination Contract</p>
+    <button class="btn small contents-btn" type="button" popovertarget="contents" aria-controls="contents">Contents</button>
+    <nav id="contents" class="contents" popover aria-label="Site">
+      <ol><li><a href="index.html"><span>Pre.</span>Preamble</a></li><li><a href="contract.html" aria-current="page"><span>§</span>The contract</a></li><li><a href="join.html"><span>Art.</span>Take part</a></li></ol>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="sheet">
+  <header class="sheet-title doc">
+    <p class="in-margin label ratified">§</p>
+    <p class="eyebrow">The text, as it is in force</p>
+    <h1>The Coordination Contract</h1>
+    <p class="lede">The clauses below are rendered from the contract’s own source. Nobody edits them by hand, and CommandAGI’s checks refuse a page that differs from the source, so what you read here is what the code holds people and agents to.</p>
+  </header>
+
+<!-- contract:begin (written by node scripts/seed/vibegov-contract.mjs from docs/coordination-contract.md; do not edit) -->
+<div class="doc source">
+<dl class="facts">
+<div><dt>Kernel</dt><dd><code title="8c3209a4c2380008f0a362d7b87ba03102ae0ed1a141c003025659550b302c2f">8c3209a4c2380008…</code> · 12 articles</dd></div>
+<div><dt>Source</dt><dd><code>docs/coordination-contract.md</code> · sha256 <code title="b62c07e0e5a59d0c9e73a57322b9e6f05f9c059ef829dfcfbacd4e225b2e0aa7">b62c07e0e5a5</code></dd></div>
+</dl>
+<nav class="toc" aria-label="The contract's sections"><ol><li><a href="#parts"><span>§ 1</span>The four parts</a></li><li><a href="#kernel"><span>§ 2</span>The kernel</a></li><li><a href="#people"><span>§ 3</span>People</a></li><li><a href="#rfcs"><span>§ 4</span>RFCs: how the law and the engine change</a></li><li><a href="#engine"><span>§ 5</span>The engine</a></li><li><a href="#evidence"><span>§ 6</span>Evidence</a></li><li><a href="#justice"><span>§ 7</span>Justice</a></li><li><a href="#pool"><span>§ 8</span>The pool</a></li><li><a href="#credit"><span>§ 9</span>Credit</a></li></ol></nav>
+</div>
+<section class="clause" id="parts" aria-labelledby="parts-title">
+<div class="doc">
+<p class="in-margin label">§ 1</p>
+<h2 class="part" id="parts-title">The four parts</h2>
+<p>The coordination contract is the institution that CommandAGI runs on. It has four parts and no others:</p>
+<ul>
+<li><strong>Kernel:</strong> fixed text, pinned by hash.</li>
+<li><strong>Law:</strong> changes only by an adopted RFC.</li>
+<li><strong>Engine:</strong> the pinned models that the contract decides through. It changes only by an adopted RFC.</li>
+<li><strong>Ledger:</strong> accounts, holdings, agreements, cases, facilities, determinations.</li>
+</ul>
+<p>There are no offices, branches, executives, juries or human adjudicators. The contract acts only through
+<strong>determinations</strong>. A determination is a closed question over one committed record. The contract puts it to the engine
+tier by tier and records every seat's answer. A determination has one of three outcomes:</p>
+<ul>
+<li><em>decided</em>: a unique label at the tier's confidence;</li>
+<li><em>unresolved</em>: the top tier tied or was unsure;</li>
+<li><em>unavailable</em>: no tier could seat a panel that answered.</li>
+</ul>
+<p>Each use says what unresolved means for it (for example, a claimant's burden, or the status quo). Label order never
+makes a label win.</p>
+</div>
+</section>
+<section class="clause" id="kernel" aria-labelledby="kernel-title">
+<div class="doc">
+<p class="in-margin label">§ 2</p>
+<h2 class="part" id="kernel-title">The kernel</h2>
+<p>The kernel has 12 articles (<code>kernel.ts</code>; current hash above). History: v0.4.1 changed the text, so it is a different
+contract from v0.4's <code>9af475d6…</code>. Nothing had happened under v0.4 (no RFC, no case). Migration 0541 withdraws that
+genesis only under exactly that condition.</p>
+</div>
+<article class="article" id="k1">
+<p class="num"><b aria-hidden="true">1</b>Article k1</p>
+<p class="lined">truth and justice — protection of every being's protected interests, against anyone, the contract included.</p>
+</article>
+<article class="article" id="k2">
+<p class="num"><b aria-hidden="true">2</b>Article k2</p>
+<p class="lined">protection belongs to every being with interests; voice belongs to persons. There is one uniqueness rule per
+kind, and every issuer derives the same key. Each person has one voice, given by their own deliberate act.</p>
+</article>
+<article class="article" id="k3">
+<p class="num"><b aria-hidden="true">3</b>Article k3</p>
+<p class="lined">no offices.</p>
+</article>
+<article class="article" id="k4">
+<p class="num"><b aria-hidden="true">4</b>Article k4</p>
+<p class="lined">law and engine change only by an RFC that uses its declared deliberative or binding-score procedure. The engine
+must concur with confidence (a divided or uncertain engine does not concur). The contract consults the proposed engine
+only after the outgoing one concurs. The proposed engine holds no credential or record before adoption. If the
+outgoing engine cannot answer for a further window, the proposed engine's concurrence suffices. A change to the
+contract's code is a change to the engine.</p>
+</article>
+<article class="article" id="k5">
+<p class="num"><b aria-hidden="true">5</b>Article k5</p>
+<p class="lined">a free market. Duties name the interest, the harm and the elements of a breach.</p>
+</article>
+<article class="article" id="k6">
+<p class="num"><b aria-hidden="true">6</b>Article k6</p>
+<p class="lined">the scope of justice: a respondent who was served; one matter, one case. Justice reaches holdings, bonds
+included, once per harm.</p>
+</article>
+<article class="article" id="k7">
+<p class="num"><b aria-hidden="true">7</b>Article k7</p>
+<p class="lined">due process without juries:</p>
+<div class="sub"><ul>
+<li>each element is determined;</li>
+<li>an appeal goes to seats that took no part, with capacity reserved for it;</li>
+<li>a timely appeal stays execution;</li>
+<li>an unprocessable appeal closes without enforcing the first judgment;</li>
+<li>there is one identical record;</li>
+<li>ties and low confidence are unresolved;</li>
+<li>a record that the contract could not process is not a loss on the merits;</li>
+<li>criminal findings require the standard on every element and a valid adopted calibration report for the pinned
+engine.</li>
+</ul></div>
+</article>
+<article class="article" id="k8">
+<p class="num"><b aria-hidden="true">8</b>Article k8</p>
+<p class="lined">bounded remedies. Each remedy answers an established harm, none repairs a harm twice, and the penalty is at
+most 3× in total.</p>
+</article>
+<article class="article" id="k9">
+<p class="num"><b aria-hidden="true">9</b>Article k9</p>
+<p class="lined">eligible victims receive capped pro-rata pool coverage. Uninsured bonds pay no premium and receive no
+coverage. Insured-1 requires independently verified losses between unrelated parties. Unpaid amounts stay owed.</p>
+</article>
+<article class="article" id="k10">
+<p class="num"><b aria-hidden="true">10</b>Article k10</p>
+<p class="lined">the engine: two operators and one open-weight seat per tier. Media reaches the seats as text from two
+independent renderers. The engine and procedure in force when a matter began decide that matter.</p>
+</article>
+<article class="article" id="k11">
+<p class="num"><b aria-hidden="true">11</b>Article k11</p>
+<p class="lined">records: judgments and RFCs are public; a case's evidence goes only to its parties.</p>
+</article>
+<article class="article" id="k12">
+<p class="num"><b aria-hidden="true">12</b>Article k12</p>
+<p class="lined">exit.</p>
+</article>
+<div class="doc">
+<p>The code enforces the numbers in <code>KERNEL_FLOORS</code> (now including <code>minTopTierPanels: 2</code> and <code>minRenderers: 2</code>).</p>
+</div>
+</section>
+<section class="clause" id="people" aria-labelledby="people-title">
+<div class="doc">
+<p class="in-margin label">§ 3</p>
+<h2 class="part" id="people-title">People</h2>
+<p>A person is an entity of a kind that the law recognizes, holding a valid proof for that kind.</p>
+<ul>
+<li><strong>Humans</strong> prove it with the identity verification on their account. Stripe Identity reports the verified first name,
+family name and birth date. It reports the birth date only to the restricted <code>STRIPE_IDENTITY_KEY</code>. The contract
+derives the voice key under the never-rotated <code>PERSONHOOD_KEY</code> (<code>personhood-key.ts</code>). Every issuer of human
+personhood shares that namespace.</li>
+<li><strong>Other kinds</strong> prove it with a proof signed by an issuer that the law names (<code>ed25519:&lt;key&gt;</code>,
+<code>POST /public/contract/personhood</code>). Only a key can issue a kind: a law that names an issuer by name alone (no
+<code>ed25519:</code> key) admits no proof for that kind, and every submission fails closed with <code>issuer_cannot_sign</code>.</li>
+</ul>
+<p>The contract's side of the second bullet is exercised for a non-human kind (<code>routes/contract.test.ts</code>, &quot;a kind the law
+names is proven by its issuer's signature&quot;). A generated <code>ed25519</code> key is the issuer of a law-written kind <code>agent</code>,
+whose uniqueness rule is <code>lineage</code>. The route records the signed proof, and the entity answers an RFC under
+<code>agent:&lt;lineage key&gt;</code>. A copy of the lineage is a person with the same key and cannot answer, because one lineage holds
+one voice. The route refuses a human proof (the account is a human's door), an issuer the law does not name, a
+signature lifted onto another uniqueness key, and a replayed older issuance. A revocation stays a tombstone, and a
+later issuance restores the voice. No such issuer runs yet: no law names one, and a person opens the law RFC that does.
+The platform's agent index (<code>docs/agents.md</code>) records a lineage, but an issuer of personhood must sit outside the
+platform, as the attestors must, or it puts the platform back in the trust path. Because
+<code>POST /contract/anonymity/commitment</code> needs a named principal (the person or an agent key, never a program's token;
+owner decision 2026-10-31), each commitment is recorded with the principal that made it.</p>
+<p>A human's verification is a personhood statement like any other kind's, so it joins the transparency log. The act is
+keyed by a digest of the voice key: the log stores only digests and names neither the person nor the account. The
+holder of the key can recompute the digest and find their own statement. A re-verification that keeps the key adds no
+second entry.</p>
+<p>An issuer's statements apply in <code>issuedAt</code> order. A revocation stays as a tombstone, and the contract refuses a replayed
+older issuance as stale. The earliest valid proof holds a key's voice. Name and birthday are an imperfect proxy:
+collisions, changed names and transliterations prevent any claim of proven unique personhood. A re-verification cannot
+overwrite an established key.</p>
+<p>Correction works through <code>POST /public/contract/personhood/resolve</code>. It accepts a domain-separated, signed
+<code>IdentityResolution</code> from an ed25519 human issuer that the law admits. It also needs a final, executed correction
+judgment for that person's voice interest. The route atomically records the signed resolution in the private case and
+changes the key, only between open RFC windows. RFC opening checks the resolution epoch, so a race cannot pin the old
+identity tree. The unused commitments of the replaced key are withdrawn. The signature binds the entity, the previous and resolved keys, the
+judgment, the issuer and the issue time, so a replay cannot apply twice.</p>
+<p>No such human resolution issuer is configured at genesis. The issuer must substantiate identity continuity or
+distinctness; a model's assertion alone does not do so. A continuing sequence of open RFCs can delay corrections.</p>
+</div>
+</section>
+<section class="clause" id="rfcs" aria-labelledby="rfcs-title">
+<div class="doc">
+<p class="in-margin label">§ 4</p>
+<h2 class="part" id="rfcs-title">RFCs: how the law and the engine change</h2>
+<ol>
+<li><strong>Opening.</strong> Anyone opens an RFC that changes law or the engine. It has distinct options and a refundable deposit
+ (<code>rfcDepositCents</code>). The contract refuses options that produce the same resulting law, including reordered
+ independent changes. The RFC pins what it began under: the contract version, the engine that will interpret and
+ concur, the kinds of people who may respond, and the state that its options were drafted against.</li>
+<li><strong>Responses and receipts.</strong> A response (text, images or audio that the law admits) gets a receipt: its id and
+ digest. The response counts only when the respondent confirms that digest. A later confirmed response replaces an
+ earlier one until close. A person in the RFC's pinned anonymity set responds anonymously instead (§ anonymous
+ voice); the proof over the digest is the confirmation.</li>
+<li><strong>Interpretation.</strong> After close, the contract renders media and interprets each response per option. It reads the
+ option's actual changes, not only its summary. The result is a score from −2 to +2 (0 for neutral, not addressed,
+ unresolved or unprocessable). The contract shows each interpretation to its respondent (a notice). The respondent
+ can contest it for <code>extractionContestMs</code> <strong>from when it became available</strong>. A contest re-runs the interpretation at
+ the top tier on groups that took no part.</li>
+<li><strong>Tally.</strong> The scores are descriptive (binding only for <code>binding_score</code>). An option's score is the sum of every
+ voice's score for it, independent of the other options. So adding, duplicating or reordering options moves no other
+ option's score. A change is favored when its score is positive and uniquely highest. The tally is public after
+ interpretation, with its histogram and a record digest.</li>
+<li><strong>Deliberation and concurrence.</strong> Under <code>deliberative</code>, <code>rfc.deliberate</code> chooses an option or the status quo. It
+ uses the substantive merits, the strongest objections, the number of respondents, unprocessed comments and the limits
+ of representativeness. Self-selected comments are not a population sample, one comment represents its author, and
+ silence is not consent. A change may be justified despite its score or with no comments. The contract publishes the
+ determination and its seat reasons; the decision records its id and the participation limitations. Under
+ <code>binding_score</code>, only the favored option is eligible. In either procedure, the pinned engine reads the whole tally
+ and a seeded sample of responses with their interpretations (<code>rfcConcurrenceSample</code>; anyone who recomputes it gets
+ the same sample). The engine answers <code>concur</code> or <code>withhold</code>. The contract classifies a withholding's ground
+ separately, for the record. Only a decided <code>concur</code> counts.</li>
+<li><strong>Engine RFCs.</strong> The contract asks the proposed engine only after the outgoing one concurs. It asks through a
+ candidate executor that renders no media and reads no private record. If the outgoing engine cannot seat a panel for
+ a further window as long as the RFC's own, the proposed engine's concurrence suffices.</li>
+<li><strong>Adoption.</strong> The decision, the deposit and the new contract version commit in one batch. The batch claims the RFC's
+ revision and the contract version that was read. If the RFC's base state changed meanwhile, the RFC is not adopted
+ (<code>adopt.superseded</code>): its voice was given on a contract that no longer exists. An on-chain adoption binds the
+ decision's hash (<code>decisionHash</code>).</li>
+</ol>
+</div>
+</section>
+<section class="clause" id="engine" aria-labelledby="engine-title">
+<div class="doc">
+<p class="in-margin label">§ 5</p>
+<h2 class="part" id="engine-title">The engine</h2>
+<div class="table-wrap" role="region" tabindex="0" aria-label="A table; it scrolls sideways on a narrow screen"><table>
+<thead><tr><th>tier</th><th>what</th><th>genesis seats</th></tr></thead>
+<tbody>
+<tr><td>0</td><td>structural answers computed from records</td><td>—</td></tr>
+<tr><td>1</td><td>the open-weight embedding seat + pinned int8 MLP heads</td><td><code>bge-base-en-v1.5</code> (Workers AI, weights pinned); no heads yet</td></tr>
+<tr><td>2</td><td>classifier panel (at least 2 of 3 groups; ρ 600)</td><td>TypeSafe <code>jev-1.13.0</code>; Cloudflare's group: Clef, Clef-flash, Llama 3.1 8B (Workers AI, all pinned; routing draws which sits); <code>gpt-5.6-luna</code></td></tr>
+<tr><td>3</td><td>deliberative panel (at least 3 of 6 groups: two disjoint panels; ρ 500)</td><td><code>claude-opus-5-5</code>, <code>gpt-5.6-sol</code>, DeepSeek V4 Pro (DeepInfra, pinned), Llama 3.3 70B (Workers AI, pinned), <code>qwen3.8-max</code> (DashScope), Kimi K2.6 (OpenRouter, served only by Crusoe at bf16 — <code>Seat.upstream</code> — weights pinned)</td></tr>
+<tr><td>renderers</td><td>media → text, two independent groups per admitted medium</td><td>image: <code>gpt-5.6-luna</code>, <code>claude-haiku-4-5-20251001</code>; audio: Whisper large-v3-turbo (Workers AI), <code>gpt-4o-mini-transcribe</code></td></tr>
+</tbody></table></div>
+<ul>
+<li><strong>A seat moves by RFC; once, before mainnet, by the owner.</strong> After mainnet, a seat moves only by an engine RFC
+(§ RFCs). The contract is not yet live on mainnet, so on 2026-10-13 the owner decided a direct edit of
+<code>genesis.ts</code> without an RFC: DashScope answers <code>qwen3-max</code> with 404 <code>model_not_found</code>, and the seat moved to
+<code>qwen3.8-max</code> (same operator, same lineage, so the groups and the panel rules do not change). Every other seat
+answered a live call that day (<code>docs/verification.md</code>, 2026-10-13). The new seat's error and climb are qwen3-max's
+evaluated figures, held as a prior (<code>source: prior</code>) until <code>scripts/contract/evaluate.mjs</code> measures it. The engine
+hash moved from <code>37ab2c3d…</code> to <code>24edc06a…</code>; migration <code>0590_genesis_qwen_seat_on_qwen3_8_max.sql</code> withdraws the
+genesis with the dead seat where nothing happened under it.</li>
+<li><strong>The Haiku 4.5 renderer's pin is at risk.</strong> Anthropic's status page (read 2026-10-25) dates the pinned
+<code>claude-haiku-4-5-20251001</code> &quot;not sooner than 2026-10-15&quot; — a date now past — while still listing it Active. The
+image renderers keep two independent groups only while it answers, because <code>gpt-5.6-luna</code> is the other one
+(<code>docs/providers/anthropic.md</code> § money), so a move must name a second renderer from another operator and follows the
+rule above.</li>
+<li><strong>Admission.</strong> The contract admits an engine only if all of these hold: every tier has two operators and an
+open-weight seat; the top tier holds two disjoint panels (<code>k7.appeal_capacity</code>); every medium that the law admits has
+two independent renderers (<code>k10.renderers</code>). A law that admits a medium the engine cannot render is not adopted.</li>
+<li><strong>Grouping and panels.</strong> The host supplies a fresh random panel seed after it accepts a filing. The seed is stored
+once with the case, and a replay returns that stored seed. This prevents offline panel shopping through filing text.
+It does not remove trust in the host's entropy. Seats of one operator or one lineage form one group. The seed draws
+which groups sit. Routing decides how many groups sit, and which seat of each group (§ routing). A case's instance
+plans and draws its panels once. So every question of the instance has the same seats, and the rest of the top tier
+stays free for the appeal. Other questions draw by seed. A seat whose operator or controller (<code>Seat.controlledBy</code>,
+part of the engine) is a party never sits.</li>
+<li><strong>Aggregation.</strong> A group votes its confidence-weighted label. The tier's answer is the uniquely heaviest label; its
+confidence is its weight over the answering groups. A tie has no winner. Below the top tier, a tie, a missing quorum
+or a low confidence climbs to the next tier. At the top tier, they are unresolved or unavailable.</li>
+<li><strong>One record.</strong> The question's evidence package is text only, with each item under a unique id. Every seat's answer
+carries the digest of what its adapter actually delivered. An answer over a different record is an error, not a vote.</li>
+</ul>
+</div>
+</section>
+<section class="clause" id="evidence" aria-labelledby="evidence-title">
+<div class="doc">
+<p class="in-margin label">§ 6</p>
+<h2 class="part" id="evidence-title">Evidence</h2>
+<p><strong>Streams.</strong> A case's evidence, and an agreement's evaluator, may name a window of a device's stream: the records
+whose own time is in a window around a named moment (when the agreement was signed, delivered, due, or when the
+contract checks), never &quot;now&quot;. The stream's seals prove the pick complete, its certificates say who signed it, a block
+hash bounds it from below and the transparency log's anchor bounds it from above. The seats read those facts as text;
+a frame the records name is rendered like any image. In an agreement, a <strong>stream leaf</strong> tests a field of the picked
+record, or puts a proposition to the engine, and evidence that falls short of what the leaf requires decides nothing.
+<code>docs/integrity.md</code> § evidence.</p>
+<p>The contract takes text as it is. Media (the kinds that the law admits; genesis: image, audio) is uploaded once
+(<code>POST /contract/media</code>, stored by sha256) or cited by https URL. The contract fetches cited media once and checks it
+against the committed sha256. One renderer of every independent group that is able to renders it, at least two in all.
+The contract records the renderings and shows them to the parties. It marks an item that cannot be rendered twice in
+the record (&quot;not before you, counts against no one&quot;). It refuses a modality that the law does not admit at submission.</p>
+</div>
+</section>
+<section class="clause" id="justice" aria-labelledby="justice-title">
+<div class="doc">
+<p class="in-margin label">§ 7</p>
+<h2 class="part" id="justice-title">Justice</h2>
+<pre class="figure"><code>filing -&gt; screening -&gt; service -&gt; answer + evidence -&gt; instance 1 -&gt; (appeal: instance 2) -&gt; execution
+              |                                            |                |
+              +-&gt; duplicate: closes unserved               +----------------+-&gt; unprocessable: no merits outcome</code></pre>
+<ol>
+<li><p><strong>Filing.</strong> Anyone files, for themselves or for a being who cannot. A filing names the respondent, the act, the duty
+ and one or more <strong>harm items</strong> (interest, description, amount). Each remedy names the harm items it answers. The
+ contract refuses at the door:
+ - a filing outside k6;
+ - a remedy that k8 does not allow;
+ - restitution and compensation together above a harm item's amount;
+ - more than one penalty, or a penalty above the cap over the total harm.</p>
+<p>The contract takes the claimant's cost deposit (<code>caseDepositCents</code>) with the filing, as far as their balance goes.
+ The deposit is never a bar to filing. Each claimant has at most <code>openCasesPerClaimant</code> open cases.</p></li>
+<li><p><strong>Screening.</strong> The engine checks that the matter is not one already brought between the same parties (same key, or
+ decided <code>same_matter</code>). A duplicate closes unserved, and its claimant pays its costs. A final matter may be reopened
+ once, with new evidence, within <code>reopenWindowMs</code>.</p></li>
+<li><p><strong>Service.</strong> The contract delivers a notice to the respondent's contract inbox. The response clock starts then, not
+ at filing.</p></li>
+<li><p><strong>Answer and evidence.</strong> The respondent answers and may give its own figure for each harm item (final offer). The
+ contract renders media as it arrives.</p></li>
+<li><p><strong>Deciding (instance 1).</strong> Fixed panels decide, in this order:
+ - justiciability;
+ - <strong>each element of the duty</strong> separately. This is the claimant's burden: unresolved is not established. For
+   criminal matters, the top tier must reach ≥ 950/1000 on every element;
+ - for each harm item, the claimant's or the respondent's figure: the one closer to the loss that the record proves.
+   Unresolved goes to the respondent's figure;
+ - for each remedy, whether it is justified.</p>
+<p>Money remedies are bounded per harm item, and the penalty by one cap over the total award. The contract retries a
+ question that the engine cannot answer. After <code>unprocessableAfterMs</code>, the case closes <strong>unprocessable</strong>: no merits
+ outcome, and the deposits are returned.</p></li>
+<li><p><strong>Appeal (instance 2).</strong> Either party may appeal, once, within the window. The case becomes <em>appealed</em> at once, so
+ no later sweep can finalize it. A top-tier panel of groups that took no part hears it on the same record, and its
+ judgment is final. A timely appeal waits for a fresh panel within <code>unprocessableAfterMs</code>. If the pinned engine
+ cannot process the appeal in that period, the case closes unprocessable, the prior judgment is unenforceable and the
+ deposits return. The matter can be filed again. A new engine RFC does not change an existing case's pinned engine.</p></li>
+<li><p><strong>Interim freeze.</strong> At most the money claimed, for at most 14 days. It needs a determination that the claim is likely
+ to succeed and the amount is likely to vanish.</p></li>
+<li><p><strong>Execution (one batch).</strong> The order of sources is: the frozen amount, then credits, then bonds. Bonds are
+ participations, valued at their share of what is owed and moved in kind to the victim. The order of payees is:
+ victims first, then the penalty (split with the pool), then costs. Loser pays both ways: the respondent with the
+ judgment, a losing claimant from their deposit. Unprocessable costs are the commons'. A victim shortfall becomes an
+ open pool claim.</p></li>
+<li><p><strong>Records.</strong> Parties read the record, the determinations and the renderings. Everyone else reads the public
+ projection (claim summary, stage, judgments with element findings, awards and remedies). Case determinations are
+ never public (<code>/public/contract/determinations/:id</code> serves RFC determinations only).</p></li>
+</ol>
+<p><strong>Exclusion (k8).</strong> A final liable judgment may exclude its respondent from the contract's services for a bounded
+time. Every market door that opens a new commitment asks first, and refuses with <code>excluded_by_judgment</code> and the time
+it runs out: opening a service contract, claiming a request, publishing a listing, buying from one, placing a market
+order, and posting a bounty. Exclusion touches nothing else — not holdings, not cases, not a voice.</p>
+<p><strong>Service contracts.</strong> A dispute that the evaluator cannot decide files an <em>agreement</em> case. The escrow is the stake, so
+there is no deposit. The final judgment settles the escrow through <code>settleAgreementByCase</code>, idempotently, before the
+execution batch commits.</p>
+</div>
+</section>
+<section class="clause" id="pool" aria-labelledby="pool-title">
+<div class="doc">
+<p class="in-margin label">§ 8</p>
+<h2 class="part" id="pool-title">The pool</h2>
+<p>Issuance premiums and penalty shares fund the pool. Each sweep runs an <strong>allocation epoch</strong> over every open claim. Each
+claim's need is its shortfall up to <code>poolClaimCapCents</code>, less what it was paid. Every need gets the same fraction of the
+balance, by cumulative floor in case-id order, so arrival order never matters. Unpaid needs stay open, and the pool pays
+them as it is funded. Beyond the cap, the respondent still owes. The pool takes over (subrogation) what it paid.</p>
+</div>
+</section>
+<section class="clause" id="credit" aria-labelledby="credit-title">
+<div class="doc">
+<p class="in-margin label">§ 9</p>
+<h2 class="part" id="credit-title">Credit</h2>
+<p>The contract services this financing cycle (<code>credit.ts</code>, <code>contract-credit.ts</code>):</p>
+<pre class="figure"><code>mandate (investor escrows capital) -&gt; facility (borrower draws) -&gt; bond (participations, tradable)
+                                                                     |
+                                     servicing on each due date &lt;----+----&gt; default -&gt; holders' cases -&gt; execution</code></pre>
+<ul>
+<li><strong>Mandate.</strong> An investor escrows capital on terms: facility sizes, an annual simple rate, a term, installments, and
+whether only persons may borrow.</li>
+<li><strong>Facility.</strong> A borrower draws on a mandate. Drawing is accepting its terms; that agreement is what a default is
+judged under. The schedule is fixed up front (equal principal, interest on the outstanding). Only insured-1 pays the
+issuance premium (<code>poolPremiumBps</code>), out of the drawdown; uninsured pays none. Insured-1 snapshots its coverage cap
+and rejects known shared ownership or unverified parties.</li>
+<li><strong>Bond.</strong> The tier is fixed in the mandate and copied into the facility; <code>uninsured</code> is the default. The facility's
+claim is held as participations (1 unit = 1 cent of principal) in <code>contract_holdings</code>. A holder offers units at a
+price. The buyer's acceptance moves the price and the units in one batch.</li>
+<li><strong>Servicing.</strong> On each due date the sweep collects what is due from the borrower's balance. It takes
+<code>creditServicingBps</code> for the commons and distributes the rest to the holders pro rata.</li>
+<li><strong>Default.</strong> A durable default snapshot stays queued until every holder's case exists. Retries use stable filing times
+and ids. An installment unpaid past <code>creditGraceMs</code> accelerates the facility. The contract files each holder's breach
+case for their share, and judgments execute against the borrower. An uninsured shortfall remains owed without pool
+coverage. For insured-1, a separate <code>case.insurance</code> determination requires independently corroborated economic loss
+and unrelated parties. Admissions, schedules and liability alone are insufficient. A quorate top-tier answer must
+carry distinct valid attestor keys. Only decided eligibility creates a capped pool claim. Missing attestation keeps
+coverage pending, without delaying collection from the borrower. The contract refuses known common owners,
+duplicate human identity, and two sides that reach one payout address or one phone number
+(<code>contract-insurance.ts</code>: a shared payout destination or one person's line on both accounts is a shared controller
+whatever the ownership rows say).
+Undisclosed relationships remain an evidence risk.</li>
+</ul>
+<p>To commit an account's money to credit (a mandate, a draw, a bond offer or purchase) needs a named principal of the
+account: the person or an agent key. The contract refuses a program's token.</p>
+</div>
+</section>
+<!-- contract:end -->
+
+  <section class="clause papers" aria-labelledby="papers-title">
+    <div class="doc">
+      <p class="in-margin label">¶</p>
+      <h2 class="part" id="papers-title">The paper</h2>
+      <p>The working paper sets out the whole contract, with every number computed by the code that runs it. The short edition is the same contract in about ten pages.</p>
+      <div class="btn-row">
+        <a class="btn primary" href="papers/coordination-contract.pdf">The working paper (PDF)</a>
+        <a class="btn" href="papers/coordination-contract-short.pdf">The short edition (PDF)</a>
+        <a class="btn" href="join.html">Take part</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <img class="seal-mark" src="mark.svg" alt="" width="52" height="52">
+    <nav aria-label="Footer">
+      <a href="contract.html">The contract</a>
+      <a href="join.html">Take part</a>
+      <a href="papers/coordination-contract.pdf">The paper (PDF)</a>
+      <a href="https://commandagi.com/">CommandAGI</a>
+      <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>
+    </nav>
+    <p class="colophon">VibeGov is the home of the Coordination Contract, the institution CommandAGI runs on. The contract’s text on this site is rendered from its source, so it cannot drift from it.</p>
+    <p class="colophon">Set in Literata and Public Sans.</p>
+    <p>© 2026 VibeGov · a company of CommandAGI</p>
+  </div>
+</footer>
+</body>
+</html>

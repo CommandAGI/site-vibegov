@@ -1,43 +1,54 @@
 # site-vibegov
 
-The site of VibeGov, a company of CommandAGI (`seed/drive/platform/org-vibegov/` in the CommandAGI repository): a
-static folder served by CommandAGI's site hosting at https://vibegov.commandagi.app, with `vibegov.pro`,
-`vibegov.tech` and `vibegov.me` as its domains.
+The site of VibeGov, the home of the Coordination Contract (`seed/org-vibegov/` in the CommandAGI repository): a
+static folder served by CommandAGI's site hosting at https://vibegov.pro, with `vibegov.tech`, `vibegov.me` and
+https://vibegov.commandagi.app serving the same site.
 
-- `index.html`, `constitution.html`, `about.html`: the site. The constitution template is the company's charter
-  (`charter.md` on the org's Drive) written out article by article.
-- `demo.html` and `demo.js`: the governance room. One round of governance on **Helios Labs**, an invented sample
-  organization: choose a proposal, vote with a weight and a reason, audit the round against the constitution, read the
-  panel's ruling. Every word is in `demo.js` in the three locales; the record stays in the page.
-- `es/`, `zh/`: the same pages in Spanish and Simplified Chinese, one static page per locale, with `hreflang`
-  alternates on every page.
-- `gov.js`: the document's apparatus on every page: the phone's contents popover, line numbers in the margin, the
-  loops that play only when seen (and never under reduced motion), and the landing page's amendment scene (five states
-  of Article 4 of Helios Labs, driven by scroll on a wide screen and by buttons everywhere, announced in `aria-live`).
+- `index.html`: the front door. What the contract is (kernel, law, engine, ledger; no offices), a question climbing
+  the engine's tiers, an illustrative RFC moving through the law (opened, answered, concurred, adopted), the three
+  outcomes of a determination, five reasons it matters, and the way in.
+- `contract.html`: the contract's text. Between its `<!-- contract:begin … -->` and `<!-- contract:end -->` markers,
+  the clauses are **rendered from `docs/coordination-contract.md`** in the CommandAGI repository by
+  `node scripts/seed/vibegov-contract.mjs`. Do not edit that region here. The repository's
+  `scripts/checks/check-generated-files.mjs` refuses a page that differs from the doc.
+- `papers/`: the working paper and its short edition (PDF), copied by the same script from
+  `docs/papers/coordination-contract/`.
+- `join.html`: how to take part: an account, a voice, an RFC answered or opened, agreements and cases; and a prompt box
+  that opens the visitor's words in the CommandAGI workbench (`https://commandagi.com/?prompt=…`).
+- `gov.js`: the document's apparatus: the phone's contents popover, line numbers in the margin, loops that play only
+  when seen (never under reduced motion), and the landing page's RFC scene (five states, driven by scroll on a wide
+  screen and by buttons everywhere, announced in `aria-live`).
 - `style.css`, `fonts/` (Literata and Public Sans, variable, OFL, self-hosted), `media/` (three generated loops, AV1
   and H.264, with WebP posters), `wordmark.svg`, `seal.svg`, `mark.svg` (the favicon), `og.png`,
   `apple-touch-icon.png`.
-- `redesign/`: the 2027 redesign: the audit (`CONTENT.md`), the design (`DESIGN.md`), the media log and scores
-  (`NOTES.md`), and the scripts that made the media and marks (`media.mjs`, `encode.sh`, `marks.py`, `og.html`,
-  `shoot.py` for screenshots). None of them runs when the site is served.
-- `lang.js`: the footer's **A/文** button and its language dialog (`docs/sites.md` § the language button in the
-  CommandAGI repository). The rows are plain links, so the pages work with no script.
+- `redesign/`: the 2027 design (`DESIGN.md`), the media log (`NOTES.md`) and the scripts that made the media and marks.
+  None of them runs when the site is served.
+
+## when the contract changes
+
+The doc is the source. After a change to `docs/coordination-contract.md` (or the paper), in the CommandAGI checkout:
+
+```
+node scripts/seed/vibegov-contract.mjs
+```
+
+then commit here, push this repository's `main`, and move the gitlink in CommandAGI.
 
 ## what the site keeps
 
-- Static, with no build: `site.json`, HTML, CSS, SVG, fonts, media and JavaScript (the media were made once and are
-  committed).
+- Static, with no build: `site.json`, HTML, CSS, SVG, fonts, media, PDFs and JavaScript.
 - No request leaves the page. Every page's CSP is `default-src 'self'`, `script-src 'self'`, `connect-src 'none'`.
-  There is no external font, script, stylesheet, image, video or tracker.
-- English at `/`, Spanish at `/es/`, Simplified Chinese at `/zh/`; `en`, `es` and `zh-Hans` `hreflang` alternates on
-  every page, `x-default` to the English one.
-- The sample organization, its people and its agents are invented. The site names no real customer and no price.
+  The one exception is the join page's form, which a visitor sends on purpose (`form-action https://commandagi.com`).
+- English only, one page per address.
+- The RFC on the landing page is illustrative, and says so.
 
 ## test
 
-`node --test site.test.mjs` (Node 22 or 24, no dependencies) checks the pages: the three locales of every page, the
-`hreflang` set, the language button and its dialog, that every relative link resolves on disk, that each locale's files
-are the same site, the CSP on every page, and that the demo's messages exist in all three locales and match the labels
-the script uses; that every loop is muted, poster-first, under 3 MB and captioned as generated; and that the
-amendment scene counts by the template's rules (a person 3, an agent at most 2, two-thirds of the weight cast) with
-one count in every locale.
+`node --test site.test.mjs` (Node 22 or 24, no dependencies) checks the three pages: their contents line and canonical
+address, that every relative link resolves on disk, the CSP of each page, that the contract page holds the twelve
+kernel articles and the two PDFs, that every loop is muted, poster-first, under 3 MB and captioned as generated, and
+that the RFC scene tallies as the contract does (an option scores the sum of its voices' −2 to +2).
+
+## deploy
+
+From this folder: `commandagi sites deploy --prod`.

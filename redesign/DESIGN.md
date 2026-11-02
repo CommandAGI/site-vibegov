@@ -3,7 +3,7 @@
 *By the house's civic and public-document designer: the one who sets bills, statutes and gazettes, and believes a
 public document is the most honest interface there is.*
 
-## the concept: a living constitution
+## the concept: a living constitution (the Coordination Contract's home since 2026-11-02)
 
 The site is not a page about a constitution. It is one. Every page is a sheet of a public document: a running head, a
 margin that carries article numbers and line numbers, the way a parliamentary bill does, and a history column that says
@@ -25,8 +25,6 @@ line numbers), and the margin.
 - Scale: a perfect fourth (1.333) for text; display jumps to `clamp(3rem, 8.4vw, 9rem)`.
 - Numerals: oldstyle proportional in prose, lining tabular in tallies and line numbers. Real quotes, real dashes,
   `text-wrap: balance` on headings, `pretty` on paragraphs.
-- Chinese falls back to the system's Song/Ming serif and Hei sans (no third-party font can be fetched; the CSP is
-  `default-src 'self'`).
 
 ## color (OKLCH, sRGB fallbacks first)
 
@@ -87,32 +85,31 @@ document.
 Each loop: AV1 + H.264 MP4, under ~2.5 MB, a JPEG/AVIF poster, `muted loop playsinline`, `preload="none"` below the
 first screen and played only when visible. A caption on each says it is generated footage.
 
-## the signature moment: an amendment, ratified
+## the signature moment: an RFC, adopted
 
-A sticky scene on the landing page: Article 4 of Helios Labs (the invented organization) with its line numbers. Four
-steps, driven by scroll and by four keyboard buttons alike:
+A sticky scene on the landing page: one clause of the contract's law (the appeal window) with its line numbers. Five
+steps, driven by scroll and by five keyboard buttons alike:
 
-1. **Proposed**: "capped at 5%" is struck and "capped at 3%, reviewed each round," is written in, in ballot blue.
-2. **Voted**: four ballots arrive in the margin (Maya 3 for, Omar 3 for by delegation, Juno 2 against with her reason,
-   Atlas abstains because the amendment touches its own allocation); the bar fills to 6 of 8 cast, past the
-   two-thirds line.
-3. **Signed off**: Article 7 asks the owner to sign a change to Article 4; a signature line fills.
-4. **Ratified**: the seal is pressed, the redline resolves into clean text, and "Amendment 1, ratified, 6 of 8" joins
-   the article's history.
+0. **In force**: the window as the genesis law sets it (7 days).
+1. **Opened**: "7 days" is struck and "14 days" is written in, in ballot blue.
+2. **Answered**: five confirmed responses arrive in the margin, each scored from −2 to +2 (two people, two anonymous
+   voices, one agent's voice of a kind the law names); a histogram fills, and the change scores their sum, +4.
+3. **Concurred**: the pinned engine reads the tally and a seeded sample; a line fills: "Concur".
+4. **Adopted**: the seal is pressed, the redline resolves into clean text, and the adoption joins the clause's history.
 
 Everything is labeled illustrative; the state is announced in an `aria-live` line.
 
-## sections of the landing page
+## the pages
 
-1. Preamble (hero, the pen loop).
-2. Article 4, amended (the signature scene).
-3. Ratified (the seal loop, one sentence).
-4. The four powers: I constitution, II proposals and votes, III drift, IV judiciary, set as a statute's divisions with
-   huge Roman numerals; the drift figure draws as you scroll.
-5. Signatories: two people in italic hands, two agents in set hands, each with their weight and the article that gives
-   it.
-6. Article 8: the records (the archive loop) and the way in: the room, the constitution, the mail address.
-7. Colophon.
+1. **The front door** (`index.html`): the preamble (the pen loop); the four parts as a statute's divisions with huge
+   Roman numerals, and a figure of a question climbing the engine's tiers; the RFC scene; the three outcomes of a
+   determination (the seal loop); five reasons it matters, as a schedule of clauses (i)–(v) with their citations; the
+   way in (the archive loop).
+2. **The contract** (`contract.html`): the text, rendered from its source: a facts line (the kernel's hash, the
+   source's digest), the contents, then each clause as a sheet with § numbers in the margin; the kernel's twelve
+   articles carry their numbers and line numbers the way a bill is printed.
+3. **Take part** (`join.html`): six numbered ways in, a prompt box that opens a draft RFC in the workbench, and one
+   honest line of status.
 
 ## don'ts
 

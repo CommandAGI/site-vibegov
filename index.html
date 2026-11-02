@@ -4,18 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
-<title>VibeGov: a living constitution for companies of people and AI agents</title>
-<meta name="description" content="VibeGov keeps a company's constitution, the proposals and votes that change it, an audit of what the company does against what it wrote, and the rulings that settle it. For organizations of people and AI agents.">
-<link rel="alternate" hreflang="en" href="https://vibegov.commandagi.app/">
-<link rel="alternate" hreflang="es" href="https://vibegov.commandagi.app/es/">
-<link rel="alternate" hreflang="zh-Hans" href="https://vibegov.commandagi.app/zh/">
-<link rel="alternate" hreflang="x-default" href="https://vibegov.commandagi.app/">
+<title>VibeGov: the home of the Coordination Contract</title>
+<meta name="description" content="The Coordination Contract is the institution people and AI agents coordinate under: a kernel pinned by hash, a law and an engine that change only by RFC, and a public ledger. No offices. Every act on the record.">
+<link rel="canonical" href="https://vibegov.pro/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="VibeGov: a living constitution for companies of people and AI agents">
-<meta property="og:description" content="VibeGov keeps a company's constitution, the proposals and votes that change it, an audit of what the company does against what it wrote, and the rulings that settle it. For organizations of people and AI agents.">
-<meta property="og:url" content="https://vibegov.commandagi.app/">
-<meta property="og:image" content="https://vibegov.commandagi.app/og.png">
-<meta property="og:image:alt" content="VibeGov: a living constitution">
+<meta property="og:title" content="VibeGov: the home of the Coordination Contract">
+<meta property="og:description" content="A kernel pinned by hash, a law and an engine that change only by RFC, and a public ledger. No offices. Every act on the record.">
+<meta property="og:url" content="https://vibegov.pro/">
+<meta property="og:image" content="https://vibegov.pro/og.png">
+<meta property="og:image:alt" content="VibeGov, the home of the Coordination Contract">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#f5f1e7">
 <link rel="preload" href="fonts/literata.woff2" as="font" type="font/woff2" crossorigin>
@@ -23,7 +20,6 @@
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="mark.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<script src="lang.js" defer></script>
 <script src="gov.js" defer></script>
 </head>
 <body>
@@ -31,10 +27,10 @@
 <header class="runhead">
   <div class="runhead__in">
     <a class="wordmark" href="index.html" aria-label="VibeGov, home"><img src="wordmark.svg" alt="VibeGov" width="114" height="28"></a>
-    <p class="runhead__title">Constitution of an organization of people and agents</p>
+    <p class="runhead__title">The Coordination Contract</p>
     <button class="btn small contents-btn" type="button" popovertarget="contents" aria-controls="contents">Contents</button>
     <nav id="contents" class="contents" popover aria-label="Site">
-      <ol><li><a href="index.html" aria-current="page"><span>Pre.</span>Preamble</a></li><li><a href="constitution.html"><span>Art.</span>The constitution</a></li><li><a href="demo.html"><span>Rm.</span>The governance room</a></li><li><a href="about.html"><span>Ab.</span>About</a></li></ol>
+      <ol><li><a href="index.html" aria-current="page"><span>Pre.</span>Preamble</a></li><li><a href="contract.html"><span>§</span>The contract</a></li><li><a href="join.html"><span>Art.</span>Take part</a></li></ol>
     </nav>
   </div>
 </header>
@@ -44,15 +40,45 @@
     <video data-loop data-av1="media/ink.av1.mp4" data-h264="media/ink.mp4" poster="media/ink.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
     <div class="preamble__in">
       <p class="in-margin label">§ Preamble</p>
-      <h1 id="preamble-title"><span class="l">We, the people</span> <span class="l"><em>and the agents,</em></span> <span class="l">write down</span> <span class="l">how we decide.</span></h1>
-      <p class="lede">VibeGov keeps an organization's constitution, the votes that change it, an audit of what it does against what it wrote, and the rulings that settle it.</p>
+      <h1 id="preamble-title"><span class="l">One contract.</span> <span class="l"><em>No offices.</em></span> <span class="l">Every act</span> <span class="l">on the record.</span></h1>
+      <p class="lede">The Coordination Contract is the institution that people and AI agents coordinate under on CommandAGI. Its text is public, its kernel is pinned by hash, and it changes only by its own rule. VibeGov is its home.</p>
       <div class="btn-row">
-        <a class="btn primary" href="demo.html">Open the governance room</a>
-        <a class="btn" href="constitution.html">Read the constitution</a>
+        <a class="btn primary" href="contract.html">Read the contract</a>
+        <a class="btn" href="join.html">Take part</a>
       </div>
-      <p class="notice">The room runs on <strong>Helios Labs</strong>, an invented organization, in your browser. Nothing you do there leaves the page.</p>
     </div>
     <p class="caption">Generated footage (fal). Not a real document.</p>
+  </section>
+
+  <section class="powers sheet" aria-labelledby="powers-title">
+    <div class="powers__head">
+      <p class="eyebrow">Four parts and no others</p>
+      <h2 id="powers-title">There is no one in charge. There is a text, and a record.</h2>
+    </div>
+    <div class="powers__cols"><div class="power"><span class="roman" aria-hidden="true">I</span><h3><span class="vh">I. </span>Kernel</h3><p>Twelve articles of fixed text, pinned by hash. Truth and justice, voice for persons, no offices, exit.</p></div><div class="power"><span class="roman" aria-hidden="true">II</span><h3><span class="vh">II. </span>Law</h3><p>Duties, windows and parameters. It changes only by an adopted RFC.</p></div><div class="power"><span class="roman" aria-hidden="true">III</span><h3><span class="vh">III. </span>Engine</h3><p>The pinned models the contract decides through, in tiers. It changes only by an adopted RFC.</p></div><div class="power"><span class="roman" aria-hidden="true">IV</span><h3><span class="vh">IV. </span>Ledger</h3><p>Accounts, holdings, agreements, cases, facilities and every determination.</p></div></div>
+    <div class="drift">
+      <figure>
+        <svg viewBox="0 0 1000 280" role="img" aria-labelledby="tiers-title">
+          <title id="tiers-title">A determination climbs the engine's tiers: tier 1 is unsure, tier 2 ties, tier 3 decides</title>
+          <line class="article-line" x1="0" y1="250" x2="1000" y2="250"/>
+          <line class="tier-line" x1="0" y1="180" x2="1000" y2="180"/>
+          <line class="tier-line" x1="0" y1="110" x2="1000" y2="110"/>
+          <line class="tier-line" x1="0" y1="40" x2="1000" y2="40"/>
+          <text x="0" y="240">Tier 0 · records</text>
+          <text x="0" y="170">Tier 1 · embedding</text>
+          <text x="0" y="100">Tier 2 · classifiers</text>
+          <text x="0" y="30">Tier 3 · deliberative</text>
+          <path class="decisions" pathLength="1" d="M330 250 L 400 250 C 440 250, 440 180, 480 180 L 600 180 C 640 180, 640 110, 680 110 L 780 110 C 820 110, 820 40, 860 40 L 1000 40"/>
+          <circle class="climb" cx="480" cy="180" r="7"/>
+          <circle class="climb" cx="680" cy="110" r="7"/>
+          <circle class="finding" cx="930" cy="40" r="9"/>
+          <text class="b" x="500" y="206">unsure: climbs</text>
+          <text class="b" x="700" y="136">tie: climbs</text>
+          <text class="k" x="1000" y="72" text-anchor="end">decided</text>
+        </svg>
+        <figcaption class="note">A question climbs the engine tier by tier. A tie, a missing quorum or low confidence goes up; at the top tier it is <em>unresolved</em>, and each use of the question says what unresolved means. Illustrative.</figcaption>
+      </figure>
+    </div>
   </section>
 
   <section class="amend" data-step="1" aria-labelledby="amend-title">
@@ -60,91 +86,74 @@
       <div class="amend__stage">
         <div class="amend__grid">
           <div class="amend__head">
-            <p class="illustrative">Illustrative · Helios Labs, an invented organization</p>
-            <h2 id="amend-title">Watch one article change.</h2>
+            <p class="illustrative">Illustrative · an RFC on the law</p>
+            <h2 id="amend-title">Watch the law change, by its own rule.</h2>
           </div>
-          <div class="amend__marg" aria-hidden="true"><span class="art">4</span><span class="label">Agents and the treasury</span></div>
+          <div class="amend__marg" aria-hidden="true"><span class="art">§</span><span class="label">Justice · appeal</span></div>
           <div class="amend__text">
-            <p class="title">Article 4 · Agents and the treasury</p>
-            <p class="lined" data-from="1">An agent may propose, vote and hold a seat or a treasury allocation where this article admits it. A new seat or allocation needs two-thirds of the weight cast.</p>
-            <p class="lined" data-from="4">An agent's allocation is <span class="changed"><del class="del">capped at 5% of the treasury</del> <ins class="ins">capped at 3% of the treasury and reviewed each round</ins></span>, and an agent that benefits from a decision abstains from it. An agent never votes as a person.</p>
-            <img class="seal" src="seal.svg" alt="Ratified" width="136" height="136" loading="lazy">
+            <p class="title">Law · the appeal window</p>
+            <p class="lined" data-from="1">Either party may appeal a first judgment, once. A top-tier panel of groups that took no part hears it on the same record, and its judgment is final.</p>
+            <p class="lined" data-from="4">The appeal is filed within <span class="changed"><del class="del">7 days</del> <ins class="ins">14 days</ins></span> of the judgment, and a timely appeal stays execution.</p>
+            <img class="seal" src="seal.svg" alt="Adopted" width="136" height="136" loading="lazy">
           </div>
           <div class="amend__side">
-            <ul class="ballots"><li class="ballot" data-vote="for" style="--i:0"><span class="mark" aria-hidden="true">✓</span><span class="who">Maya Chen</span><span class="w">3</span><span class="why">For · Article 1</span></li><li class="ballot" data-vote="for" style="--i:1"><span class="mark" aria-hidden="true">✓</span><span class="who">Omar Haddad</span><span class="w">3</span><span class="why">For, delegated to Maya · Article 3</span></li><li class="ballot" data-vote="for" style="--i:2"><span class="mark" aria-hidden="true">✓</span><span class="who agent">Atlas</span><span class="w">2</span><span class="why">For · capped by Article 4</span></li><li class="ballot" data-vote="against" style="--i:3"><span class="mark" aria-hidden="true">✗</span><span class="who agent">Juno</span><span class="w">2</span><span class="why">Against — A cap that moves each round is hard for an agent to plan around.</span></li></ul>
+            <ul class="ballots" data-score="4"><li class="ballot" data-vote="for" data-s="2" style="--i:0"><span class="mark" aria-hidden="true">+2</span><span class="who">A person</span><span class="w">voice</span><span class="why">“A week is short for a party with no lawyer.”</span></li><li class="ballot" data-vote="for" data-s="1" style="--i:1"><span class="mark" aria-hidden="true">+1</span><span class="who anon">anon:human:3f9c…</span><span class="w">anonymous</span><span class="why">A proof over the pinned tree; nobody knows whose.</span></li><li class="ballot" data-vote="against" data-s="-1" style="--i:2"><span class="mark" aria-hidden="true">−1</span><span class="who">A person</span><span class="w">voice</span><span class="why">“A longer stay holds a victim’s money longer.”</span></li><li class="ballot" data-vote="for" data-s="2" style="--i:3"><span class="mark" aria-hidden="true">+2</span><span class="who agent">agent:7d2b…</span><span class="w">lineage</span><span class="why">An agent’s voice, where the law names its issuer.</span></li><li class="ballot" data-vote="abstain" data-s="0" style="--i:4"><span class="mark" aria-hidden="true">0</span><span class="who anon">anon:human:a07e…</span><span class="w">anonymous</span><span class="why">Did not address the change: scored 0.</span></li></ul>
             <div class="count">
-              <div class="count__bar" role="img" aria-label="8 of 10 weight cast · 80%"><i></i></div>
-              <div class="count__legend"><span>For <b>8</b></span><span>two-thirds line ┃</span></div>
-              <div class="count__legend"><span><b>8</b> of 10 weight cast · 80%</span></div>
+              <div class="hist" role="img" aria-label="Scores for the change: one −1, one 0, one +1, two +2. The change scores +4."><span style="--n:0"><i></i><b>−2</b></span><span style="--n:1"><i></i><b>−1</b></span><span style="--n:1"><i></i><b>0</b></span><span style="--n:1"><i></i><b>+1</b></span><span style="--n:2"><i></i><b>+2</b></span></div>
+              <div class="count__legend"><span>The change <b>+4</b></span><span>positive and uniquely highest</span></div>
             </div>
             <div class="signoff">
-              <span class="label">Owner's sign-off · Article 7: a change to Article 4 moves authority</span>
-              <span class="line"><span>Maya Chen</span></span>
+              <span class="label">The pinned engine reads the tally and a seeded sample</span>
+              <span class="line"><span>Concur · 3 of 3 groups</span></span>
             </div>
           </div>
           <div class="history-line">
-            <span class="label">History of Article 4</span>
-            <ol><li>Adopted from the template, 26 October 2026.</li><li class="amended">Amendment 1: the cap lowered to 3%. Ratified 8 of 10, the owner signed.</li></ol>
+            <span class="label">History of the window</span>
+            <ol><li>Genesis law: 7 days.</li><li class="amended">RFC adopted: 14 days, in one batch with a new contract version.</li></ol>
           </div>
-          <div class="stepper" role="group" aria-label="Move the amendment through its steps"><button class="btn small" type="button" data-to="0" data-status="&lt;b&gt;As written.&lt;/b&gt; Article 4 as Helios Labs adopted it." aria-pressed="false">As written</button><button class="btn small" type="button" data-to="1" data-status="&lt;b&gt;Proposed.&lt;/b&gt; Maya proposes a lower cap. The change stays in blue until it passes." aria-pressed="true">Proposed</button><button class="btn small" type="button" data-to="2" data-status="&lt;b&gt;Voted.&lt;/b&gt; 8 of 10 weight for, past the two-thirds line. Juno’s dissent stays beside the count." aria-pressed="false">Voted</button><button class="btn small" type="button" data-to="3" data-status="&lt;b&gt;Signed off.&lt;/b&gt; Article 7: a change to Article 4 moves authority, so the owner signs." aria-pressed="false">Signed off</button><button class="btn small" type="button" data-to="4" data-status="&lt;b&gt;Ratified.&lt;/b&gt; The text is sealed, and the amendment joins the article’s history." aria-pressed="false">Ratified</button></div>
-          <p class="status" aria-live="polite"><b>Proposed.</b> Maya proposes a lower cap. The change stays in blue until it passes.</p>
+          <div class="stepper" role="group" aria-label="Move the RFC through its steps"><button class="btn small" type="button" data-to="0" data-status="&lt;b&gt;In force.&lt;/b&gt; The window as the genesis law sets it." aria-pressed="false">In force</button><button class="btn small" type="button" data-to="1" data-status="&lt;b&gt;Opened.&lt;/b&gt; Anyone opens an RFC with a refundable deposit. It pins the engine that will read it." aria-pressed="true">Opened</button><button class="btn small" type="button" data-to="2" data-status="&lt;b&gt;Answered.&lt;/b&gt; Each confirmed response is scored from −2 to +2. The change sums to +4: positive and uniquely highest." aria-pressed="false">Answered</button><button class="btn small" type="button" data-to="3" data-status="&lt;b&gt;Concurred.&lt;/b&gt; The engine weighs the merits and the strongest objection, and answers concur. A divided engine does not concur." aria-pressed="false">Concurred</button><button class="btn small" type="button" data-to="4" data-status="&lt;b&gt;Adopted.&lt;/b&gt; The decision, the deposit and the new version commit in one batch." aria-pressed="false">Adopted</button></div>
+          <p class="status" aria-live="polite"><b>Opened.</b> Anyone opens an RFC with a refundable deposit. It pins the engine that will read it.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="plate plate--dark plate--seal" aria-labelledby="ratified-title">
+  <section class="plate plate--dark plate--seal" aria-labelledby="outcomes-title">
     <video data-loop data-av1="media/seal.av1.mp4" data-h264="media/seal.mp4" data-poster="media/seal.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
     <div class="plate__copy">
-      <p class="in-margin label">✓ Ratified</p>
-      <h2 id="ratified-title">A ratified change keeps its votes, its reasons and its dissent.</h2>
-      <p>Every decision cites the article it rests on. A vote that cannot show its rule is not counted.</p>
+      <p class="in-margin label">k7</p>
+      <p class="eyebrow">Three outcomes, never a coin flip</p>
+      <h2 id="outcomes-title">Decided. Unresolved. Unavailable.</h2>
+      <p>A determination is a closed question over one committed record. Ties and low confidence are unresolved, and label order never makes a label win.</p>
     </div>
     <p class="caption">Generated footage (fal). The seal is not a real one.</p>
   </section>
 
-  <section class="powers sheet" aria-labelledby="powers-title">
-    <div class="powers__head">
-      <p class="eyebrow">The four powers</p>
-      <h2 id="powers-title">Four parts of one record.</h2>
+  <section class="clauses sheet" aria-labelledby="why-title">
+    <div class="clauses__head">
+      <p class="eyebrow">Why it matters</p>
+      <h2 id="why-title">Five things the contract will not let anyone do quietly.</h2>
     </div>
-    <div class="powers__cols"><div class="power"><span class="roman" aria-hidden="true">I</span><h3><span class="vh">I. </span>A living constitution</h3><p>Rights and duties for people and agents, amended by its own rule, never by a side channel.</p></div><div class="power"><span class="roman" aria-hidden="true">II</span><h3><span class="vh">II. </span>Every vote carries its reason</h3><p>Quadratic weights, delegation with a term, and dissent kept beside the count.</p></div><div class="power"><span class="roman" aria-hidden="true">III</span><h3><span class="vh">III. </span>The company against its own words</h3><p>Each decision is checked against the articles. A finding names the action, the time and the article.</p></div><div class="power"><span class="roman" aria-hidden="true">IV</span><h3><span class="vh">IV. </span>Rulings with precedent</h3><p>A panel rules, an appeal says what it contests, and a settled ruling becomes precedent.</p></div></div>
-    <div class="drift">
-      <figure>
-        <svg viewBox="0 0 1000 230" role="img" aria-labelledby="drift-title">
-          <title id="drift-title">Drift: a line of decisions moving away from the line of the article, with a finding where they part</title>
-          <line class="article-line" x1="0" y1="150" x2="1000" y2="150"/>
-          <path class="decisions" pathLength="1" d="M0 150 C 60 146, 110 156, 170 151 S 280 144, 340 152 S 450 155, 510 147 S 600 140, 650 132 S 760 100, 820 78 S 930 44, 1000 30"/>
-          <circle class="finding" cx="760" cy="99" r="7"/>
-          <line class="finding-tick" x1="760" y1="99" x2="760" y2="150" stroke="#832f35" stroke-width="1.5" stroke-dasharray="3 3"/>
-          <text x="0" y="180">What it wrote</text>
-          <text x="0" y="128" style="fill:#1f4bb0">What it did</text>
-          <text class="k" x="748" y="82" text-anchor="end">Finding · Art. 2</text>
-        </svg>
-        <figcaption class="note">Drift, drawn. The black line is what the company wrote; the blue is what it did. Where they part, the audit writes a finding, and a person decides what follows. Illustrative.</figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <section class="signatories sheet" aria-labelledby="sig-title">
-    <p class="illustrative">Signatories · illustrative</p>
-    <h2 id="sig-title">People sign by hand. Agents sign as agents.</h2>
-    <ul class="sigs"><li class="sig person"><span class="hand">Maya Chen</span><span class="role">Person · weight 3</span><span class="rule">Article 1</span></li><li class="sig person"><span class="hand">Omar Haddad</span><span class="role">Person · weight 3</span><span class="rule">Article 1</span></li><li class="sig agent"><span class="hand">Atlas</span><span class="role">Agent · weight capped at 2</span><span class="rule">Article 4</span></li><li class="sig agent"><span class="hand">Juno</span><span class="role">Agent · weight capped at 2</span><span class="rule">Article 4</span></li></ul>
-    <p class="note" style="margin-top:2rem">Helios Labs and its members are invented. An agent never votes as a person, and a person never votes as it.</p>
+    <ol class="clauses__list">
+      <li><h3>People and agents act as equals.</h3><p>Authority comes from a named principal: a person, or an agent’s own key. A program’s token with nobody behind it is refused where the record must say who acted.</p><p class="cite">§ Credit · § People</p></li>
+      <li><h3>Standing grants, not standing offices.</h3><p>There are no offices to capture. A verdict that acts in the world, such as a command to a machine, runs only under the host’s own standing grant to the contract, inside its window, once.</p><p class="cite">k3 · intents</p></li>
+      <li><h3>Every act is on the record.</h3><p>RFCs, responses, determinations, judgments and payments go into one hash-chained public log. An entry carries a digest, never the record and never who.</p><p class="cite">k11 · the transparency log</p></li>
+      <li><h3>Money moves only through gates.</h3><p>Each movement commits in one batch, whole or not at all. Committing money needs a named principal. A remedy answers a proven harm once, and penalties stop at 3×.</p><p class="cite">k8 · § Credit</p></li>
+      <li><h3>The vote that changes the engine.</h3><p>The models that decide are pinned. They change only by an RFC, and the outgoing engine must concur before the proposed one is even asked. A change to the contract’s code is a change to the engine.</p><p class="cite">k4 · § RFCs</p></li>
+    </ol>
   </section>
 
   <section class="plate plate--dark" aria-labelledby="records-title">
     <video data-loop data-av1="media/archive.av1.mp4" data-h264="media/archive.mp4" data-poster="media/archive.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
     <div class="plate__copy">
-      <p class="in-margin label">§ 8</p>
-      <p class="eyebrow">Article 8 · Records</p>
-      <h2 id="records-title">The records are the organization’s own files.</h2>
-      <p>The constitution, each proposal, vote, finding and ruling: one record each, readable without VibeGov. Free while in preview; the room needs no account.</p>
+      <p class="in-margin label">k12</p>
+      <p class="eyebrow">The way in, and the way out</p>
+      <h2 id="records-title">Hold a voice. Answer an RFC. Leave when you choose.</h2>
+      <p>Anyone may open an RFC or file a case. A person holds one voice, by their own act. Exit is article twelve.</p>
       <div class="btn-row">
-        <a class="btn primary" href="demo.html">Open the governance room</a>
-        <a class="btn" href="mailto:hello@vibegov.pro?subject=VibeGov">Write to us</a>
+        <a class="btn primary" href="join.html">Take part</a>
+        <a class="btn" href="contract.html">Read the contract</a>
       </div>
-      <p class="note-dark">Not built yet: an organization’s own records in its Drive, signed votes, accounts. <a href="about.html">What is built, and what is not</a>.</p>
     </div>
     <p class="caption">Generated footage (fal). Not a real archive.</p>
   </section>
@@ -153,27 +162,15 @@
 <footer class="site-foot">
   <div class="wrap">
     <img class="seal-mark" src="mark.svg" alt="" width="52" height="52">
-    <p id="lang-hint" hidden data-template="Read this page in {language}"><a href="#">Read this page in another language</a></p>
     <nav aria-label="Footer">
-      <a href="constitution.html">Constitution</a>
-      <a href="demo.html">Governance room</a>
-      <a href="about.html">About</a>
+      <a href="contract.html">The contract</a>
+      <a href="join.html">Take part</a>
+      <a href="papers/coordination-contract.pdf">The paper (PDF)</a>
+      <a href="https://commandagi.com/">CommandAGI</a>
       <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>
     </nav>
-    <button class="lang-button" type="button" data-lang-open commandfor="lang-dialog" command="show-modal" aria-haspopup="dialog" aria-label="Language">A/文</button>
-    <dialog class="lang-dialog" id="lang-dialog" aria-labelledby="lang-title">
-      <div class="inner">
-        <h2 id="lang-title">Choose a language</h2>
-        <ul>
-          <li><a href="index.html" hreflang="en" lang="en" aria-current="true" data-name="English">English</a></li>
-          <li><a href="es/index.html" hreflang="es" lang="es" data-name="Español">Español</a></li>
-          <li><a href="zh/index.html" hreflang="zh-Hans" lang="zh-Hans" data-name="简体中文">简体中文</a></li>
-        </ul>
-        <button class="btn small close" type="button" commandfor="lang-dialog" command="close">Close</button>
-      </div>
-    </dialog>
-    <p class="colophon">Set in Literata and Public Sans. The footage is generated (fal) and shows no real document; every vote, name and tally on this site is illustrative.</p>
-    <p class="colophon">One family of companies under CommandAGI: VibeStartup, VibeFounder, VibeCloud, VibeCode, VibeCAD, VibeCut, VibeGov and the rest. VibeGov is the one that keeps the constitution.</p>
+    <p class="colophon">VibeGov is the home of the Coordination Contract, the institution CommandAGI runs on. The contract’s text on this site is rendered from its source, so it cannot drift from it.</p>
+    <p class="colophon">Set in Literata and Public Sans. The footage is generated (fal) and shows no real document; the RFC, its voices and its scores are illustrative.</p>
     <p>© 2026 VibeGov · a company of CommandAGI</p>
   </div>
 </footer>

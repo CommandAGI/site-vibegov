@@ -1,6 +1,6 @@
 /* The document's apparatus (redesign/DESIGN.md): the contents popover where popovers are missing, line numbers in the
-   margin, loops that play only when seen, and the amendment scene. Every word is in the page, so one script serves each
-   locale; with no script the pages read whole (the scene rests on its proposed state, the videos on their posters). */
+   margin, loops that play only when seen, and the RFC scene. Every word is in the page; with no script the pages read
+   whole (the scene rests on its opened state, the videos on their posters). */
 (() => {
   const still = matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -70,7 +70,7 @@
     still.addEventListener('change', () => videos.forEach(v => (still.matches ? v.pause() : (attach(v), play(v)))));
   }
 
-  // The amendment scene: five states of one article (as written, proposed, voted, signed off, ratified). Scroll moves
+  // The RFC scene: five states of one clause of the law (in force, opened, answered, concurred, adopted). Scroll moves
   // through them on a wide screen; the buttons move through them everywhere; the status line says each state aloud.
   const scene = document.querySelector('.amend');
   if (!scene) return;
