@@ -5,10 +5,14 @@ static folder served by CommandAGI's site hosting at https://vibegov.pro, with `
 https://vibegov.commandagi.app serving the same site. The design and the reasons are in CommandAGI's
 `docs/vibegov.md`.
 
-- `index.html`: the front door. The contract's four parts with its kernel hash recomputed in the page, the live
-  figures (open RFCs, responses counted, persons with a voice, cases, the pool, credit), the open RFCs with their
-  deadlines and a Respond link, the decided ones, the ledger's state (log, sweep, on-chain anchor), the law's windows,
-  and the acts a member can take.
+- `index.html`: the front door, in the order a newcomer asks: what VibeGov is for (the mission) and what the
+  contract binds itself to (six of the kernel's promises, the kernel hash recomputed in the page, the log's on-chain
+  anchor); what is alive right now (the ledger's height and last entry ticking, open RFCs with countdowns, decisions
+  this week, voices; the activity feed in plain words, `/public/contract/activity`; what comes next,
+  `/public/contract/calendar`, with its `.ics` feed); the open and decided RFCs; machines under the contract (the
+  machines their owners made public and published, live or labelled a recording, and the commands the contract
+  authorized, `/public/contract/robots`; with none on view, "No live robot right now" and a recorded run); the
+  figures and the ledger; how to take part; the library.
 - `record.html`: the public record: every RFC, the judgments, the last 50 log entries with each hash recomputed in the
   page, the checkpoints, the engine's seats (who runs each, what pins its model, its figures;
   `/public/contract/engine`), the versions. `record.html#rfc=<id>` shows one RFC (`/public/contract/rfcs/:id/tally`):
@@ -27,6 +31,9 @@ https://vibegov.commandagi.app serving the same site. The design and the reasons
   and line numbers.
 - `papers/`: the working paper and its short edition (PDF), copied by the same script from
   `docs/papers/coordination-contract/`.
+- `robots/labrat/`: a recorded simulated run (an SO-101 arm picks a pipette tip on LabRat's bench), copied byte for
+  byte by the same script from `cloud://global/worlds/labrat` (its servo stream, its run record, two frames its README
+  names). The page plots the stream and labels the run a recording and a simulation.
 - `style.css`, `fonts/` (Literata and Public Sans, variable, OFL, self-hosted), `mark.svg`, `og.png`,
   `apple-touch-icon.png` (drawn by `redesign/marks.py`), `fixtures/` (real entries of the public record that the test
   recomputes).
@@ -57,7 +64,9 @@ then commit here, push this repository's `main`, and move the gitlink in Command
 - Each page connects to itself and the public API only: `connect-src 'self' https://api.commandagi.com`. It reads
   `/public/contract/*` with no credential. The join page's form is sent only on purpose (`form-action
   https://commandagi.com`).
-- No generated picture, video or photograph. Every figure is read from the record; a zero says so in words.
+- No generated picture, video or photograph. The only pictures besides the mark are frames of machines: a live
+  frame from the API (`img-src https://api.commandagi.com`) while its owner shows it, and the recorded run's frames,
+  each labelled a recording. Every figure is read from the record; a zero says so in words.
 - English only, one page per address.
 
 ## test

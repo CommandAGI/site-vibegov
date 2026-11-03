@@ -87,7 +87,7 @@ export function renderOpenRfcs(s, now) {
     .map(r => `<li class="rfc">
 <p class="rfc__meta"><span class="tag">${esc(r.target)}</span><span class="tag">${esc(r.procedure === 'binding_score' ? 'binding score' : 'deliberative')}</span><span>${count(r.options)} option${r.options === 1 ? '' : 's'} and the status quo</span></p>
 <h3><a href="${esc(rfcHref(r.id))}">${esc(r.title)}</a></h3>
-<p class="rfc__clock">Closes ${time(r.closesAt, now)} · opened ${time(r.openedAt, now)}</p>
+<p class="rfc__clock">Closes ${time(r.closesAt, now)} · opened ${time(r.openedAt, now)} ${until(r.closesAt, now)}</p>
 <p class="rfc__act"><a class="btn small primary" href="${esc(editorHref('rfc', r.id))}">Respond</a> <code>${esc(r.id)}</code></p>
 </li>`)
     .join('')}</ol>`;
@@ -274,4 +274,246 @@ export async function getJson(fetchFn, base, path) {
   const res = await fetchFn(`${base}${path}`, { credentials: 'omit', referrerPolicy: 'no-referrer' });
   if (!res.ok) throw new Error(`${path} answered ${res.status}`);
   return res.json();
+}
+
+// ─── the front door: what is alive now (docs/vibegov.md § the site) ──────────────────────────────────────────
+
+const WEEK_MS = 7 * 86_400_000;
+
+/** A countdown in its two largest units, padded so that it does not jump as it ticks: "2d 04h", "4h 12m", "12m 05s". */
+export function countdown(ms) {
+  if (!(ms > 0)) return 'now';
+  const s = Math.floor(ms / 1000);
+  const d = Math.floor(s / 86400), h = Math.floor((s % 86400) / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+  const p = n => String(n).padStart(2, '0');
+  if (d) return `${d}d ${p(h)}h`;
+  if (h) return `${h}h ${p(m)}m`;
+  if (m) return `${m}m ${p(sec)}s`;
+  return `${sec}s`;
+}
+
+/** A time that page.js words again each second: `data-at` for "4 seconds ago", `data-until` for a countdown. */
+const since = (at, now) => `<time datetime="${new Date(at).toISOString()}" title="${esc(date(at))}" data-at="${at}">${esc(relative(at, now))}</time>`;
+const until = (at, now) => `<span class="countdown" data-until="${at}" title="${esc(date(at))}">${esc(countdown(at - now))}</span>`;
+
+/** The vital signs: the ledger's height and its last entry, the next close, the decisions of this week, the voices. */
+export function renderVitals(s, now) {
+  const next = s.rfcs.open[0];
+  const week = s.rfcs.decided.filter(r => r.decidedAt && now - r.decidedAt <= WEEK_MS).length;
+  const persons = sum(s.people.withVoice);
+  const vital = (label, value, words, cls = '') => `<div class="vital${cls}"><dt>${esc(label)}</dt><dd><b>${value}</b><span>${words}</span></dd></div>`;
+  return `<dl class="vitals">${[
+    vital('Ledger height', count(s.log.length), s.log.headAt ? `last entry ${since(s.log.headAt, now)}` : 'no entry yet', ' vital--ledger'),
+    vital('Open RFCs', count(s.rfcs.byStatus.open ?? 0), next ? `the next closes in ${until(next.closesAt, now)}` : 'none open: anyone may open one'),
+    vital('Decided this week', count(week), week ? `RFC${week === 1 ? '' : 's'} decided in the last 7 days` : 'no RFC decided in the last 7 days'),
+    vital('Voices', count(persons), `${count(s.voices.confirmed)} response${s.voices.confirmed === 1 ? '' : 's'} counted`),
+  ].join('')}</dl>`;
+}
+
+/**
+ * The commitment's seal, under the kernel check: the version in force, and whether the log's head is anchored on chain
+ * (the last checkpoint, its transaction, how many of the recent ones held) or, if not, why not.
+ */
+export function renderAnchor(s, now) {
+  const a = s.anchor;
+  const ok = a.last?.status === 'anchored';
+  const where = ok
+    ? `Log entry ${count(a.last.seq)} is anchored on ${esc(a.last.cluster ?? 'chain')} ${since(a.last.at, now)}${a.last.tx ? ` <code title="${esc(a.last.tx)}">${esc(a.last.tx.slice(0, 10))}…</code>` : ''}.`
+    : a.last
+      ? `The log's head is not anchored on chain${a.key ? '' : `: ${esc(a.detail ?? 'no anchor key')}`}.`
+      : 'No checkpoint yet.';
+  const version = s.contract
+    ? `Version ${count(s.contract.version)} in force since ${esc(date(s.contract.effectiveAt))}${s.contract.rfcId ? ` by RFC <a href="${esc(rfcHref(s.contract.rfcId))}"><code>${esc(s.contract.rfcId)}</code></a>` : ', the genesis'}.`
+    : 'No version is in force.';
+  return `<p class="check check--${ok ? 'ok' : 'wait'}"><span class="dot" aria-hidden="true"></span><span>${where} ${count(a.anchoredOfLast.anchored)} of the last ${count(a.anchoredOfLast.of)} checkpoints are anchored.</span></p><p class="seal__version">${version}</p>`;
+}
+
+const cap = t =>t.charAt(0).toUpperCase() + t.slice(1);
+
+/**
+ * One act of the log in plain words: what happened, about what, and where to read it. Counts and RFC titles only: an
+ * act on a case or a person names neither (the log itself holds only a digest of the act's body).
+ */
+export function activityWords(e) {
+  const rfc = e.rfcTitle ? `“${esc(e.rfcTitle)}”` : 'an RFC';
+  const n = e.n ?? 1;
+  const many = (one, more) => (n === 1 ? one : more.replace('{n}', count(n)));
+  const on = e.rfcTitle ? ` on ${rfc}` : '';
+  const version = esc(String(e.subject).replace(/^version:/, ''));
+  const W = {
+    version: ['law', `Contract version ${version} took effect`],
+    'adoption.executed': ['law', `Version ${version} was written on chain`],
+    'rfc.opened': ['rfc', `RFC ${rfc} opened`],
+    'rfc.response': ['rfc', many(`A response to ${rfc} was confirmed`, `{n} responses to ${rfc} were confirmed`)],
+    'rfc.interpretation': ['engine', many(`The engine read a response to ${rfc}`, `The engine read {n} responses to ${rfc}`)],
+    'rfc.reinterpretation': ['engine', many(`A contested reading${on} was read again`, `{n} contested readings${on} were read again`)],
+    'rfc.decided': ['rfc', `${cap(rfc)} was decided`],
+    determination: ['engine', many(`The engine made a determination${on}`, `The engine made {n} determinations${on}`)],
+    'determination.review': ['engine', many('A determination was reviewed', '{n} determinations were reviewed')],
+    'case.filed': ['case', many('A case was filed', '{n} cases were filed')],
+    'case.submission': ['case', many('A party added to a case’s record', 'Parties added {n} submissions to a case')],
+    'case.appeal': ['case', 'A judgment was appealed'],
+    'case.stakes': ['case', 'A party raised a case’s stakes'],
+    'case.judgment': ['case', many('A case was decided', '{n} judgments were given')],
+    'case.executed': ['case', 'A judgment was carried out'],
+    'case.insurance': ['money', 'The pool decided an insurance claim'],
+    'identity.resolved': ['case', 'A judgment resolved an identity'],
+    'personhood.issued': ['people', many(`A ${esc(String(e.subject).replace(/^personhood:/, '') || 'person')}’s voice was confirmed`, '{n} voices were confirmed')],
+    'personhood.revoked': ['people', 'A voice was revoked'],
+    'pool.epoch': ['money', 'The pool settled an epoch'],
+    'credit.mandate': ['money', 'A credit mandate opened'],
+    'credit.mandate.closed': ['money', 'A credit mandate closed'],
+    'credit.facility': ['money', 'A loan was made'],
+    'credit.payment': ['money', many('A loan payment was made', '{n} loan payments were made')],
+    'credit.transfer': ['money', 'A loan changed hands'],
+    'credit.default': ['money', 'A loan defaulted'],
+    'intent.authorized': ['machine', many('The contract authorized a command to a machine', 'The contract authorized {n} commands to machines')],
+    'intent.recorded': ['machine', many('A machine’s receipt was recorded on chain', '{n} machines’ receipts were recorded on chain')],
+    'intent.closed': ['machine', many('A finished command was closed on chain', '{n} finished commands were closed on chain')],
+  }[e.kind];
+  const [family, words] = W ?? ['law', `${esc(e.kind)} was recorded`];
+  const href = e.rfcTitle ? rfcHref(e.subject) : e.kind.startsWith('intent.') ? 'index.html#machines' : 'record.html';
+  return { family, words, href };
+}
+
+/** Acts of one kind on one subject in a row read as one line with a count ("12 responses to … were confirmed"). */
+export function groupActivity(entries) {
+  const out = [];
+  for (const e of entries) {
+    const last = out.at(-1);
+    if (last && last.kind === e.kind && last.subject === e.subject) last.n += 1;
+    else out.push({ ...e, n: 1 });
+  }
+  return out;
+}
+
+/** What just happened, newest first; the routine heartbeat (beacons, seal batches) as one closing line. */
+export function renderActivity(activity, stats, now) {
+  const lines = groupActivity(activity.entries).slice(0, 12);
+  const routine = stats ? Object.entries(stats.log.lastDay ?? {}).filter(([k]) => k === 'beacon' || k === 'seals') : [];
+  const heartbeat = routine.length
+    ? `<p class="feed__routine">Also in the last 24 hours: ${routine.map(([k, n]) => `${count(n)} ${k === 'beacon' ? 'chain beacons' : 'seal batches from machines and hosts'}`).join(' and ')}. That is the record’s heartbeat.</p>`
+    : '';
+  if (!lines.length) return `<p class="empty">Nothing has happened on the record yet but its heartbeat.</p>${heartbeat}`;
+  return `<ol class="feed">${lines
+    .map(e => {
+      const w = activityWords(e);
+      return `<li class="feed__item feed--${w.family}"><a href="${esc(w.href)}">${w.words}</a><span class="feed__when">${since(e.at, now)} · entry ${count(e.seq)}</span></li>`;
+    })
+    .join('')}</ol>${heartbeat}`;
+}
+
+const caseRef = e => `<code title="${esc(e.subject)}">${esc(String(e.subject).slice(0, 10))}</code>`;
+const CAL = {
+  'rfc.closes': ['rfc', e => `Responses close on “${esc(e.title)}”`],
+  'rfc.contest_closes': ['rfc', e => `Last moment to contest a reading on “${esc(e.title)}”`],
+  'engine.session': ['engine', e => (e.id.endsWith(':decide') ? `The engine sits to decide “${esc(e.title)}”` : `The engine sits to read the responses to “${esc(e.title)}”`)],
+  'case.answer_due': ['case', e => `A respondent’s answer is due in case ${caseRef(e)}`],
+  'case.evidence_closes': ['case', e => `Evidence closes in case ${caseRef(e)}`],
+  'case.appeal_closes': ['case', e => `The appeal window closes in case ${caseRef(e)}`],
+};
+
+/** What comes next, soonest first: a date block, the event in words, and a countdown. A due engine sitting is "in session". */
+export function renderCalendar(cal, now) {
+  if (!cal.events.length) return '<p class="empty">Nothing is on the calendar: no RFC is open and no case waits on a deadline.</p>';
+  const part = (at, o) => new Date(at).toLocaleDateString('en-GB', { ...o, timeZone: 'UTC' });
+  return `<ol class="cal">${cal.events
+    .slice(0, 10)
+    .map(e => {
+      const [family, words] = CAL[e.kind] ?? ['rfc', () => esc(e.kind)];
+      const href = family === 'case' ? 'record.html' : rfcHref(e.subject);
+      const when = e.at <= now ? '<span class="countdown countdown--now">in session</span>' : until(e.at, now);
+      return `<li class="cal__item cal--${family}"><time class="cal__date" datetime="${new Date(e.at).toISOString()}"><b>${esc(part(e.at, { day: 'numeric' }))}</b>${esc(part(e.at, { month: 'short' }))}</time><a href="${esc(href)}">${words(e)}</a>${when}</li>`;
+    })
+    .join('')}</ol>`;
+}
+
+/** A picture's address on the API, in 15-second buckets: a live frame is fetched again each bucket, cached between. */
+export const pictureHref = (base, path, now) => `${base}${path}${path.includes('?') ? '&' : '?'}t=${Math.floor(now / 15_000)}`;
+
+const STATE = { live: ['live', 'Live'], recorded: ['recorded', 'Recording'], idle: ['idle', 'Idle'] };
+
+/**
+ * Machines that their owners made public and published (`/public/contract/robots`). Live means a frame or an act in
+ * the last two minutes; anything older is a recording and says so. With none on view, the page says that.
+ */
+export function renderRobots(view, now, base = API) {
+  if (!view.robots.length)
+    return '<p class="empty robots__none"><b>No live robot right now.</b> A machine shows here while its owner has made its run public and published it. Below is a recording.</p>';
+  return `<ul class="robots">${view.robots
+    .slice(0, 6)
+    .map(r => {
+      const [cls, label] = STATE[r.state] ?? STATE.idle;
+      const pic = r.picture
+        ? `<img class="robot__frame" src="${esc(pictureHref(base, r.picture, now))}" alt="${esc(`What ${r.title} shows${r.state === 'live' ? ' now' : ' last'}`)}" loading="lazy" data-frame="${esc(r.picture)}">`
+        : '<div class="robot__frame robot__frame--none" aria-hidden="true"></div>';
+      const last = r.frameAt ?? r.lastActivityAt;
+      return `<li class="robot robot--${cls}">
+<figure>${pic}<figcaption><span class="badge badge--${cls}">${label}</span><span class="tag">${esc(r.reality)}</span></figcaption></figure>
+<h3>${esc(r.title)}</h3>
+${r.description ? `<p>${esc(r.description)}</p>` : ''}
+<p class="robot__meta">${esc(r.machines.map(m => m.noun).join(', '))}${last ? ` · ${r.state === 'live' ? 'last frame' : 'last active'} ${since(last, now)}` : ''}</p>
+<p><a class="btn small" href="${esc(r.watch)}">${r.state === 'live' ? 'Watch it live' : 'Open its run'}</a></p>
+</li>`;
+    })
+    .join('')}</ul>`;
+}
+
+const CMD_STATUS = { authorized: 'authorized', delivered: 'delivered', receipted: 'done, with a receipt', refused: 'refused by its host', failed: 'failed', not_authorized: 'not authorized' };
+
+/** The commands the contract itself authorized (an agreement's verdict listed them): verb, channel, state, chain. */
+export function renderCommands(view, now) {
+  const by = view.commands.byStatus;
+  const total = sum(by);
+  if (!total)
+    return '<p class="empty">The contract has authorized no command to a machine yet. One comes from an agreement whose verdict lists an intent: the engine’s seats sign it on chain, and the machine’s host runs it once, under its own standing grant to the contract.</p>';
+  return `<p class="note">${count(total)} command${total === 1 ? '' : 's'} in all: ${Object.entries(by).map(([k, n]) => `${count(n)} ${esc(CMD_STATUS[k] ?? k)}`).join(' · ')}.</p><ol class="cmds">${view.commands.recent
+    .map(c => `<li><b>${esc(c.kind === 'command' ? `${c.verb ?? 'command'}${c.channel ? ` on ${c.channel}` : ''}` : c.kind)}</b> <span class="verdict${c.status === 'receipted' ? ' verdict--adopted' : ''}">${esc(CMD_STATUS[c.status] ?? c.status)}</span> <span class="note">${since(c.updatedAt ?? c.at, now)}${c.tx ? ` · ${esc(c.cluster ?? 'chain')} <code title="${esc(c.tx)}">${esc(c.tx.slice(0, 10))}…</code>` : ''}</span></li>`)
+    .join('')}</ol>`;
+}
+
+// ─── a recorded run (robots/labrat/, copied from the run by the repository's scripts/seed/vibegov-contract.mjs) ──
+
+/** A servo stream (`records.jsonl`): the agent's steps, the number of goals, the simulator's states, the seals. */
+export function parseServoRun(text) {
+  const rows = String(text).split('\n').filter(Boolean).map(l => JSON.parse(l));
+  const t0 = Date.parse(rows[0]?.t ?? 0);
+  const ms = r => Date.parse(r.t) - t0;
+  return {
+    started: rows[0]?.t ?? null,
+    durationMs: rows.length ? ms(rows.at(-1)) : 0,
+    by: rows.find(r => r.by)?.by ?? null,
+    goals: rows.filter(r => r.kind === 'command').length,
+    steps: rows.filter(r => r.kind === 'note' && !/: send /.test(r.text)).map(r => ({ at: ms(r), text: String(r.text).replace(/^[^:]+:[^:]+: /, '') })),
+    states: rows.filter(r => r.kind === 'state' && r.values).map(r => ({ at: ms(r), values: r.values })),
+    seals: rows.filter(r => r.kind === 'seal').map(r => r.seal),
+    simulated: rows.some(r => r.src === 'sim'),
+    noGrant: rows.some(r => /simulated: no grant needed/.test(r.text ?? '')),
+  };
+}
+
+/** The joints' paths over the run as one SVG (each joint on its own range), with a rule at each of the agent's steps. */
+export function jointTrace(run, width = 640, height = 160) {
+  if (run.states.length < 2) return '';
+  const joints = Object.keys(run.states[0].values);
+  const end = Math.max(1, run.states.at(-1).at);
+  const x = at => ((at / end) * width).toFixed(1);
+  const paths = joints.map((j, i) => {
+    const vs = run.states.map(s => s.values[j]);
+    const lo = Math.min(...vs), span = Math.max(...vs) - lo || 1;
+    const d = run.states.map((s, k) => `${k ? 'L' : 'M'}${x(s.at)},${(height - 6 - ((s.values[j] - lo) / span) * (height - 12)).toFixed(1)}`).join('');
+    return `<path class="trace trace--${i}" d="${d}"><title>${esc(j.replace(/_/g, ' '))}</title></path>`;
+  });
+  const marks = run.steps.filter(s => s.at > 0 && s.at < end).map(s => `<line class="trace__step" x1="${x(s.at)}" x2="${x(s.at)}" y1="0" y2="${height}"/>`);
+  return `<svg class="traces" viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(`The ${joints.length} joints over ${duration(end)}: ${joints.join(', ').replace(/_/g, ' ')}`)}" preserveAspectRatio="none">${marks.join('')}${paths.join('')}</svg>
+<ul class="traces__key">${joints.map((j, i) => `<li><i class="trace--${i}"></i>${esc(j.replace(/_/g, ' '))}</li>`).join('')}</ul>`;
+}
+
+/** A recorded run as the site shows it: labelled a recording and its reality, its steps, its trace, its seals. */
+export function renderRecording(run) {
+  const seal = run.seals.at(-1);
+  return `<p class="rec__label"><span class="badge badge--recorded">Recording</span><span class="tag">${run.simulated ? 'simulation' : 'physical'}</span><span>${run.started ? esc(date(Date.parse(run.started))) : ''} · ${esc(duration(run.durationMs))} · ${count(run.goals)} goals</span></p>
+<ol class="rec__steps">${run.steps.map(s => `<li><span>${esc((s.at / 1000).toFixed(1))} s</span>${esc(s.text)}</li>`).join('')}</ol>
+${jointTrace(run)}
+<p class="note">Driven by <code>${esc(run.by ?? 'an agent')}</code>; each goal is recorded before the simulator gets it.${run.noGrant ? ' A simulated run needs no grant, and its record says so. A physical run needs a standing grant on the machine.' : ''}${seal ? ` Its ${count(run.seals.length)} seals are signed (${esc(seal.alg)}), and the last is bound to ${esc(seal.block?.chain ?? 'a chain')} slot ${count(seal.block?.slot)}.` : ''}</p>`;
 }

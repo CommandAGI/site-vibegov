@@ -72,18 +72,27 @@ test('a page connects to the public API and nothing else; no asset comes from an
   assert.match(read('join.html'), /<textarea[^>]*name="prompt"/);
 });
 
-test('no generated picture stands in for the record: no video, no photograph, one drawn mark', () => {
+test('no generated picture stands in for the record: the mark, and frames of a recorded run labelled as recordings', () => {
   assert.ok(!existsSync(join(ROOT, 'media')), 'no media folder');
+  const run = readdirSync(join(ROOT, 'robots/labrat')).sort();
+  assert.deepEqual(run, ['pick-at-the-collar.jpg', 'pick-lifted.jpg', 'run.json', 'servos.jsonl'], 'the run, copied from its world by scripts/seed/vibegov-contract.mjs');
+  assert.equal(JSON.parse(read('robots/labrat/run.json')).reality, 'simulation');
   for (const page of PAGES) {
     const text = read(page);
-    assert.doesNotMatch(text, /<video|<picture|\.webp|\.jpe?g|\.mp4/, `${page}: no footage or photograph`);
-    for (const [, src] of text.matchAll(/<img[^>]*src="([^"]+)"/g)) assert.equal(src, 'mark.svg', `${page}: the only image is the mark`);
+    assert.doesNotMatch(text, /<video|<picture|\.webp|\.mp4/, `${page}: no footage`);
+    for (const [img, src] of text.matchAll(/<img[^>]*src="([^"]+)"[^>]*>/g)) {
+      if (src === 'mark.svg') continue;
+      assert.match(src, /^robots\/labrat\/[a-z-]+\.jpg$/, `${page}: an image other than the mark is a frame of the recorded run (${src})`);
+      assert.match(img, /alt="[^"]{20,}"/, `${page}: ${src} says what it shows`);
+      const figure = text.slice(text.indexOf(img)).match(/<figcaption>([^<]+)<\/figcaption>/)?.[1] ?? '';
+      assert.match(figure, /^Recording/, `${page}: ${src} is labelled a recording`);
+    }
     assert.doesNotMatch(text, /fal\b|generated footage/i, `${page}: says nothing about footage`);
   }
 });
 
 test('each live part of a page is one that page.js fills', () => {
-  const filled = new Set([...read('page.js').matchAll(/(?:put|el)\('([a-z-]+)'/g)].map(m => m[1]));
+  const filled = new Set([...read('page.js').matchAll(/(?:put|el|view)\('([a-z-]+)'/g)].map(m => m[1]));
   for (const page of PAGES)
     for (const [, name] of read(page).matchAll(/data-live="([a-z-]+)"/g)) assert.ok(filled.has(name), `${page}: data-live="${name}" is filled by page.js`);
   assert.match(read('index.html'), /data-live="figures"/);
@@ -326,4 +335,152 @@ test('the log chain recomputes over real entries, and a moved entry or a changed
   assert.deepEqual(await logProblems(tampered), [`entry ${entries[3].seq}: its hash does not recompute`]);
   const gap = [entries[0], ...entries.slice(2)];
   assert.ok((await logProblems(gap)).some(p => p.includes(`expected ${entries[0].seq + 1}`)));
+});
+
+// ─── the front door: alive now, what comes next, the machines ─────────────────
+
+test('the vital signs tick: the ledger height and its last entry, the next close as a countdown, this week\'s decisions', () => {
+  assert.deepEqual([L.countdown(0), L.countdown(5_400), L.countdown(65_000), L.countdown(4 * 3_600_000 + 12 * 60_000), L.countdown(2 * 86_400_000 + 4 * 3_600_000)], ['now', '5s', '1m 05s', '4h 12m', '2d 04h']);
+  const s = statsOf({
+    rfcs: {
+      byStatus: { open: 1, adopted: 2 },
+      open: [{ id: 'rfc_a', title: 'A', target: 'law', procedure: 'deliberative', options: 1, openedAt: NOW - 86_400_000, closesAt: NOW + 3 * 3_600_000 }],
+      decided: [{ id: 'rfc_w', title: 'this week', status: 'adopted', decidedAt: NOW - 2 * 86_400_000 }, { id: 'rfc_old', title: 'last month', status: 'adopted', decidedAt: NOW - 30 * 86_400_000 }],
+    },
+    people: { withVoice: { human: 12, agent: 3 }, anonymousCommitments: {} },
+    voices: { confirmed: 41, rfcsAnswered: 3 },
+  });
+  const v = L.renderVitals(s, NOW);
+  assert.match(v, /<dt>Ledger height<\/dt><dd><b>36,178<\/b><span>last entry <time [^>]*data-at="\d+">2 minutes ago<\/time>/, 'the last entry, re-worded each second');
+  assert.match(v, /the next closes in <span class="countdown" data-until="\d+"[^>]*>3h 00m<\/span>/);
+  assert.match(v, /<dt>Decided this week<\/dt><dd><b>1<\/b>/, 'only the decision of the last 7 days');
+  assert.match(v, /<b>15<\/b><span>41 responses counted/);
+  assert.match(L.renderOpenRfcs(s, NOW), /data-until="\d+"[^>]*>3h 00m</, 'each open RFC counts down to its close');
+  assert.match(L.renderAnchor(statsOf({}), NOW), /check--wait[\s\S]*not anchored on chain: not configured: CONTRACT_ANCHOR_SECRET\. 0 of the last 200 checkpoints are anchored[\s\S]*Version 0 in force since [^<]+, the genesis/, 'an anchor that does not hold says why');
+  const anchored = statsOf({ anchor: { key: 'K', detail: null, last: { seq: 36100, status: 'anchored', cluster: 'devnet', tx: '4sigTransaction', at: NOW - 30_000 }, anchoredOfLast: { anchored: 200, of: 200 } } });
+  assert.match(L.renderAnchor(anchored, NOW), /check--ok[\s\S]*Log entry 36,100 is anchored on devnet <time[^>]*>30 seconds ago<\/time> <code title="4sigTransaction">/);
+  const empty = L.renderVitals(statsOf({}), NOW);
+  assert.match(empty, /none open: anyone may open one/);
+  assert.match(empty, /no RFC decided in the last 7 days/);
+});
+
+test('the activity feed says what happened in plain words, counts runs of one act, names no one, and escapes a title', async () => {
+  const entry = (seq, kind, subject, rfcTitle = null) => ({ seq, kind, subject, at: NOW - (100 - seq) * 1000, hash: 'f'.repeat(64), rfcTitle });
+  const activity = {
+    at: NOW,
+    entries: [
+      entry(99, 'rfc.response', 'rfc_12', 'Twelve <i>days</i>'),
+      entry(98, 'rfc.response', 'rfc_12', 'Twelve <i>days</i>'),
+      entry(97, 'rfc.response', 'rfc_12', 'Twelve <i>days</i>'),
+      entry(96, 'case.judgment', 'case_abc'),
+      entry(95, 'personhood.issued', 'personhood:human'),
+      entry(94, 'intent.authorized', 'd'.repeat(64)),
+      entry(93, 'rfc.opened', 'rfc_12', 'Twelve <i>days</i>'),
+      entry(92, 'something.new', 'x'),
+    ],
+  };
+  const api = await fakeApi({ '/public/contract/activity': activity });
+  try {
+    const html = L.renderActivity(await L.getJson(fetch, api.base, '/public/contract/activity'), statsOf({}), NOW);
+    const lines = [...html.matchAll(/<li class="feed__item feed--([a-z]+)"><a href="([^"]+)">([^<]*(?:<(?!\/a>)[^<]*)*)<\/a>/g)].map(m => [m[1], m[2], m[3]]);
+    assert.deepEqual(lines, [
+      ['rfc', 'record.html#rfc=rfc_12', '3 responses to “Twelve &lt;i&gt;days&lt;/i&gt;” were confirmed'],
+      ['case', 'record.html', 'A case was decided'],
+      ['people', 'record.html', 'A human’s voice was confirmed'],
+      ['machine', 'index.html#machines', 'The contract authorized a command to a machine'],
+      ['rfc', 'record.html#rfc=rfc_12', 'RFC “Twelve &lt;i&gt;days&lt;/i&gt;” opened'],
+      ['law', 'record.html', 'something.new was recorded'],
+    ]);
+    assert.ok(!html.includes('case_abc'), 'a case is not named in the feed');
+    assert.match(html, /entry 99<\/span>/);
+    assert.match(html, /1,440 chain beacons and 120 seal batches|120 seal batches from machines and hosts and 1,440 chain beacons/, 'the heartbeat in one line');
+    assert.deepEqual(api.seen, ['/public/contract/activity']);
+  } finally {
+    await api.close();
+  }
+  assert.match(L.renderActivity({ at: NOW, entries: [] }, null, NOW), /Nothing has happened on the record yet/);
+});
+
+test('coming up: soonest first with a countdown; an engine sitting that is due is in session; a case by its id alone', async () => {
+  const cal = {
+    at: NOW,
+    horizonMs: 120 * 86_400_000,
+    events: [
+      { id: 'engine.session:rfc_9:decide', kind: 'engine.session', at: NOW - 60_000, subject: 'rfc_9', title: 'Seat a renderer' },
+      { id: 'rfc.closes:rfc_12', kind: 'rfc.closes', at: NOW + 2 * 86_400_000, subject: 'rfc_12', title: 'Twelve <b>days</b>' },
+      { id: 'case.evidence_closes:case_abcdef123456', kind: 'case.evidence_closes', at: Date.UTC(2026, 10, 20), subject: 'case_abcdef123456', title: null },
+    ],
+  };
+  const api = await fakeApi({ '/public/contract/calendar': cal });
+  try {
+    const html = L.renderCalendar(await L.getJson(fetch, api.base, '/public/contract/calendar'), NOW);
+    const items = [...html.matchAll(/<li class="cal__item cal--([a-z]+)">/g)].map(m => m[1]);
+    assert.deepEqual(items, ['engine', 'rfc', 'case']);
+    assert.match(html, /The engine sits to decide “Seat a renderer”<\/a><span class="countdown countdown--now">in session/);
+    assert.match(html, /Responses close on “Twelve &lt;b&gt;days&lt;\/b&gt;”<\/a><span class="countdown" data-until="\d+"[^>]*>2d 00h/);
+    assert.match(html, /<b>20<\/b>Nov<\/time><a href="record\.html">Evidence closes in case <code title="case_abcdef123456">case_abcde<\/code>/);
+  } finally {
+    await api.close();
+  }
+  assert.match(L.renderCalendar({ at: NOW, events: [] }, NOW), /Nothing is on the calendar/);
+  assert.match(read('index.html'), /href="https:\/\/api\.commandagi\.com\/public\/contract\/calendar\.ics"/, 'the calendar as a feed to subscribe to');
+});
+
+test('the machines: live ones first with a fresh frame, a recording says so, none says "no live robot right now"; the contract\'s commands', async () => {
+  const robot = (id, state, over = {}) => ({ id, title: `Arm ${id}`, description: 'sorts <parts>', reality: 'physical', state, lastActivityAt: NOW - 20_000, frameAt: NOW - 20_000, machines: [{ kind: 'robot', noun: 'robot', status: 'running' }], picture: `/threads/${id}/poster`, watch: `https://commandagi.com/app?open=${encodeURIComponent(`/thread/${id}`)}`, ...over });
+  const view = {
+    at: NOW,
+    liveMs: 120_000,
+    robots: [robot('t1', 'live'), robot('t2', 'recorded', { reality: 'simulation', frameAt: NOW - 3 * 86_400_000, picture: null })],
+    commands: { byStatus: { receipted: 2, refused: 1 }, recent: [{ id: 'd'.repeat(64), kind: 'command', verb: 'frame', channel: 'camera', status: 'receipted', at: NOW - 60_000, updatedAt: NOW - 30_000, tx: '5xTxSignature', cluster: 'devnet', receipted: true }] },
+  };
+  const none = { at: NOW, liveMs: 120_000, robots: [], commands: { byStatus: {}, recent: [] } };
+  const api = await fakeApi({ '/public/contract/robots': view });
+  try {
+    const v = await L.getJson(fetch, api.base, '/public/contract/robots');
+    const html = L.renderRobots(v, NOW, api.base);
+    assert.deepEqual([...html.matchAll(/<li class="robot robot--([a-z]+)">/g)].map(m => m[1]), ['live', 'recorded']);
+    assert.match(html, /<span class="badge badge--live">Live<\/span><span class="tag">physical<\/span>/);
+    assert.match(html, /<span class="badge badge--recorded">Recording<\/span><span class="tag">simulation<\/span>/, 'a recording is labelled a recording');
+    assert.ok(html.includes(`src="${api.base}/threads/t1/poster?t=${Math.floor(NOW / 15_000)}"`), 'the live frame from the API, fetched again every 15 s');
+    assert.match(html, /robot__frame--none/, 'no picture, no stand-in image');
+    assert.match(html, /sorts &lt;parts&gt;/);
+    assert.match(html, />Watch it live<\/a>/);
+    assert.match(html, />Open its run<\/a>/);
+    const cmds = L.renderCommands(v, NOW);
+    assert.match(cmds, /3 commands in all: 2 done, with a receipt · 1 refused by its host/);
+    assert.match(cmds, /<b>frame on camera<\/b> <span class="verdict verdict--adopted">done, with a receipt<\/span>/);
+    assert.match(cmds, /devnet <code title="5xTxSignature">5xTxSignat…<\/code>/);
+  } finally {
+    await api.close();
+  }
+  assert.match(L.renderRobots(none, NOW), /No live robot right now\./);
+  assert.match(L.renderCommands(none, NOW), /The contract has authorized no command to a machine yet/);
+  const csp = read('index.html').match(/http-equiv="Content-Security-Policy" content="([^"]+)"/)[1];
+  assert.match(csp, /img-src 'self' data: https:\/\/api\.commandagi\.com;/, 'a frame comes from the API only');
+});
+
+test('the recorded run is drawn from its own servo stream: its steps, its goals, its joints, its seals, labelled a simulation', () => {
+  const run = L.parseServoRun(read('robots/labrat/servos.jsonl'));
+  assert.equal(run.goals, 56);
+  assert.equal(run.by, 'agent:labrat-tip-picker');
+  assert.deepEqual(run.steps.map(s => s.text).slice(1, 6), ['open the gripper', 'swing over tip A1, 50 mm above its collar', 'down to its collar', 'close on the collar', 'lift it 40 mm']);
+  assert.ok(run.simulated && run.noGrant);
+  const html = L.renderRecording(run);
+  assert.match(html, /<span class="badge badge--recorded">Recording<\/span><span class="tag">simulation<\/span>/);
+  assert.match(html, /8 seconds · 56 goals/);
+  assert.equal([...html.matchAll(/<path class="trace trace--\d"/g)].length, 6, 'one path per joint');
+  assert.match(html, /A simulated run needs no grant, and its record says so/);
+  assert.match(html, /bound to solana:devnet slot 517,540,548/);
+  assert.equal(L.jointTrace({ states: [], steps: [] }), '', 'no trace from fewer than two states');
+});
+
+test('the home page puts the mission and the binding commitment first, then what is alive, the machines, the way in and the library', () => {
+  const text = read('index.html');
+  const order = ['id="mission-title"', 'data-live="kernel"', 'data-live="anchor"', 'id="now"', 'data-live="activity"', 'data-live="calendar"', 'id="rfcs"', 'id="machines"', 'data-live="robots"', 'data-live="recording"', 'id="take-part"', 'id="library"'];
+  const at = order.map(s => text.indexOf(s));
+  assert.ok(at.every(i => i > 0), `each part is on the page: ${order.filter((_, i) => at[i] < 0)}`);
+  assert.deepEqual([...at].sort((a, b) => a - b), at, 'in this order');
+  for (const k of ['k1', 'k2', 'k3 · k4', 'k7', 'k11', 'k12']) assert.match(text, new RegExp(`<li><b>${k}</b>`), `the promise ${k}`);
+  assert.match(text, /href="https:\/\/commandagi\.com\/app\?open=%2Fapp%2Fcontract">Needs you</, 'sign in to what needs you, from every screen');
 });

@@ -10,10 +10,23 @@ voice, whether the ledger is alive and anchored. The text is one click away and 
 act a member can take is a link into the contract editor, at the record it acts on. The 2026-10-26 design (a "living
 constitution": ivory paper, wax seals, generated footage) is gone.
 
+## the living home (owner, 2026-11-02)
+
+"The site still looks really old school and out of contact with reality. Something like jw.org — showing VibeGov
+active in the real world, with a mission and a binding commitment, live metrics, upcoming events, and live views of some
+of its robots — would be more appropriate."
+
+The structure of a large, living, mission-driven organisation's home, not its look: the mission up front in one
+sentence, the commitment beside it (a deep-blue seal card: the kernel's promises, its hash checked live, the anchor),
+then what is happening now (big ticking vitals, a timeline of acts in plain words, a calendar of deadlines with
+countdowns), the machines at work, how to take part, and a library. Warm, plain words; every number read live.
+
 ## rules
 
-- **No picture stands in for the record.** No generated image, no video, no photograph. The one image is the mark, a
-  drawn tick in a rounded square.
+- **No picture stands in for the record.** No generated image, no video, no stock photograph. Besides the mark, the
+  only pictures are frames of real runs: a live machine's frame from the API, and a recorded run's frames, labelled
+  "Recording". A run is never called live when it is not.
+- **Time moves.** "4 seconds ago" and every countdown are re-worded each second; the views are read each 30 s.
 - **A number is read, never typed.** Every figure comes from `/public/contract/*` at load. A zero is said in words
   ("No RFC is open. Anyone may open one."). An unreachable API says so and names the address.
 - **A check the visitor can repeat.** The kernel's hash and the log's hashes are recomputed in the page; green means
