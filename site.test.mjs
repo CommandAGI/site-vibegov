@@ -192,7 +192,8 @@ test('open RFCs are listed soonest first with their clocks and a Respond link; a
     assert.match(figures, /<b>15<\/b><span>12 human · 3 agent/, 'persons with a voice, by kind');
     assert.match(figures, /<b>3<\/b><span>2 open · 1 with a judgment/);
     assert.match(figures, /<b>\$1,234\.56<\/b><span>1 open claims, \$50\.00 owed/);
-    assert.match(L.renderDecided(s, NOW), /Adopted<\/span> <a href="[^"]+rfc%3Drfc_z">Lower the deposit/);
+    assert.match(L.renderDecided(s, NOW), /Adopted<\/span> <a href="record\.html#rfc=rfc_z">Lower the deposit/, 'a decision links to its tally on this site');
+    assert.match(open, /<h3><a href="record\.html#rfc=rfc_a">/, 'an open RFC links to its page here');
   } finally {
     await api.close();
   }
@@ -208,6 +209,98 @@ test('a sweep with no recent beacon reads as quiet, and an API that refuses is a
   } finally {
     await api.close();
   }
+});
+
+// ─── one RFC's tally and the engine's seats ─────────────────────────────────────
+
+const tallyOf = over => ({
+  at: NOW,
+  id: 'rfc_t',
+  title: 'A longer appeal window',
+  body: 'fourteen days',
+  target: 'law',
+  procedure: 'deliberative',
+  status: 'open',
+  openedAt: NOW - 86_400_000,
+  closesAt: NOW + 13 * 86_400_000,
+  contractVersion: 0,
+  engineHash: 'b'.repeat(64),
+  people: ['human'],
+  options: [
+    { id: 'status_quo', target: 'none', title: 'keep things as they are', summary: 'No change.' },
+    { id: 'longer', target: 'law', title: 'Fourteen <b>days</b>', summary: '' },
+  ],
+  responses: 7,
+  tally: null,
+  decision: null,
+  ...over,
+});
+
+test('the record page reads the RFC its address names', () => {
+  assert.equal(L.rfcOfHash('#rfc=rfc_t'), 'rfc_t');
+  assert.equal(L.rfcOfHash(`#rfc=${encodeURIComponent('rfc a/b')}`), 'rfc a/b');
+  for (const h of ['', '#', '#rfcs', '#rfc=', '#rfc=%E0%A4%A']) assert.equal(L.rfcOfHash(h), null, `"${h}" names no RFC`);
+  assert.equal(L.rfcHref('rfc_t'), 'record.html#rfc=rfc_t');
+  assert.match(read('record.html'), /<section class="band" id="rfc"[^>]*hidden>/, 'the RFC band shows only when an RFC is named');
+  assert.match(read('record.html'), /data-live="engine"/);
+});
+
+test('an open RFC shows its count and no score; a read one its scores, histogram and decision; a title stays text', async () => {
+  const decided = tallyOf({
+    status: 'adopted',
+    closesAt: NOW - 5 * 86_400_000,
+    responses: 3,
+    tally: { respondents: 3, scores: { longer: 4 }, histogram: { longer: [0, 0, 1, 0, 2] }, unscored: { longer: 0 }, favored: 'longer', recordDigest: 'd'.repeat(64), provisional: false },
+    decision: { adopted: 'longer', reason: 'selected after consideration of comments; the engine concurs', decidedAt: NOW - 86_400_000, decisionHash: 'f'.repeat(64), depositReturned: true, participation: { respondents: 3, representativeness: 'three self-selected comments' }, determinations: [{ id: 'det_1', kind: 'rfc.concur', outcome: 'decided', label: 'concur', tier: 3 }] },
+  });
+  const api = await fakeApi({ '/public/contract/rfcs/rfc_t/tally': tallyOf({}), '/public/contract/rfcs/rfc_d/tally': decided });
+  try {
+    const open = L.renderTally(await L.getJson(fetch, api.base, '/public/contract/rfcs/rfc_t/tally'), NOW);
+    assert.match(open, /<b>7<\/b> confirmed responses so far/);
+    assert.match(open, /publishes the tally once the responses are read/);
+    assert.doesNotMatch(open, /<table|Score|favored/, 'no score before the responses are read');
+    assert.match(open, /href="https:\/\/commandagi\.com\/app\?open=%2Fapp%2Fcontract%3Frfc%3Drfc_t">Respond/);
+    assert.ok(open.includes('Fourteen &lt;b&gt;days&lt;/b&gt;') && !open.includes('<b>days</b>'), 'an option title is escaped');
+
+    const read = L.renderTally(await L.getJson(fetch, api.base, '/public/contract/rfcs/rfc_d/tally'), NOW);
+    assert.match(read, /<b>3<\/b> voices read\./);
+    assert.match(read, /<td class="num">\+4<\/td>/, 'the option\'s score');
+    assert.match(read, /favored/);
+    assert.equal([...read.matchAll(/<li title="[^"]+"><i style="--h:(\d+)%"><\/i><span>([^<]+)<\/span><b>(\d+)<\/b><\/li>/g)].map(m => `${m[2]}:${m[3]}`).join(' '), '−2:0 −1:0 0:1 +1:0 +2:2', 'the histogram from −2 to +2');
+    assert.match(read, /Adopted: Fourteen &lt;b&gt;days&lt;\/b&gt;/);
+    assert.match(read, /<code>rfc\.concur<\/code> decided: <b>concur<\/b> at tier 3/);
+    assert.match(read, /returned to the opener/);
+    assert.deepEqual(api.seen, ['/public/contract/rfcs/rfc_t/tally', '/public/contract/rfcs/rfc_d/tally']);
+  } finally {
+    await api.close();
+  }
+  assert.match(L.renderTally(tallyOf({ status: 'contest', tally: { ...decided.tally, provisional: true } }), NOW), /may still contest/, 'a tally that contests may still move says so');
+});
+
+test('the engine\'s seats: operator, pin and figures per tier, the renderers apart', () => {
+  const seat = (id, pin, extra = {}) => ({ id, model: `${id}-model`, operator: 'cloudflare', upstream: null, lineage: 'l', protocol: 'p', pin, modalities: ['text'], attested: false, economics: { errorPermille: 25, climbPermille: 100, meanLatencyMs: 1, p99LatencyMs: 2, costMicroUsd: 3, source: 'prior' }, measured: null, ...extra });
+  const html = L.renderEngine({
+    at: NOW,
+    name: 'genesis',
+    engineHash: 'b'.repeat(64),
+    version: 0,
+    effectiveAt: Date.UTC(2026, 9, 14),
+    rfcId: null,
+    tiers: [
+      { tier: 1, name: 'embedding', quorum: null, seats: [seat('bge', { kind: 'weights', sha256: 'a'.repeat(64), source: 'hf' })] },
+      { tier: 2, name: 'classifiers', quorum: 2, seats: [seat('clef', { kind: 'version', id: 'clef-1.0' }, { measured: { seat: 'clef', calls: 12, referenced: 3, wrong: 0, errorUpperPermille: 562, climbPermille: 0, meanLatencyMs: 1, p99LatencyMs: 1 } })] },
+      { tier: 3, name: 'deliberative', quorum: 3, seats: [seat('opus', { kind: 'version', id: 'claude-opus-5-5' }, { operator: 'openrouter', upstream: 'crusoe' })] },
+    ],
+    renderers: [seat('whisper', { kind: 'weights', sha256: 'c'.repeat(64), source: 'hf' })],
+  });
+  assert.equal([...html.matchAll(/<h3 class="tier">/g)].length, 4, 'three tiers and the renderers');
+  assert.match(html, /\(the genesis\)/);
+  assert.match(html, /weights <code title="a{64}">a{10}…<\/code>/, 'open weights by their hash');
+  assert.match(html, /version <code>claude-opus-5-5<\/code>/, 'a hosted model by its version');
+  assert.match(html, /openrouter via crusoe/);
+  assert.match(html, /12 calls · 56\.2% wrong at most/, 'measured figures where there are some');
+  assert.match(html, /2\.5% wrong \(prior\)/);
+  assert.match(html, /at least 2 groups agree/);
 });
 
 // ─── what a visitor checks without trusting the platform ──────────────────────

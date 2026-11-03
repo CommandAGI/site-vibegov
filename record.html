@@ -44,8 +44,13 @@
     </div>
   </section>
 
+  <section class="band" id="rfc" aria-labelledby="rfc-title" hidden>
+    <div class="band__head"><div><h2 id="rfc-title">One RFC</h2><p>Its options and how many responses count. Once the responses are read, each option's score, how the voices scored it from −2 to +2, and the decision. Before that the contract shows no score.</p></div><span class="cite">§ RFCs 4–7</span></div>
+    <div data-live="rfc" aria-live="polite" aria-busy="true"><p class="note">Reading the RFC…</p></div>
+  </section>
+
   <section class="band" aria-labelledby="rfcs-title">
-    <div class="band__head"><div><h2 id="rfcs-title">RFCs</h2><p>Newest first. Open one in the contract editor to read its options, its clocks and, once read, its tally.</p></div><span class="cite">§ RFCs</span></div>
+    <div class="band__head"><div><h2 id="rfcs-title">RFCs</h2><p>Newest first. Pick one to read its tally here, or open it in the contract editor to respond.</p></div><span class="cite">§ RFCs</span></div>
     <div data-live="rfcs" aria-busy="true"><p class="note">Reading the RFCs…</p></div>
   </section>
 
@@ -62,6 +67,11 @@
   <section class="band" aria-labelledby="checkpoints-title">
     <div class="band__head"><div><h2 id="checkpoints-title">Checkpoints on chain</h2><p>The log's head, anchored on the contract's registry program, or recorded as not anchored with the reason.</p></div><span class="cite">§ on-chain</span></div>
     <div data-live="checkpoints" aria-busy="true"><p class="note">Reading the checkpoints…</p></div>
+  </section>
+
+  <section class="band" id="engine" aria-labelledby="engine-title">
+    <div class="band__head"><div><h2 id="engine-title">The engine's seats</h2><p>The models that read responses and decide matters, tier by tier: who runs each, what pins it, and what it has done. Seats move only by an engine RFC.</p></div><span class="cite">k10 · § the engine</span></div>
+    <div data-live="engine" aria-busy="true"><p class="note">Reading the engine…</p></div>
   </section>
 
   <section class="band" aria-labelledby="versions-title">

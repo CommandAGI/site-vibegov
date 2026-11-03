@@ -57,6 +57,7 @@ async function record() {
     el('judgments') && part(['judgments'], '/public/contract/judgments', d => put('judgments', L.renderJudgments(d.judgments, now))),
     el('checkpoints') && part(['checkpoints'], '/public/contract/checkpoints', d => put('checkpoints', L.renderCheckpoints(d, now))),
     el('versions') && part(['versions'], '/public/contract/versions', d => put('versions', L.renderVersions(d.versions))),
+    el('engine') && part(['engine'], '/public/contract/engine', d => put('engine', L.renderEngine(d))),
     el('log') &&
       part(['log'], '/public/contract/log/head', async ({ head }) => {
         if (!head) return put('log', L.renderLog([], [], now));
@@ -77,5 +78,23 @@ if (el('figures') || el('pulse')) {
     }
   });
 }
+// One RFC, named by the address (`record.html#rfc=<id>`): its tally once read, its count before.
+async function rfc() {
+  const node = el('rfc');
+  if (!node) return;
+  const id = L.rfcOfHash(location.hash);
+  node.closest('section')?.toggleAttribute('hidden', !id);
+  if (!id) return;
+  const path = `/public/contract/rfcs/${encodeURIComponent(id)}/tally`;
+  try {
+    put('rfc', L.renderTally(await get(path), Date.now()));
+    node.closest('section')?.scrollIntoView();
+  } catch (e) {
+    unreachable(['rfc'], e, path);
+  }
+}
+
 kernel();
 record();
+rfc();
+window.addEventListener('hashchange', rfc);

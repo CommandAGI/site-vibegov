@@ -154,6 +154,23 @@ code { font-family: var(--mono); font-size: 0.86em; overflow-wrap: anywhere; }
 .verdict { font: 650 0.74rem var(--sans); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
 .verdict--adopted { color: var(--ok); }
 
+/* one RFC's tally, and the engine's seats (record.html) */
+.tally__head { display: grid; gap: 0.3rem; margin-bottom: 0.75rem; }
+.tally__head h3 { font-size: 1.3rem; }
+.tally__head p { margin: 0; }
+.tally__count { margin: 0 0 0.5rem; }
+.options { margin: 0.5rem 0 0; padding-left: 1.2rem; display: grid; gap: 0.3rem; }
+.options span { color: var(--muted); }
+.hist { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(2.2rem, 1fr)); gap: 0.3rem; align-items: end; }
+.hist li { display: grid; grid-template-rows: 2.5rem auto auto; justify-items: center; font-size: 0.75rem; color: var(--muted); }
+.hist i { align-self: end; display: block; width: 70%; height: max(2px, var(--h)); border-radius: 3px 3px 0 0; background: var(--act); opacity: 0.8; }
+.hist b { color: var(--ink); font-variant-numeric: tabular-nums; font-weight: 600; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.decision { margin-top: 1rem; padding: 1rem 1.2rem; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--panel); }
+.decision > p { margin: 0 0 0.6rem; }
+.dets { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.3rem; font-size: 0.9rem; }
+.tier { font-size: 1rem; margin: 1.25rem 0 0; }
+
 .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 3.5rem); }
 
 /* the record's own state */

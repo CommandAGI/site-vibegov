@@ -10,7 +10,11 @@ https://vibegov.commandagi.app serving the same site. The design and the reasons
   deadlines and a Respond link, the decided ones, the ledger's state (log, sweep, on-chain anchor), the law's windows,
   and the acts a member can take.
 - `record.html`: the public record: every RFC, the judgments, the last 50 log entries with each hash recomputed in the
-  page, the checkpoints, the versions.
+  page, the checkpoints, the engine's seats (who runs each, what pins its model, its figures;
+  `/public/contract/engine`), the versions. `record.html#rfc=<id>` shows one RFC (`/public/contract/rfcs/:id/tally`):
+  before its responses are read, its options and how many responses count, and no score (the contract publishes the
+  tally only after interpretation, § RFCs 4); after, each option's score, its histogram from −2 to +2 and the
+  decision with the determinations it rests on. The overview's RFCs link here.
 - `contract.html`: the contract's text. Between its `<!-- contract:begin … -->` and `<!-- contract:end -->` markers,
   the clauses are **rendered from `docs/coordination-contract.md`** in the CommandAGI repository by
   `node scripts/seed/vibegov-contract.mjs`. Do not edit that region here. The repository's
@@ -32,7 +36,9 @@ https://vibegov.commandagi.app serving the same site. The design and the reasons
 
 Every act (respond to an RFC, confirm its receipt, contest a reading, open an RFC, file or follow a case, the
 anonymous voice) happens in CommandAGI's contract editor, signed in. The site links to it at the record:
-`https://commandagi.com/app?open=/app/contract?rfc=<id>` (URL-encoded) opens the editor on that RFC.
+`https://commandagi.com/app?open=/app/contract?rfc=<id>` (URL-encoded) opens the editor on that RFC. The editor's
+first panel, Needs you, lists what waits on the signed-in person or agent (`GET /contract/awaiting`); the overview and
+the take-part page link to it.
 
 ## when the contract changes
 
