@@ -5,15 +5,15 @@ static folder served by CommandAGI's site hosting at https://vibegov.pro, with `
 https://vibegov.commandagi.app serving the same site. The design and the reasons are in CommandAGI's
 `docs/vibegov.md`.
 
-- `index.html`: the front door, in the order a newcomer asks: what VibeGov is for (the mission) and what the
-  contract binds itself to (six of the kernel's promises, the kernel hash recomputed in the page, the log's on-chain
-  anchor); what is alive right now (the ledger's height and last entry ticking, open RFCs with countdowns, decisions
-  this week, voices; the activity feed in plain words, `/public/contract/activity`; what comes next,
-  `/public/contract/calendar`, with its `.ics` feed); the open and decided RFCs; machines under the contract (the
-  machines their owners made public and published, live or labelled a recording, and the commands the contract
-  authorized, `/public/contract/robots`; with none on view, "No live robot right now" and a recorded run); the
-  figures and the ledger; how to take part; the library.
-- `record.html`: the public record: every RFC, the judgments, the last 50 log entries with each hash recomputed in the
+- `index.html`: the front door, **A World in Command**: AI should answer to the people who live with it. The claim,
+  the reason, then seven short sections on what the contract holds (one person one voice, no throne, changed only by
+  voice, AI works and people decide, everything on the record, harm has a remedy, free to leave). Each section has a
+  dot picture and the kernel's own words with a link to the article. Two live parts: the open RFCs, and the ledger's
+  length with the kernel hash recomputed in the page. The act is "Take your voice".
+- `record.html`: the public record and everything alive now: the ledger's height and last entry ticking, the activity
+  feed in plain words (`/public/contract/activity`), what comes next (`/public/contract/calendar`, with its `.ics`
+  feed), the machines their owners made public (`/public/contract/robots`) and a recorded run, the figures, how the law
+  changes; every RFC, the judgments, the last 50 log entries with each hash recomputed in the
   page, the checkpoints, the engine's seats (who runs each, what pins its model, its figures;
   `/public/contract/engine`), the versions. `record.html#rfc=<id>` shows one RFC (`/public/contract/rfcs/:id/tally`):
   before its responses are read, its options and how many responses count, and no score (the contract publishes the
@@ -34,10 +34,14 @@ https://vibegov.commandagi.app serving the same site. The design and the reasons
 - `robots/labrat/`: a recorded simulated run (an SO-101 arm picks a pipette tip on LabRat's bench), copied byte for
   byte by the same script from `cloud://global/worlds/labrat` (its servo stream, its run record, two frames its README
   names). The page plots the stream and labels the run a recording and a simulation.
-- `style.css`, `fonts/` (Literata and Public Sans, variable, OFL, self-hosted), `mark.svg`, `og.png`,
-  `apple-touch-icon.png` (drawn by `redesign/marks.py`), `fixtures/` (real entries of the public record that the test
-  recomputes).
-- `redesign/`: the design (`DESIGN.md`), the audit before the 2026-10-26 redesign (`CONTENT.md`) and `marks.py`.
+- `scene.js`: the sky behind every page, in one WebGL canvas: stars, the sun, the moon and the Earth as points of
+  light. `dots.js`: the front door's dot pictures, drawn from the grey maps in `art/`. `art/land.png` is where the
+  Earth's land is.
+- `style.css`, `fonts/` (Literata and Public Sans, variable, OFL, self-hosted), `mark.svg`, `apple-touch-icon.png`
+  (drawn by `redesign/marks.py`), `og.png` (a browser's picture of `redesign/og.html`), `fixtures/` (real entries of
+  the public record that the test recomputes).
+- `redesign/`: the design (`DESIGN.md`), `marks.py`, `land.py` (the land map from Natural Earth), `art.mjs` (the dot
+  pictures' sources from fal, and their maps), `og.html`, and the audit before the 2026-10-26 redesign (`CONTENT.md`).
 
 ## acting
 
@@ -64,15 +68,16 @@ then commit here, push this repository's `main`, and move the gitlink in Command
 - Each page connects to itself and the public API only: `connect-src 'self' https://api.commandagi.com`. It reads
   `/public/contract/*` with no credential. The join page's form is sent only on purpose (`form-action
   https://commandagi.com`).
-- No generated picture, video or photograph. The only pictures besides the mark are frames of machines: a live
-  frame from the API (`img-src https://api.commandagi.com`) while its owner shows it, and the recorded run's frames,
-  each labelled a recording. Every figure is read from the record; a zero says so in words.
+- No photograph and no video. The pictures are the mark, the sky, the dot pictures (points drawn from maps of
+  generated stills; the still itself is never shown), and frames of machines on the record page: a live frame from the
+  API (`img-src https://api.commandagi.com`) while its owner shows it, and the recorded run's frames, each labelled a
+  recording. Every figure is read from the record; a zero says so in words.
 - English only, one page per address.
 
 ## test
 
 `node --test site.test.mjs` (Node 22 or 24, no dependencies) checks the four pages (contents line, canonical
-address, links on disk, CSP), that no picture stands in for the record, that the contract page holds the twelve
+address, links on disk, CSP), the pictures, that every quotation on the front door is the kernel's text, that the contract page holds the twelve
 kernel articles and the two PDFs, `live.js` against a fake API on a local port (empty states, escaping, deadlines, the
 Respond link, a refusing API), and `verify.js` against real kernel and log entries (and that a changed word or digest
 is caught).

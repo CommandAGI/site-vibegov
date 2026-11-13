@@ -372,7 +372,7 @@ export function activityWords(e) {
     'intent.closed': ['machine', many('A finished command was closed on chain', '{n} finished commands were closed on chain')],
   }[e.kind];
   const [family, words] = W ?? ['law', `${esc(e.kind)} was recorded`];
-  const href = e.rfcTitle ? rfcHref(e.subject) : e.kind.startsWith('intent.') ? 'index.html#machines' : 'record.html';
+  const href = e.rfcTitle ? rfcHref(e.subject) : e.kind.startsWith('intent.') ? 'record.html#machines' : 'record.html';
   return { family, words, href };
 }
 
@@ -516,4 +516,9 @@ export function renderRecording(run) {
 <ol class="rec__steps">${run.steps.map(s => `<li><span>${esc((s.at / 1000).toFixed(1))} s</span>${esc(s.text)}</li>`).join('')}</ol>
 ${jointTrace(run)}
 <p class="note">Driven by <code>${esc(run.by ?? 'an agent')}</code>; each goal is recorded before the simulator gets it.${run.noGrant ? ' A simulated run needs no grant, and its record says so. A physical run needs a standing grant on the machine.' : ''}${seal ? ` Its ${count(run.seals.length)} seals are signed (${esc(seal.alg)}), and the last is bound to ${esc(seal.block?.chain ?? 'a chain')} slot ${count(seal.block?.slot)}.` : ''}</p>`;
+}
+
+// The front door's one figure: how long the public ledger is, and when it last grew.
+export function renderHeadline(s, now) {
+  return `<p class="count"><b>${count(s.log.length)}</b><span>entries on the public ledger${s.log.headAt ? `, the last ${since(s.log.headAt, now)}` : ''}</span></p>`;
 }

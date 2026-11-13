@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>VibeGov: the share card</title>
+<!-- og.png is a browser's picture of this page at 1200 x 630 (redesign/DESIGN.md § the share card). -->
+<base href="../">
+<link rel="stylesheet" href="style.css">
+<style>
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  .card { display: grid; grid-template-columns: 640px 1fr; align-items: center; height: 630px; padding-left: 72px; }
+  .card h1 { font-size: 112px; line-height: 0.94; letter-spacing: -0.04em; font-weight: 480; }
+  .card h1 em { display: block; white-space: nowrap; }
+  .card p { margin: 28px 0 0; font-size: 26px; line-height: 1.35; color: var(--ink); white-space: nowrap; }
+  .card .wordmark { font-size: 30px; margin-bottom: 44px; }
+  .card .wordmark img { width: 44px; height: 44px; }
+  .card .globe { width: 640px; margin-right: -150px; }
+</style>
+<script type="module" src="scene.js"></script>
+</head>
+<body class="home">
+<canvas id="sky" aria-hidden="true"></canvas>
+<div class="card">
+  <div>
+    <span class="wordmark"><img src="mark.svg" alt="">VibeGov</span>
+    <h1>A World <em>in Command.</em></h1>
+    <p>AI should answer to the people who live with it.</p>
+  </div>
+  <div class="globe"></div>
+</div>
+</body>
+</html>

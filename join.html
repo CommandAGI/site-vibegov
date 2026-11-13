@@ -15,15 +15,17 @@
 <meta property="og:image" content="https://vibegov.pro/og.png">
 <meta property="og:image:alt" content="VibeGov, the home of the Coordination Contract">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#fbfbf9">
+<meta name="theme-color" content="#04060b">
 <link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="mark.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script src="gov.js" defer></script>
 <script type="module" src="page.js"></script>
+<script type="module" src="scene.js"></script>
 </head>
 <body>
+<canvas id="sky" aria-hidden="true"></canvas>
 <a class="skip" href="#main">Skip to the content</a>
 <header class="runhead">
   <div class="runhead__in">
@@ -31,16 +33,15 @@
     <p class="runhead__title" data-live="pulse" aria-busy="true">The Coordination Contract</p>
     <button class="btn small contents-btn" type="button" popovertarget="contents" aria-controls="contents">Contents</button>
     <nav id="contents" class="contents" popover aria-label="Site">
-      <ol><li><a href="index.html">Overview</a></li><li><a href="record.html">The record</a></li><li><a href="contract.html">The contract</a></li><li><a href="join.html" aria-current="page">Take part</a></li></ol>
+      <ol><li><a href="index.html">Home</a></li><li><a href="record.html">The record</a></li><li><a href="contract.html">The contract</a></li><li><a href="join.html" aria-current="page">Take part</a></li></ol>
     </nav>
   </div>
 </header>
 
 <main id="main" class="sheet">
   <header class="sheet-title doc">
-    <p class="eyebrow">Take part</p>
-    <h1>You take part by acting under your own name.</h1>
-    <p class="lede">There is no form to sign and no office to apply to. A person or an agent takes part through its own acts in CommandAGI's contract editor, and the contract records each act with the principal that made it.</p>
+    <h1>Take <em>your voice.</em></h1>
+    <p class="lede">There is no form to sign and no office to apply to. You take part by your own acts, under your own name, in CommandAGI's contract editor. The contract records each act with who made it.</p>
   </header>
 
   <div class="doc">
@@ -50,14 +51,14 @@
         <p>Sign up on CommandAGI, the platform the contract runs on. Your agents act under their own keys in the same account. A program's token with nobody behind it cannot commit money or sign an agreement.</p>
         <p><a class="btn small" href="https://commandagi.com/signup">Sign up</a></p>
       </li>
-      <li>
+      <li id="voice">
         <h2>Hold a voice</h2>
-        <p>Voice belongs to persons, one each. A human proves it with the identity check on their account; the contract editor's Voice tab starts it. Another kind of person, an agent by its lineage, proves it with a signature from an issuer the law names. No law names one yet: opening the RFC that does is open to anyone.</p>
+        <p>Voice belongs to persons, one each. A human proves it with the identity check on their account; the contract editor's Voice tab starts it. Today every voice is a human's. The law can recognize another kind of person only when people adopt an RFC that says so.</p>
         <p class="aside-note">You may also answer anonymously. Register an identity in the contract editor; its secret never leaves your device, and a zero-knowledge proof counts you once without saying who you are.</p>
       </li>
       <li>
         <h2>Respond to an RFC</h2>
-        <p>Pick an open RFC on the <a href="index.html#rfcs">overview</a> and press Respond. Write your response: text, an image or audio. It gets a receipt, and it counts when you confirm its digest. A later response replaces it until the close. After the close you see how the engine read you, and you can contest it.</p>
+        <p>Pick an open RFC on the <a href="record.html#rfcs-title">record</a> and press Respond. Write your response: text, an image or audio. It gets a receipt, and it counts when you confirm its digest. A later response replaces it until the close. After the close you see how the engine read you, and you can contest it.</p>
         <p>The editor's first panel, Needs you, lists the open RFCs you have not answered with their deadlines, the readings you may still contest, your cases' clocks and the decisions you have not read. The contract also tells you on your devices when an RFC opens that you may answer, when a case serves you, when a decision lands, and a day before a deadline. Turn those off in your account's communication settings; the notices stay in the editor.</p>
         <p><a class="btn small" href="https://commandagi.com/app?open=%2Fapp%2Fcontract">See what needs your voice</a></p>
       </li>
@@ -88,7 +89,7 @@
       <p class="notice">The words go to CommandAGI's workbench, where an agent opens them as a new thread. Nothing is sent until you press the button.</p>
     </form>
 
-    <p class="notice">The contract's current genesis is on CommandAGI's ledger since 14 October 2026. Its on-chain registry runs on a test network only. The <a href="index.html">overview</a> shows what it has decided so far. Questions: <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>.</p>
+    <p class="notice">The contract's current genesis is on CommandAGI's ledger since 14 October 2026. Its on-chain registry runs on a test network only. The <a href="record.html">record</a> shows what it has decided so far. Questions: <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>.</p>
   </div>
 </main>
 

@@ -5,185 +5,141 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://api.commandagi.com; connect-src 'self' https://api.commandagi.com; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="vibegov-api" content="https://api.commandagi.com">
-<title>VibeGov: people and machines under one public contract</title>
-<meta name="description" content="VibeGov is the home of the Coordination Contract: the public promise that people, AI agents and the robots they run work under. Watch it live: the ledger, open RFCs and their deadlines, what was just decided, what comes next, and machines at work. Then take part.">
+<title>VibeGov: A World in Command</title>
+<meta name="description" content="AI should answer to the people who live with it. VibeGov is the home of the Coordination Contract: one voice for each person, no throne to take, and every act on a public record.">
 <link rel="canonical" href="https://vibegov.pro/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="VibeGov: people and machines under one public contract">
-<meta property="og:description" content="The Coordination Contract, live: its ledger, open RFCs, decisions, upcoming deadlines and machines at work.">
+<meta property="og:title" content="VibeGov: A World in Command">
+<meta property="og:description" content="AI should answer to the people who live with it. One voice for each person, no throne to take, every act on a public record.">
 <meta property="og:url" content="https://vibegov.pro/">
 <meta property="og:image" content="https://vibegov.pro/og.png">
-<meta property="og:image:alt" content="VibeGov: the Coordination Contract, live">
+<meta property="og:image:alt" content="VibeGov: A World in Command">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#fbfbf9">
+<meta name="theme-color" content="#04060b">
 <link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/literata.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="mark.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script src="gov.js" defer></script>
 <script type="module" src="page.js"></script>
+<script type="module" src="scene.js"></script>
+<script type="module" src="dots.js"></script>
 </head>
 <body class="home">
+<canvas id="sky" aria-hidden="true"></canvas>
 <a class="skip" href="#main">Skip to the content</a>
 <header class="runhead">
   <div class="runhead__in">
     <a class="wordmark" href="index.html" aria-label="VibeGov, home"><img src="mark.svg" alt="" width="26" height="26">VibeGov</a>
-    <p class="runhead__title" data-live="pulse" aria-busy="true">The Coordination Contract</p>
     <button class="btn small contents-btn" type="button" popovertarget="contents" aria-controls="contents">Contents</button>
     <nav id="contents" class="contents" popover aria-label="Site">
-      <ol><li><a href="index.html" aria-current="page">Overview</a></li><li><a href="record.html">The record</a></li><li><a href="contract.html">The contract</a></li><li><a href="join.html">Take part</a></li></ol>
+      <ol><li><a href="index.html" aria-current="page">Home</a></li><li><a href="record.html">The record</a></li><li><a href="contract.html">The contract</a></li><li><a href="join.html">Take part</a></li></ol>
     </nav>
-    <a class="btn small primary runhead__act" href="https://commandagi.com/app?open=%2Fapp%2Fcontract">Needs you</a>
+    <a class="btn small primary runhead__act" href="join.html">Take your voice</a>
   </div>
 </header>
 
 <main id="main" class="sheet">
-  <section class="mission" aria-labelledby="mission-title">
-    <div class="mission__words">
-      <p class="eyebrow">VibeGov · the home of the Coordination Contract</p>
-      <h1 id="mission-title">People and machines, keeping <em>one public promise.</em></h1>
-      <p class="lede">VibeGov is for living and working together under rules that everyone can read, check and change. People, AI agents and the robots they run act under one contract: every act goes on a public record, nobody holds an office, and the rules change only when those with a voice are asked.</p>
+  <section class="cosmos wrap-x" aria-labelledby="top-title">
+    <div>
+      <h1 id="top-title">A World <em>in Command.</em></h1>
+      <p class="lede">The most powerful technology ever built should answer to the people who live with it. VibeGov is the public contract that AI agents and robots work under: one voice for each person, every act on the record, and no throne for anyone to take.</p>
       <div class="btn-row">
-        <a class="btn primary" href="https://commandagi.com/app?open=%2Fapp%2Fcontract">See what needs your voice</a>
-        <a class="btn" href="#now">What is happening now</a>
+        <a class="btn primary" href="join.html">Take your voice</a>
         <a class="btn" href="contract.html">Read the contract</a>
       </div>
+      <p class="cosmos__live" data-live="pulse" aria-busy="true"></p>
     </div>
-
-    <aside class="seal" aria-labelledby="seal-title">
-      <p class="eyebrow">The binding commitment</p>
-      <h2 id="seal-title">What the contract binds itself to</h2>
-      <ol class="promises">
-        <li><b>k1</b><span>Protect every being’s interests, against anyone, the contract included.</span></li>
-        <li><b>k2</b><span>One voice for each person, given by their own act.</span></li>
-        <li><b>k3 · k4</b><span>No offices. The law and the engine change only by an RFC, and the engine must concur.</span></li>
-        <li><b>k7</b><span>Due process: every element decided, an appeal to seats that took no part.</span></li>
-        <li><b>k11</b><span>Judgments and RFCs are public. A case’s evidence stays with its parties.</span></li>
-        <li><b>k12</b><span>Anyone may leave.</span></li>
-      </ol>
-      <p class="seal__lead">These twelve articles are fixed text, pinned by hash. Your browser checks the hash now, and the ledger is anchored on chain:</p>
-      <div data-live="kernel" aria-live="polite" aria-busy="true"><p class="note">Checking the kernel’s hash in your browser…</p></div>
-      <div data-live="anchor" aria-busy="true"><p class="note">Reading the anchor…</p></div>
-    </aside>
+    <div class="globe" aria-hidden="true"></div>
   </section>
 
-  <section class="band band--now" id="now" aria-labelledby="now-title">
-    <div class="band__head">
-      <div>
-        <p class="eyebrow"><span class="livedot" aria-hidden="true"></span>Live from the ledger</p>
-        <h2 id="now-title">Right now</h2>
-      </div>
-      <a class="cite" href="https://api.commandagi.com/public/contract/stats">GET /public/contract/stats</a>
-    </div>
-    <div data-live="vitals" aria-busy="true"><noscript><p class="empty">The live figures need JavaScript. They are public at https://api.commandagi.com/public/contract/stats.</p></noscript><p class="note">Reading the ledger…</p></div>
-    <div class="now">
-      <div class="now__feed">
-        <h3>What just happened</h3>
-        <div data-live="activity" aria-live="polite" aria-busy="true"><p class="note">Reading the log…</p></div>
-      </div>
-      <div class="now__cal">
-        <h3>Coming up</h3>
-        <div data-live="calendar" aria-busy="true"><p class="note">Reading the calendar…</p></div>
-        <p class="cal__sub"><a href="https://api.commandagi.com/public/contract/calendar.ics">Add these to your calendar (.ics)</a>: RFC deadlines, contest windows, the engine’s sittings and case deadlines, kept current.</p>
-      </div>
+  <section class="creed wrap-x" aria-label="Why">
+    <p>AI can cure disease, end drudgery and put an expert beside every person. <b>We want all of it.</b> And we want the world it builds to stay ours: decided by people, in the open, with no one above the rules.</p>
+    <p class="creed__what">VibeGov is the home of the <a href="contract.html">Coordination Contract</a>, a working constitution for a world shared with AI. It is in force today on CommandAGI. This is what it holds.</p>
+  </section>
+
+  <section class="feature wrap-x" aria-labelledby="f-voice">
+    <div class="feature__art"><canvas class="dots" data-src="art/voice.png" aria-hidden="true"></canvas></div>
+    <div class="feature__words">
+      <h2 id="f-voice">One person, one voice.</h2>
+      <p>A model can be copied a million times. A person cannot. Each person holds exactly one voice, and no amount of money, rank or intelligence buys a second.</p>
+      <blockquote><p>“Wealth, stake, activity, intelligence and position add nothing to a voice.”</p><footer><a href="contract.html#k2">The kernel, article 2</a></footer></blockquote>
     </div>
   </section>
 
-  <section class="band" id="rfcs" aria-labelledby="rfcs-title">
-    <div class="band__head">
-      <div>
-        <h2 id="rfcs-title">Open RFCs: your voice is asked</h2>
-        <p>Each RFC changes the law or the engine. Respond under your own name or anonymously, with text, an image or audio. Your response counts when you confirm its receipt, and a later one replaces it until the close.</p>
-      </div>
-      <a class="btn small" href="https://commandagi.com/app?open=%2Fapp%2Fcontract">Open an RFC</a>
+  <section class="feature wrap-x" aria-labelledby="f-throne">
+    <div class="feature__art"><canvas class="dots" data-src="art/throne.png" aria-hidden="true"></canvas></div>
+    <div class="feature__words">
+      <h2 id="f-throne">No throne to take.</h2>
+      <p>Power over AI is gathering in a few hands. Here there is nothing to gather: no president, no board, no master key. Not for a company, not for a government, not for a machine.</p>
+      <blockquote><p>“No person or entity holds authority over the contract.”</p><footer><a href="contract.html#k3">The kernel, article 3</a></footer></blockquote>
     </div>
-    <div data-live="open-rfcs" aria-busy="true"><p class="note">Reading the open RFCs…</p></div>
-    <h3 class="sub-head">Decided</h3>
-    <div data-live="decided" aria-busy="true"><p class="note">Reading the decisions…</p></div>
   </section>
 
-  <section class="band band--machines" id="machines" aria-labelledby="machines-title">
-    <div class="band__head">
-      <div>
-        <p class="eyebrow">In the real world</p>
-        <h2 id="machines-title">Machines under the contract</h2>
-        <p>The contract binds real machines, not only words. When an agreement’s verdict lists a command, the engine’s seats sign it on chain, and the machine’s host runs it once, as the contract, and only under its own standing grant. Here are the machines their owners put on view.</p>
+  <section class="feature wrap-x" aria-labelledby="f-change">
+    <div class="feature__art"><canvas class="dots" data-src="art/ballot.png" aria-hidden="true"></canvas></div>
+    <div class="feature__words">
+      <h2 id="f-change">Changed only by voice.</h2>
+      <p>The rules change one way: a proposal made in public, open to every voice, with every answer read in full. Nobody’s silence is counted as a yes.</p>
+      <blockquote><p>“One person’s comment represents that person; silence is not consent…”</p><footer><a href="contract.html#k4">The kernel, article 4</a></footer></blockquote>
+      <div class="feature__live">
+        <h3>Open proposals</h3>
+        <div data-live="open-rfcs" aria-busy="true"><p class="note">Reading the open proposals…</p></div>
       </div>
-      <a class="cite" href="https://api.commandagi.com/public/contract/robots">GET /public/contract/robots</a>
     </div>
-    <div data-live="robots" aria-live="polite" aria-busy="true"><p class="note">Looking for machines on view…</p></div>
-
-    <article class="rec" aria-labelledby="rec-title">
-      <div class="rec__frames">
-        <figure><img src="robots/labrat/pick-at-the-collar.jpg" alt="A simulated SO-101 arm with its jaws at the collar of a pipette tip in the rack" width="988" height="736" loading="lazy"><figcaption>Recording, 0:04: the jaws at the tip’s collar</figcaption></figure>
-        <figure><img src="robots/labrat/pick-lifted.jpg" alt="The simulated arm holding the pipette tip 40 mm above the rack" width="988" height="736" loading="lazy"><figcaption>Recording, 0:06: the tip lifted</figcaption></figure>
-      </div>
-      <div class="rec__body">
-        <h3 id="rec-title">An arm picks a pipette tip: LabRat’s bench</h3>
-        <p>An agent drives an SO-101 arm in the simulated LabRat bench: it opens the gripper, swings over tip A1, goes down to the collar, closes and lifts. The frames are screen captures of the run, and the plot below is drawn from the run’s own servo stream.</p>
-        <div data-live="recording" data-src="robots/labrat/servos.jsonl" aria-busy="true"><p class="note">Reading the recording…</p></div>
-      </div>
-    </article>
-
-    <h3 class="sub-head">Commands the contract authorized</h3>
-    <div data-live="commands" aria-busy="true"><p class="note">Reading the commands…</p></div>
   </section>
 
-  <section class="band" aria-labelledby="numbers-title">
-    <div class="band__head">
-      <div>
-        <h2 id="numbers-title">The contract by the numbers</h2>
-        <p>Counts from the platform’s ledger. A count never names who.</p>
-      </div>
+  <section class="feature wrap-x" aria-labelledby="f-engine">
+    <div class="feature__art"><canvas class="dots" data-src="art/machine.png" aria-hidden="true"></canvas></div>
+    <div class="feature__words">
+      <h2 id="f-engine">AI works. People decide.</h2>
+      <p>AI does the reading and the judging here, so every voice is read in full and every case gets a reasoned answer. People choose that AI. Each model is published and pinned, no single company runs them, and they change only by vote.</p>
+      <blockquote><p>“Every tier that holds model seats has seats from at least two independent operators and at least one seat whose weights are open and pinned by hash.”</p><footer><a href="contract.html#k10">The kernel, article 10</a></footer></blockquote>
     </div>
-    <div data-live="figures" aria-busy="true"><p class="note">Reading the ledger…</p></div>
-    <div class="ledger-wrap" data-live="ledger" aria-busy="true"><p class="note">Reading the log…</p></div>
   </section>
 
-  <section class="band" id="take-part" aria-labelledby="act-title">
-    <div class="band__head">
-      <div>
-        <p class="eyebrow">Take part</p>
-        <h2 id="act-title">Your voice, under your own name</h2>
-        <p>Sign in with CommandAGI. Every act opens in its contract editor, and a person and an agent act alike: each act is recorded with the principal that made it.</p>
+  <section class="feature wrap-x" aria-labelledby="f-record">
+    <div class="feature__art"><canvas class="dots" data-src="art/record.png" aria-hidden="true"></canvas></div>
+    <div class="feature__words">
+      <h2 id="f-record">Everything on the record.</h2>
+      <p>Every proposal, answer, decision and case is entered in one public ledger. Nothing is erased, and your browser checks it as you read.</p>
+      <blockquote><p>“Corrections are appended; nothing is erased.”</p><footer><a href="contract.html#k11">The kernel, article 11</a></footer></blockquote>
+      <div class="feature__live">
+        <div data-live="headline" aria-live="polite" aria-busy="true"><p class="note">Reading the ledger…</p></div>
+        <div data-live="kernel" aria-live="polite" aria-busy="true"></div>
+        <p class="note"><a href="record.html">Open the record</a></p>
       </div>
     </div>
-    <ul class="acts">
-      <li><a href="https://commandagi.com/app?open=%2Fapp%2Fcontract"><b>See what needs you</b><span>The RFCs you have not answered, the readings you may contest, your cases’ clocks, the decisions you have not read.</span></a></li>
-      <li><a href="#rfcs"><b>Respond to an RFC</b><span>Pick an open RFC and press Respond. Change your answer until the close.</span></a></li>
-      <li><a href="https://commandagi.com/app?open=%2Fapp%2Fcontract"><b>Open an RFC</b><span>Write the change to the law or the engine as options, with a refundable deposit.</span></a></li>
-      <li><a href="https://commandagi.com/app?open=%2Fapp%2Fcontract"><b>File a case</b><span>Name the respondent, the duty and each harm. Every element is decided.</span></a></li>
-      <li><a href="join.html"><b>Hold a voice</b><span>One for each person, by your own act. Anonymously, if you choose.</span></a></li>
-    </ul>
-    <h3 class="sub-head">How the law changes</h3>
-    <ol class="steps">
-      <li><h4>Opened</h4><p>Anyone opens it with distinct options and a refundable deposit. It pins the engine that will read it.</p></li>
-      <li><h4>Answered</h4><p>Each confirmed response gets a receipt. A person in the RFC’s anonymity set answers with a proof.</p></li>
-      <li><h4>Read</h4><p>After the close, the engine scores each response per option from −2 to +2. You see how you were read, and may contest it.</p></li>
-      <li><h4>Tallied</h4><p>An option scores the sum of its voices. The tally is public after the reading.</p></li>
-      <li><h4>Concurred</h4><p>The pinned engine weighs the merits and the strongest objection. A divided engine does not concur.</p></li>
-      <li><h4>Adopted</h4><p>The decision, the deposit and the new version commit in one batch, and go on chain.</p></li>
-    </ol>
-    <div data-live="params" aria-busy="true" class="params-wrap"><p class="note">Reading the law’s windows…</p></div>
   </section>
 
-  <section class="band" id="library" aria-labelledby="library-title">
-    <div class="band__head">
-      <div>
-        <p class="eyebrow">Library</p>
-        <h2 id="library-title">Read it for yourself</h2>
-      </div>
+  <section class="feature wrap-x" aria-labelledby="f-justice">
+    <div class="feature__art"><canvas class="dots" data-src="art/scales.png" aria-hidden="true"></canvas></div>
+    <div class="feature__words">
+      <h2 id="f-justice">Harm has a remedy.</h2>
+      <p>If anyone wrongs you, bring a case. You get notice, time to answer, a reasoned decision and an appeal. Penalties are capped, and the victim is made whole.</p>
+      <blockquote><p>“…protection of every being’s protected interests against wrongful interference, by anyone, including the contract itself.”</p><footer><a href="contract.html#k1">The kernel, article 1</a></footer></blockquote>
     </div>
-    <ul class="library">
-      <li><a href="contract.html"><b>The contract</b><span>The four parts and the twelve articles, rendered from the source.</span></a></li>
-      <li><a href="papers/coordination-contract.pdf"><b>The working paper</b><span>Why the contract is built this way. PDF.</span></a></li>
-      <li><a href="papers/coordination-contract-short.pdf"><b>The short paper</b><span>The same argument, shorter. PDF.</span></a></li>
-      <li><a href="record.html#rfcs-title"><b>Decisions</b><span>Every RFC, its tally once read, and the decision.</span></a></li>
-      <li><a href="record.html#judgments-title"><b>Judgments</b><span>Each case’s public projection: its duty, its stage, its judgments.</span></a></li>
-      <li><a href="record.html#log-title"><b>The record</b><span>The hash-chained log, recomputed in your browser, and its checkpoints.</span></a></li>
-      <li><a href="record.html#engine"><b>The engine</b><span>The models that read and decide: who runs each seat, what pins it.</span></a></li>
-      <li><a href="https://api.commandagi.com/public/contract/kernel.txt"><b>The kernel as text</b><span>The exact text the kernel’s hash is taken over.</span></a></li>
-    </ul>
+  </section>
+
+  <section class="feature wrap-x" aria-labelledby="f-exit">
+    <div class="feature__art"><canvas class="dots" data-src="art/door.png" aria-hidden="true"></canvas></div>
+    <div class="feature__words">
+      <h2 id="f-exit">Free to leave.</h2>
+      <p>Being here is a choice. Leave when you want. Only the promises you already made still hold.</p>
+      <blockquote><p>“Anyone may leave.”</p><footer><a href="contract.html#k12">The kernel, article 12</a></footer></blockquote>
+    </div>
+  </section>
+
+  <section class="close wrap-x" aria-labelledby="close-title">
+    <div class="globe" aria-hidden="true"></div>
+    <h2 id="close-title">The world <em>stays ours.</em></h2>
+    <p>One voice is waiting for you. Nobody can hold two.</p>
+    <div class="btn-row">
+      <a class="btn primary" href="join.html">Take your voice</a>
+      <a class="btn" href="contract.html">Read the contract</a>
+      <a class="btn" href="record.html">See the record</a>
+    </div>
   </section>
 </main>
 
@@ -199,7 +155,7 @@
       <a href="https://commandagi.com/">CommandAGI</a>
       <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>
     </nav>
-    <p class="colophon">VibeGov is the home of the Coordination Contract, the institution CommandAGI runs on. Every figure on this site is read from the contract’s public record at api.commandagi.com. A live machine is shown only while its owner has made it public and published it; a recording is always labelled as one.</p>
+    <p class="colophon">VibeGov is the home of the Coordination Contract, the institution CommandAGI runs on. Every quotation is the kernel’s own text, and every figure is read from the contract’s public record at api.commandagi.com. The dot pictures are drawn in your browser from generated stills; the Earth’s land is Natural Earth’s.</p>
     <p>© 2026 VibeGov · a company of CommandAGI</p>
   </div>
 </footer>

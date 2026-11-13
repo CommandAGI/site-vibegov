@@ -22,6 +22,7 @@ async function figures() {
     const s = (stats = await get('/public/contract/stats'));
     const now = Date.now();
     put('vitals', L.renderVitals(s, now));
+    put('headline', L.renderHeadline(s, now));
     put('anchor', L.renderAnchor(s, now));
     put('figures', L.renderFigures(s));
     put('open-rfcs', L.renderOpenRfcs(s, now));
@@ -29,9 +30,9 @@ async function figures() {
     put('ledger', L.renderLedger(s, now));
     put('params', L.renderParameters(s));
     const h = L.health(s, now);
-    put('pulse', `<span class="health health--${h.state}"><span class="dot" aria-hidden="true"></span>${L.count(s.log.length)} log entries · last ${s.log.headAt ? L.esc(L.relative(s.log.headAt, now)) : 'never'}</span>`);
+    put('pulse', `<span class="health health--${h.state}"><span class="dot" aria-hidden="true"></span>${L.count(s.log.length)} entries on the public record · the last ${s.log.headAt ? L.esc(L.relative(s.log.headAt, now)) : 'never'}</span>`);
   } catch (e) {
-    unreachable(['vitals', 'anchor', 'figures', 'open-rfcs', 'decided', 'ledger', 'params', 'pulse'], e, '/public/contract/stats');
+    unreachable(['vitals', 'headline', 'anchor', 'figures', 'open-rfcs', 'decided', 'ledger', 'params', 'pulse'], e, '/public/contract/stats');
   }
 }
 
@@ -121,7 +122,7 @@ const refresh = async () => {
   await figures();
   await Promise.all([activity(), calendar(), machines()]);
 };
-if (el('figures') || el('pulse')) {
+if (el('figures') || el('pulse') || el('headline')) {
   refresh();
   let timer = setInterval(refresh, 30_000);
   let ticker = setInterval(tick, 1000);

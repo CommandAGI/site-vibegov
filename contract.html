@@ -15,15 +15,17 @@
 <meta property="og:image" content="https://vibegov.pro/og.png">
 <meta property="og:image:alt" content="VibeGov, the home of the Coordination Contract">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#fbfbf9">
+<meta name="theme-color" content="#04060b">
 <link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="mark.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script src="gov.js" defer></script>
 <script type="module" src="page.js"></script>
+<script type="module" src="scene.js"></script>
 </head>
 <body>
+<canvas id="sky" aria-hidden="true"></canvas>
 <a class="skip" href="#main">Skip to the content</a>
 <header class="runhead">
   <div class="runhead__in">
@@ -31,14 +33,13 @@
     <p class="runhead__title" data-live="pulse" aria-busy="true">The Coordination Contract</p>
     <button class="btn small contents-btn" type="button" popovertarget="contents" aria-controls="contents">Contents</button>
     <nav id="contents" class="contents" popover aria-label="Site">
-      <ol><li><a href="index.html">Overview</a></li><li><a href="record.html">The record</a></li><li><a href="contract.html" aria-current="page">The contract</a></li><li><a href="join.html">Take part</a></li></ol>
+      <ol><li><a href="index.html">Home</a></li><li><a href="record.html">The record</a></li><li><a href="contract.html" aria-current="page">The contract</a></li><li><a href="join.html">Take part</a></li></ol>
     </nav>
   </div>
 </header>
 
 <main id="main" class="sheet">
   <header class="sheet-title doc">
-    <p class="eyebrow">The text, as it is in force</p>
     <h1>The Coordination Contract</h1>
     <p class="lede">The clauses below are rendered from the contract’s own source. Nobody edits them by hand, and CommandAGI’s checks refuse a page that differs from the source, so what you read here is what the code holds people and agents to.</p>
     <div data-live="kernel" aria-live="polite" aria-busy="true"><p class="note">Checking the ledger's kernel against this text…</p></div>

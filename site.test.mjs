@@ -45,7 +45,7 @@ test('four pages, in English, each with its canonical address and the same conte
 test('every relative link and asset resolves on disk', () => {
   for (const page of PAGES) {
     const text = read(page);
-    for (const [, ref] of text.matchAll(/(?:href|src)="([^"]+)"/g)) {
+    for (const [, ref] of text.matchAll(/(?:href|src|data-src)="([^"]+)"/g)) {
       if (/^(mailto:|https?:|data:)/.test(ref)) continue;
       if (ref.startsWith('#')) {
         assert.match(text, new RegExp(`id="${ref.slice(1)}"`), `${page}: ${ref} names no element`);
@@ -72,13 +72,21 @@ test('a page connects to the public API and nothing else; no asset comes from an
   assert.match(read('join.html'), /<textarea[^>]*name="prompt"/);
 });
 
-test('no generated picture stands in for the record: the mark, and frames of a recorded run labelled as recordings', () => {
+test('the pictures: the mark, the dot pictures drawn from their maps, and frames of a recorded run labelled as recordings', () => {
   assert.ok(!existsSync(join(ROOT, 'media')), 'no media folder');
   const run = readdirSync(join(ROOT, 'robots/labrat')).sort();
   assert.deepEqual(run, ['pick-at-the-collar.jpg', 'pick-lifted.jpg', 'run.json', 'servos.jsonl'], 'the run, copied from its world by scripts/seed/vibegov-contract.mjs');
   assert.equal(JSON.parse(read('robots/labrat/run.json')).reality, 'simulation');
+  // A dot picture is a canvas that dots.js fills from a small grey map; the page never shows a generated still itself.
+  const maps = [...read('index.html').matchAll(/<canvas class="dots" data-src="art\/([a-z]+)\.png" aria-hidden="true"><\/canvas>/g)].map(m => m[1]);
+  assert.deepEqual(maps, ['voice', 'throne', 'ballot', 'machine', 'record', 'scales', 'door'], 'one dot picture per section, each hidden from a screen reader');
+  assert.deepEqual(readdirSync(join(ROOT, 'art')).sort(), [...maps.map(m => `${m}.png`), 'land.png'].sort(), 'art/ holds the maps and the land, nothing else');
+  for (const f of readdirSync(join(ROOT, 'art'))) assert.ok(readFileSync(join(ROOT, 'art', f)).length < 16_000, `art/${f} is a small map, not a photograph`);
+  assert.match(read('index.html'), /The dot pictures are drawn in your browser from generated stills/, 'the page says where the dot pictures come from');
   for (const page of PAGES) {
     const text = read(page);
+    assert.match(text, /<canvas id="sky" aria-hidden="true"><\/canvas>/, `${page}: the sky`);
+    assert.match(text, /<script type="module" src="scene\.js"><\/script>/, `${page}: scene.js draws it`);
     assert.doesNotMatch(text, /<video|<picture|\.webp|\.mp4/, `${page}: no footage`);
     for (const [img, src] of text.matchAll(/<img[^>]*src="([^"]+)"[^>]*>/g)) {
       if (src === 'mark.svg') continue;
@@ -87,7 +95,6 @@ test('no generated picture stands in for the record: the mark, and frames of a r
       const figure = text.slice(text.indexOf(img)).match(/<figcaption>([^<]+)<\/figcaption>/)?.[1] ?? '';
       assert.match(figure, /^Recording/, `${page}: ${src} is labelled a recording`);
     }
-    assert.doesNotMatch(text, /fal\b|generated footage/i, `${page}: says nothing about footage`);
   }
 });
 
@@ -95,8 +102,9 @@ test('each live part of a page is one that page.js fills', () => {
   const filled = new Set([...read('page.js').matchAll(/(?:put|el|view)\('([a-z-]+)'/g)].map(m => m[1]));
   for (const page of PAGES)
     for (const [, name] of read(page).matchAll(/data-live="([a-z-]+)"/g)) assert.ok(filled.has(name), `${page}: data-live="${name}" is filled by page.js`);
-  assert.match(read('index.html'), /data-live="figures"/);
+  assert.match(read('index.html'), /data-live="headline"/);
   assert.match(read('index.html'), /data-live="open-rfcs"/);
+  assert.match(read('record.html'), /data-live="figures"/);
   assert.match(read('record.html'), /data-live="log"/);
 });
 
@@ -387,7 +395,7 @@ test('the activity feed says what happened in plain words, counts runs of one ac
       ['rfc', 'record.html#rfc=rfc_12', '3 responses to “Twelve &lt;i&gt;days&lt;/i&gt;” were confirmed'],
       ['case', 'record.html', 'A case was decided'],
       ['people', 'record.html', 'A human’s voice was confirmed'],
-      ['machine', 'index.html#machines', 'The contract authorized a command to a machine'],
+      ['machine', 'record.html#machines', 'The contract authorized a command to a machine'],
       ['rfc', 'record.html#rfc=rfc_12', 'RFC “Twelve &lt;i&gt;days&lt;/i&gt;” opened'],
       ['law', 'record.html', 'something.new was recorded'],
     ]);
@@ -423,7 +431,7 @@ test('coming up: soonest first with a countdown; an engine sitting that is due i
     await api.close();
   }
   assert.match(L.renderCalendar({ at: NOW, events: [] }, NOW), /Nothing is on the calendar/);
-  assert.match(read('index.html'), /href="https:\/\/api\.commandagi\.com\/public\/contract\/calendar\.ics"/, 'the calendar as a feed to subscribe to');
+  assert.match(read('record.html'), /href="https:\/\/api\.commandagi\.com\/public\/contract\/calendar\.ics"/, 'the calendar as a feed to subscribe to');
 });
 
 test('the machines: live ones first with a fresh frame, a recording says so, none says "no live robot right now"; the contract\'s commands', async () => {
@@ -456,7 +464,7 @@ test('the machines: live ones first with a fresh frame, a recording says so, non
   }
   assert.match(L.renderRobots(none, NOW), /No live robot right now\./);
   assert.match(L.renderCommands(none, NOW), /The contract has authorized no command to a machine yet/);
-  const csp = read('index.html').match(/http-equiv="Content-Security-Policy" content="([^"]+)"/)[1];
+  const csp = read('record.html').match(/http-equiv="Content-Security-Policy" content="([^"]+)"/)[1];
   assert.match(csp, /img-src 'self' data: https:\/\/api\.commandagi\.com;/, 'a frame comes from the API only');
 });
 
@@ -475,12 +483,36 @@ test('the recorded run is drawn from its own servo stream: its steps, its goals,
   assert.equal(L.jointTrace({ states: [], steps: [] }), '', 'no trace from fewer than two states');
 });
 
-test('the home page puts the mission and the binding commitment first, then what is alive, the machines, the way in and the library', () => {
+test('the front door: A World in Command, seven things the contract holds, each in the kernel\'s own words', () => {
   const text = read('index.html');
-  const order = ['id="mission-title"', 'data-live="kernel"', 'data-live="anchor"', 'id="now"', 'data-live="activity"', 'data-live="calendar"', 'id="rfcs"', 'id="machines"', 'data-live="robots"', 'data-live="recording"', 'id="take-part"', 'id="library"'];
+  assert.match(text, /<title>VibeGov: A World in Command<\/title>/);
+  assert.match(text, /<h1 id="top-title">A World <em>in Command\.<\/em><\/h1>/);
+  const order = ['id="top-title"', 'data-live="pulse"', 'class="creed', 'id="f-voice"', 'id="f-throne"', 'id="f-change"', 'data-live="open-rfcs"', 'id="f-engine"', 'id="f-record"', 'data-live="headline"', 'data-live="kernel"', 'id="f-justice"', 'id="f-exit"', 'id="close-title"'];
   const at = order.map(s => text.indexOf(s));
   assert.ok(at.every(i => i > 0), `each part is on the page: ${order.filter((_, i) => at[i] < 0)}`);
   assert.deepEqual([...at].sort((a, b) => a - b), at, 'in this order');
-  for (const k of ['k1', 'k2', 'k3 · k4', 'k7', 'k11', 'k12']) assert.match(text, new RegExp(`<li><b>${k}</b>`), `the promise ${k}`);
-  assert.match(text, /href="https:\/\/commandagi\.com\/app\?open=%2Fapp%2Fcontract">Needs you</, 'sign in to what needs you, from every screen');
+  // A quotation is the kernel's text, letter for letter (an ellipsis marks where it is cut), under the article it names.
+  const kernel = Object.fromEntries(JSON.parse(read('fixtures/kernel.json')).kernel.articles.map(a => [a.id, a.text]));
+  const quotes = [...text.matchAll(/<blockquote><p>“([^”]+)”<\/p><footer><a href="contract\.html#(k\d+)">The kernel, article (\d+)<\/a><\/footer><\/blockquote>/g)];
+  assert.deepEqual(quotes.map(q => q[2]), ['k2', 'k3', 'k4', 'k10', 'k11', 'k1', 'k12'], 'one quotation per section');
+  for (const [, words, id, n] of quotes) {
+    assert.equal(id, `k${n}`, 'the link and its words name the same article');
+    assert.ok(kernel[id].includes(words.replace(/^…|…$/g, '').replaceAll('’', "'")), `“${words}” is in ${id}`);
+  }
+  assert.equal([...text.matchAll(/<section class="feature /g)].length, quotes.length, 'every section carries its quotation');
+  assert.match(text, /<a class="btn primary" href="join\.html">Take your voice<\/a>/, 'the one act the page asks for');
+});
+
+test('the front door\'s one figure is the ledger\'s length and when it last grew', () => {
+  const html = L.renderHeadline(statsOf({ log: { length: 36493, headHash: 'ab'.repeat(32), headAt: NOW - 90_000, lastBeaconAt: null, lastDay: {} } }), NOW);
+  assert.match(html, /<b>36,493<\/b><span>entries on the public ledger, the last <time [^>]*data-at="\d+">/);
+  assert.match(L.renderHeadline(statsOf({ log: { length: 0, headHash: null, headAt: null, lastBeaconAt: null, lastDay: {} } }), NOW), /<b>0<\/b><span>entries on the public ledger<\/span>/, 'an empty ledger says zero and no time');
+});
+
+test('the record page holds what is alive: now, the RFCs, the log, the machines, the figures, how the law changes', () => {
+  const text = read('record.html');
+  const order = ['id="now"', 'data-live="vitals"', 'data-live="activity"', 'data-live="calendar"', 'data-live="rfcs"', 'data-live="log"', 'data-live="engine"', 'id="machines"', 'data-live="robots"', 'data-live="recording"', 'data-live="figures"', 'id="law"', 'data-live="params"', 'data-live="versions"'];
+  const at = order.map(s => text.indexOf(s));
+  assert.ok(at.every(i => i > 0), `each part is on the page: ${order.filter((_, i) => at[i] < 0)}`);
+  assert.deepEqual([...at].sort((a, b) => a - b), at, 'in this order');
 });
