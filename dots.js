@@ -77,3 +77,14 @@ async function picture(canvas) {
 }
 
 for (const canvas of document.querySelectorAll('canvas.dots')) picture(canvas).catch(() => canvas.classList.add('is-missing'));
+
+// A recording plays only while it is on screen, and not at all for a reader who asked for less motion.
+for (const video of document.querySelectorAll('video[data-loop]')) {
+  new IntersectionObserver(entries => {
+    for (const e of entries) {
+      if (e.isIntersecting && !still.matches) video.play().catch(() => {});
+      else video.pause();
+    }
+  }, { threshold: 0.25 }).observe(video);
+  if (still.matches) video.controls = true;
+}

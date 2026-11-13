@@ -20,41 +20,82 @@ The 2026-11-02 design (a light page that led with live figures) is gone. Its liv
 
 - **The front door's order.** The claim (A World in Command). Why (we want all that AI can do, and we want the world
   to stay ours). Then what the contract holds, one section each: one person one voice (k2), no throne (k3), changed
-  only by voice (k4), AI works and people decide (k10), everything on the record (k11), harm has a remedy (k1), free to
-  leave (k12). Then the act: take your voice.
+  only by voice (k4), AI works and people decide (k10), robots by permission (a film of a robot at work), everything
+  on the record (k11, live), harm has a remedy (k1), free to leave (k12). Then five things to do today, and the act:
+  take your voice.
 - **A heading is 2 to 4 words that a person would say.** One or two sentences under it. No kicker above a heading, no
   question as a heading, italics only in the page's first heading and its last.
-- **Each section quotes the kernel**, letter for letter, with a link to the article. An ellipsis marks a cut.
+- **Each section on what the contract holds quotes the kernel**, letter for letter, with a link to the article. An ellipsis marks a cut.
   `site.test.mjs` holds every quotation to the kernel's text. The site's own sentences explain; they never restate a
   clause as if it were the text.
 - **Say what is true of the contract.** AI models read the answers and decide the cases; the page says so, and says
   who chooses the models. Today every voice is a human's; the law can recognize another kind only by an adopted RFC.
 - **One act.** "Take your voice" is the only gold button on a page.
 
+## the first screen: earthrise (`earth.js`, `sky/`) (owner, 2026-11-13)
+
+"I wanted the earthrise with the curvature of the Earth's horizon at the bottom of the page, facing the sun, on the
+hero. Not dot art for the 3D scene of the Earth. The sun and moon flying by as I scroll is distracting; they should
+be in the view of the hero."
+
+- The first screen is the view from orbit: the Earth's curved horizon across the bottom, the sun coming up over it, the
+  moon above. It is one WebGL2 picture traced per pixel, with no library. The Earth looks real, not drawn.
+- The ground is NASA's Blue Marble, the night side's lamps NASA's Black Marble, the moon the Clementine map (all
+  public domain, from Wikimedia Commons; the originals are in the org Drive's `media/earth/`). Clouds are noise. The
+  air is a thin shell: blue where the sun is up, orange where it is low.
+- The sun rises in the first seconds after the page loads, then climbs very slowly. The ground turns under the camera.
+- The sun and the moon are in this picture only. They scroll away with it. Nothing crosses the later sections.
+- The moon is close to the sun in this sky, so it would be almost new. It is lit from the sun's side as a crescent.
+  That is the one thing in the picture that is not where the light says.
+- The last section shows the whole Earth with the same code (`data-view="whole"`).
+- A narrow screen takes maps of half the size. With no WebGL2 the canvas stays empty. Reduced motion: one frame.
+
 ## the sky (`scene.js`)
 
-One WebGL canvas (`#sky`) is fixed behind every page. No library.
+One WebGL canvas (`#sky`) is fixed behind every page: about 10,000 stars as points, more along one band, the same sky
+on every visit. It turns once in 20 minutes and drifts a little with the scroll. Nothing else is in it.
 
-- **Stars**: about 10,000 points on the sky, more of them along one band. The same sky on every visit (a fixed seed).
-- **The sun and the moon** are on the sky. The sun is a disc of points with a corona that breathes. The moon is a
-  sphere of points lit by the sun, so its phase is true to where the sun is.
-- **The camera turns slowly**: one turn of the sky in 11 minutes, and most of a turn more from the top of a page to
-  its end. So the sun crosses the page early and the moon later.
-- **The Earth** is drawn where a page has a `.globe` box (the front door's first and last sections). Its land is points
-  of light from `art/land.png` (Natural Earth 1:50m, `redesign/land.py`). The sun lights it: the day side is ivory,
-  the night side shows lamps. It turns once in 4 minutes.
-- With no WebGL the page keeps its dark ground. With reduced motion the sky is drawn still.
+## pictures: more than one kind (owner, 2026-11-13)
+
+"We shouldn't only do dotted visuals, just in some places. In others we'll have a real embed or 3D or photos or
+videos." And: "the content on the homepage could offer a bit more for practical-minded people to pick up, like the
+robot simulation."
+
+| section | its picture |
+|---|---|
+| the first and last | the Earth, real (`earth.js`) |
+| one voice, no throne, changed by voice, AI works, remedy, leave | a dot picture |
+| robots by permission | a film: a recording of the SO-101 cube simulation on CommandAGI, with a link to the live one |
+| everything on the record | a live pane: the ledger's length, the latest acts, the kernel's hash checked in the page |
+| start today | five lines, each one act a person can do now |
+
+The film is `robots/so101-cube/` (recorded from `commandagi.com/embed.html` in headless Chrome on a GPU; the full
+recording is in the org Drive's `media/so101-cube/`). Its caption says it is a recording of a simulation. The live
+simulation cannot be framed here yet: `commandagi.com` allows only its own pages to frame an embed. An embed share
+(CommandAGI's `docs/site-hosting.md` § embedding your own design) is the way to put it in the page.
 
 ## the dot pictures (`dots.js`, `art/`, `redesign/art.mjs`)
 
-Each section of the front door has one picture made of points: a raised hand, an empty throne, a ballot, a robot arm
-resting in a hand, an open ledger, scales, an open door. A picture must show what its heading names.
+A raised hand, an empty throne, a ballot, a robot arm resting in a hand, scales, an open door. A picture must show
+what its heading names.
 
 - The source of each is a generated still (fal, seedream v5 pro), black and white on black. The still stays out of the
   site's folder (the org Drive's `media/dot-pictures/`). `redesign/art.mjs cut` reduces it to a 168 px grey map in `art/`.
 - `dots.js` draws one point for each bright pixel. Until a picture is seen its points lie scattered like stars. When
-  it scrolls into view they gather into the picture. So the stars, the Earth and the pictures are one material.
+  it scrolls into view they gather into the picture.
 - The page never shows a generated still as a photograph, and its colophon says where the dot pictures come from.
+
+## controls: a line of the contract (owner, 2026-11-13)
+
+"The style shouldn't use round pill buttons as much if it can find something more CC-coded, more original."
+
+- **A button is a clause.** Square. Its reference is in a small margin cell at its left, in mono and gold (`k2`,
+  `k11`, `sim`: the `data-ref` attribute), as an article's number stands in the contract's margin. Four corner marks
+  frame it, as on a printed ballot; the whole frame draws when it is pointed at.
+- **The one act a page asks for** is a gold stub with one corner cut, as a ballot's is.
+- **A list of acts is a list of clauses** (`.clauses`): reference, act, one sentence, an arrow, between hairlines.
+- **A pane** (`.pane`) frames something real: square, a mono header with its name and its source.
+- No pill anywhere. The contents line marks its page with a gold underline. Radius is 3 px at most.
 
 ## rules
 
@@ -62,8 +103,8 @@ resting in a hand, an open ledger, scales, an open door. A picture must show wha
 - **A number is read, never typed.** Every figure comes from `/public/contract/*` at load. A zero is said in words.
   An unreachable API says so and names the address.
 - **A check the visitor can repeat.** The kernel's hash and the log's hashes are recomputed in the page.
-- **Colour has one meaning each.** Gold: the sun, the page's first heading, the kernel's words, and the one act a page
-  asks for. Blue: a link, the Earth's air. Green: a check that holds. Amber: not done. Red: a check that failed.
+- **Colour has one meaning each.** Gold: the sun, the page's first heading, the kernel's words, a reference, and the
+  one act a page asks for. Blue: a link. Green: a check that holds. Amber: not done. Red: a check that failed.
 - **Text on the sky has no box** on the front door. The other pages put their text on one dark sheet, so long text
   reads well. A record (a figure, an RFC, an act) is a rounded panel.
 - **One edge, square corners.** A line on one edge only never sits on a rounded corner.
@@ -91,7 +132,7 @@ One scheme, dark: the page is the night sky.
 ## the mark and the share card
 
 `mark.svg` is the sun as a gold disc with a tick that is also a V (`redesign/marks.py`). `og.png` is a browser's
-picture of `redesign/og.html` at 1200 × 630: the title, the Earth and the sky.
+picture of `redesign/og.html` at 1200 × 630, on a GPU: the title over the earthrise.
 
 ## pages
 

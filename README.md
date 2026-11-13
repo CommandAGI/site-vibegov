@@ -5,11 +5,12 @@ static folder served by CommandAGI's site hosting at https://vibegov.pro, with `
 https://vibegov.commandagi.app serving the same site. The design and the reasons are in CommandAGI's
 `docs/vibegov.md`.
 
-- `index.html`: the front door, **A World in Command**: AI should answer to the people who live with it. The claim,
-  the reason, then seven short sections on what the contract holds (one person one voice, no throne, changed only by
-  voice, AI works and people decide, everything on the record, harm has a remedy, free to leave). Each section has a
-  dot picture and the kernel's own words with a link to the article. Two live parts: the open RFCs, and the ledger's
-  length with the kernel hash recomputed in the page. The act is "Take your voice".
+- `index.html`: the front door, **A World in Command**: AI should answer to the people who live with it. The first
+  screen is the earthrise: the Earth's horizon, the sun coming up, the moon. Then the reason, and what the contract
+  holds, one short section each with the kernel's own words (one person one voice, no throne, changed only by voice, AI
+  works and people decide, everything on the record, harm has a remedy, free to leave). Between them: a film of a
+  simulated robot arm at work (robots by permission) and a live pane of the ledger. Then five things to do today. The
+  act is "Take your voice".
 - `record.html`: the public record and everything alive now: the ledger's height and last entry ticking, the activity
   feed in plain words (`/public/contract/activity`), what comes next (`/public/contract/calendar`, with its `.ics`
   feed), the machines their owners made public (`/public/contract/robots`) and a recorded run, the figures, how the law
@@ -34,14 +35,15 @@ https://vibegov.commandagi.app serving the same site. The design and the reasons
 - `robots/labrat/`: a recorded simulated run (an SO-101 arm picks a pipette tip on LabRat's bench), copied byte for
   byte by the same script from `cloud://global/worlds/labrat` (its servo stream, its run record, two frames its README
   names). The page plots the stream and labels the run a recording and a simulation.
-- `scene.js`: the sky behind every page, in one WebGL canvas: stars, the sun, the moon and the Earth as points of
-  light. `dots.js`: the front door's dot pictures, drawn from the grey maps in `art/`. `art/land.png` is where the
-  Earth's land is.
+- `scene.js`: the stars behind every page, in one WebGL canvas. `earth.js`: the Earth as a camera in orbit sees it
+  (WebGL2, traced per pixel from the maps in `sky/`: NASA's Blue Marble and Black Marble, the Clementine moon map; all
+  public domain). `dots.js`: the front door's dot pictures, drawn from the grey maps in `art/`, and the film's play
+  and pause. `robots/so101-cube/`: the film, a recording of a simulation on CommandAGI.
 - `style.css`, `fonts/` (Literata and Public Sans, variable, OFL, self-hosted), `mark.svg`, `apple-touch-icon.png`
   (drawn by `redesign/marks.py`), `og.png` (a browser's picture of `redesign/og.html`), `fixtures/` (real entries of
   the public record that the test recomputes).
-- `redesign/`: the design (`DESIGN.md`), `marks.py`, `land.py` (the land map from Natural Earth), `art.mjs` (the dot
-  pictures' sources from fal, and their maps), `og.html`, and the audit before the 2026-10-26 redesign (`CONTENT.md`).
+- `redesign/`: the design (`DESIGN.md`), `marks.py`, `art.mjs` (the dot pictures' sources from fal, and their maps),
+  `og.html`, and the audit before the 2026-10-26 redesign (`CONTENT.md`).
 
 ## acting
 
@@ -68,8 +70,9 @@ then commit here, push this repository's `main`, and move the gitlink in Command
 - Each page connects to itself and the public API only: `connect-src 'self' https://api.commandagi.com`. It reads
   `/public/contract/*` with no credential. The join page's form is sent only on purpose (`form-action
   https://commandagi.com`).
-- No photograph and no video. The pictures are the mark, the sky, the dot pictures (points drawn from maps of
-  generated stills; the still itself is never shown), and frames of machines on the record page: a live frame from the
+- The pictures are the mark, the sky, the Earth (drawn from NASA's maps), the dot pictures (points drawn from maps of
+  generated stills; the still itself is never shown), one film (a recording of a simulated robot arm, labelled as
+  one), and frames of machines on the record page: a live frame from the
   API (`img-src https://api.commandagi.com`) while its owner shows it, and the recorded run's frames, each labelled a
   recording. Every figure is read from the record; a zero says so in words.
 - English only, one page per address.

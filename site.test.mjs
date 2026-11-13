@@ -72,22 +72,32 @@ test('a page connects to the public API and nothing else; no asset comes from an
   assert.match(read('join.html'), /<textarea[^>]*name="prompt"/);
 });
 
-test('the pictures: the mark, the dot pictures drawn from their maps, and frames of a recorded run labelled as recordings', () => {
+test('the pictures: the mark, the Earth from NASA\'s maps, dot pictures from their maps, and recordings labelled as recordings', () => {
   assert.ok(!existsSync(join(ROOT, 'media')), 'no media folder');
   const run = readdirSync(join(ROOT, 'robots/labrat')).sort();
   assert.deepEqual(run, ['pick-at-the-collar.jpg', 'pick-lifted.jpg', 'run.json', 'servos.jsonl'], 'the run, copied from its world by scripts/seed/vibegov-contract.mjs');
   assert.equal(JSON.parse(read('robots/labrat/run.json')).reality, 'simulation');
+  const home = read('index.html');
   // A dot picture is a canvas that dots.js fills from a small grey map; the page never shows a generated still itself.
-  const maps = [...read('index.html').matchAll(/<canvas class="dots" data-src="art\/([a-z]+)\.png" aria-hidden="true"><\/canvas>/g)].map(m => m[1]);
-  assert.deepEqual(maps, ['voice', 'throne', 'ballot', 'machine', 'record', 'scales', 'door'], 'one dot picture per section, each hidden from a screen reader');
-  assert.deepEqual(readdirSync(join(ROOT, 'art')).sort(), [...maps.map(m => `${m}.png`), 'land.png'].sort(), 'art/ holds the maps and the land, nothing else');
+  const maps = [...home.matchAll(/<canvas class="dots" data-src="art\/([a-z]+)\.png" aria-hidden="true"><\/canvas>/g)].map(m => m[1]);
+  assert.deepEqual(maps, ['voice', 'throne', 'ballot', 'machine', 'scales', 'door'], 'the dot pictures, each hidden from a screen reader');
+  assert.deepEqual(readdirSync(join(ROOT, 'art')).sort(), maps.map(m => `${m}.png`).sort(), 'art/ holds the maps, nothing else');
   for (const f of readdirSync(join(ROOT, 'art'))) assert.ok(readFileSync(join(ROOT, 'art', f)).length < 16_000, `art/${f} is a small map, not a photograph`);
-  assert.match(read('index.html'), /The dot pictures are drawn in your browser from generated stills/, 'the page says where the dot pictures come from');
+  // The Earth: two canvases that earth.js draws from the maps in sky/.
+  assert.deepEqual([...home.matchAll(/<canvas class="earth" data-view="([a-z]+)" aria-hidden="true"><\/canvas>/g)].map(m => m[1]), ['rise', 'whole']);
+  assert.deepEqual(readdirSync(join(ROOT, 'sky')).sort(), ['earth-day-2k.jpg', 'earth-day.jpg', 'earth-night-2k.jpg', 'earth-night.jpg', 'moon.jpg']);
+  for (const [, src] of read('earth.js').matchAll(/'(sky\/[a-z0-9-]+\.jpg)'/g)) assert.ok(existsSync(join(ROOT, src)), `earth.js reads ${src}`);
+  // The one film: a recording of a simulation, and its caption says so.
+  const films = [...home.matchAll(/<video[^>]*>[\s\S]*?<\/video>\s*<figcaption>([^<]+)<\/figcaption>/g)];
+  assert.equal(films.length, 1);
+  assert.match(films[0][0], /<video data-loop muted loop playsinline preload="none" poster="robots\/so101-cube\/poster\.jpg"[^>]*aria-label="[^"]{20,}"/, 'muted, not loaded until it is seen, and named');
+  assert.match(films[0][1], /^Recording, 13 November 2026: a simulated /, 'the film is labelled a recording of a simulation');
+  assert.match(home, /The dot pictures are drawn in your browser from generated stills\. The Earth and the Moon are drawn from NASA’s maps\. The robot is a recording of a simulation\./, 'the page says where its pictures come from');
   for (const page of PAGES) {
     const text = read(page);
     assert.match(text, /<canvas id="sky" aria-hidden="true"><\/canvas>/, `${page}: the sky`);
     assert.match(text, /<script type="module" src="scene\.js"><\/script>/, `${page}: scene.js draws it`);
-    assert.doesNotMatch(text, /<video|<picture|\.webp|\.mp4/, `${page}: no footage`);
+    if (page !== 'index.html') assert.doesNotMatch(text, /<video|<picture|\.webp|\.mp4/, `${page}: no footage`);
     for (const [img, src] of text.matchAll(/<img[^>]*src="([^"]+)"[^>]*>/g)) {
       if (src === 'mark.svg') continue;
       assert.match(src, /^robots\/labrat\/[a-z-]+\.jpg$/, `${page}: an image other than the mark is a frame of the recorded run (${src})`);
@@ -483,24 +493,25 @@ test('the recorded run is drawn from its own servo stream: its steps, its goals,
   assert.equal(L.jointTrace({ states: [], steps: [] }), '', 'no trace from fewer than two states');
 });
 
-test('the front door: A World in Command, seven things the contract holds, each in the kernel\'s own words', () => {
+test('the front door: A World in Command, what the contract holds in the kernel\'s own words, a robot at work, and what to do today', () => {
   const text = read('index.html');
   assert.match(text, /<title>VibeGov: A World in Command<\/title>/);
   assert.match(text, /<h1 id="top-title">A World <em>in Command\.<\/em><\/h1>/);
-  const order = ['id="top-title"', 'data-live="pulse"', 'class="creed', 'id="f-voice"', 'id="f-throne"', 'id="f-change"', 'data-live="open-rfcs"', 'id="f-engine"', 'id="f-record"', 'data-live="headline"', 'data-live="kernel"', 'id="f-justice"', 'id="f-exit"', 'id="close-title"'];
+  const order = ['data-view="rise"', 'id="top-title"', 'data-live="pulse"', 'class="creed', 'id="f-voice"', 'id="f-throne"', 'id="f-change"', 'data-live="open-rfcs"', 'id="f-engine"', 'id="f-robots"', 'data-live="headline"', 'data-live="activity"', 'data-live="kernel"', 'id="f-record"', 'id="f-justice"', 'id="f-exit"', 'id="today-title"', 'data-view="whole"', 'id="close-title"'];
   const at = order.map(s => text.indexOf(s));
   assert.ok(at.every(i => i > 0), `each part is on the page: ${order.filter((_, i) => at[i] < 0)}`);
   assert.deepEqual([...at].sort((a, b) => a - b), at, 'in this order');
   // A quotation is the kernel's text, letter for letter (an ellipsis marks where it is cut), under the article it names.
   const kernel = Object.fromEntries(JSON.parse(read('fixtures/kernel.json')).kernel.articles.map(a => [a.id, a.text]));
   const quotes = [...text.matchAll(/<blockquote><p>“([^”]+)”<\/p><footer><a href="contract\.html#(k\d+)">The kernel, article (\d+)<\/a><\/footer><\/blockquote>/g)];
-  assert.deepEqual(quotes.map(q => q[2]), ['k2', 'k3', 'k4', 'k10', 'k11', 'k1', 'k12'], 'one quotation per section');
+  assert.deepEqual(quotes.map(q => q[2]), ['k2', 'k3', 'k4', 'k10', 'k11', 'k1', 'k12'], 'one quotation per thing the contract holds');
   for (const [, words, id, n] of quotes) {
     assert.equal(id, `k${n}`, 'the link and its words name the same article');
     assert.ok(kernel[id].includes(words.replace(/^…|…$/g, '').replaceAll('’', "'")), `“${words}” is in ${id}`);
   }
-  assert.equal([...text.matchAll(/<section class="feature /g)].length, quotes.length, 'every section carries its quotation');
-  assert.match(text, /<a class="btn primary" href="join\.html">Take your voice<\/a>/, 'the one act the page asks for');
+  assert.equal([...text.matchAll(/<blockquote>/g)].length, quotes.length, 'no quotation that is not the kernel\'s');
+  assert.match(text, /<a class="btn primary" href="join\.html" data-ref="k2">Take your voice<\/a>/, 'the one act the page asks for');
+  assert.equal([...text.matchAll(/<ol class="clauses">[\s\S]*?<\/ol>/g)][0][0].match(/<li>/g).length, 5, 'five things to do today');
 });
 
 test('the front door\'s one figure is the ledger\'s length and when it last grew', () => {

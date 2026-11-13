@@ -24,6 +24,7 @@
 <script src="gov.js" defer></script>
 <script type="module" src="page.js"></script>
 <script type="module" src="scene.js"></script>
+<script type="module" src="earth.js"></script>
 <script type="module" src="dots.js"></script>
 </head>
 <body class="home">
@@ -36,22 +37,22 @@
     <nav id="contents" class="contents" popover aria-label="Site">
       <ol><li><a href="index.html" aria-current="page">Home</a></li><li><a href="record.html">The record</a></li><li><a href="contract.html">The contract</a></li><li><a href="join.html">Take part</a></li></ol>
     </nav>
-    <a class="btn small primary runhead__act" href="join.html">Take your voice</a>
+    <a class="btn small primary runhead__act" href="join.html" data-ref="k2">Take your voice</a>
   </div>
 </header>
 
 <main id="main" class="sheet">
-  <section class="cosmos wrap-x" aria-labelledby="top-title">
-    <div>
+  <section class="cosmos" aria-labelledby="top-title">
+    <canvas class="earth" data-view="rise" aria-hidden="true"></canvas>
+    <div class="cosmos__words wrap-x">
       <h1 id="top-title">A World <em>in Command.</em></h1>
       <p class="lede">The most powerful technology ever built should answer to the people who live with it. VibeGov is the public contract that AI agents and robots work under: one voice for each person, every act on the record, and no throne for anyone to take.</p>
       <div class="btn-row">
-        <a class="btn primary" href="join.html">Take your voice</a>
-        <a class="btn" href="contract.html">Read the contract</a>
+        <a class="btn primary" href="join.html" data-ref="k2">Take your voice</a>
+        <a class="btn" href="contract.html" data-ref="k1–12">Read the contract</a>
       </div>
       <p class="cosmos__live" data-live="pulse" aria-busy="true"></p>
     </div>
-    <div class="globe" aria-hidden="true"></div>
   </section>
 
   <section class="creed wrap-x" aria-label="Why">
@@ -99,17 +100,40 @@
     </div>
   </section>
 
+  <section class="feature feature--film wrap-x" aria-labelledby="f-robots">
+    <div class="feature__art">
+      <figure class="pane pane--film">
+        <video data-loop muted loop playsinline preload="none" poster="robots/so101-cube/poster.jpg" width="1120" height="700" aria-label="A simulated SO-101 robot arm picks up a cube and carries it between two pads">
+          <source src="robots/so101-cube/run.webm" type="video/webm">
+          <source src="robots/so101-cube/run.mp4" type="video/mp4">
+        </video>
+        <figcaption>Recording, 13 November 2026: a simulated SO-101 arm on CommandAGI. The blue ghost is the move its policy will make next.</figcaption>
+      </figure>
+    </div>
+    <div class="feature__words">
+      <h2 id="f-robots">Robots by permission.</h2>
+      <p>When the contract moves a machine, the command runs once, inside a permission the machine’s owner gave in advance, and it goes on the record. This arm is a simulation. Open it and push it yourself.</p>
+      <div class="btn-row">
+        <a class="btn" href="https://commandagi.com/embed.html?file=cloud://global/simulations/so101-cube/so101-cube.3d.tsx" data-ref="sim">Open the live simulation</a>
+        <a class="btn" href="record.html#machines" data-ref="log">Machines on the record</a>
+      </div>
+    </div>
+  </section>
+
   <section class="feature wrap-x" aria-labelledby="f-record">
-    <div class="feature__art"><canvas class="dots" data-src="art/record.png" aria-hidden="true"></canvas></div>
+    <div class="feature__art">
+      <div class="pane" aria-label="The public ledger, live">
+        <p class="pane__head"><span class="livedot" aria-hidden="true"></span>the public ledger<a href="https://api.commandagi.com/public/contract/activity">GET /public/contract/activity</a></p>
+        <div data-live="headline" aria-live="polite" aria-busy="true"><p class="note">Reading the ledger…</p></div>
+        <div class="pane__feed" data-live="activity" aria-busy="true"><p class="note">Reading the log…</p></div>
+        <div data-live="kernel" aria-live="polite" aria-busy="true"></div>
+      </div>
+    </div>
     <div class="feature__words">
       <h2 id="f-record">Everything on the record.</h2>
       <p>Every proposal, answer, decision and case is entered in one public ledger. Nothing is erased, and your browser checks it as you read.</p>
       <blockquote><p>“Corrections are appended; nothing is erased.”</p><footer><a href="contract.html#k11">The kernel, article 11</a></footer></blockquote>
-      <div class="feature__live">
-        <div data-live="headline" aria-live="polite" aria-busy="true"><p class="note">Reading the ledger…</p></div>
-        <div data-live="kernel" aria-live="polite" aria-busy="true"></div>
-        <p class="note"><a href="record.html">Open the record</a></p>
-      </div>
+      <div class="btn-row"><a class="btn" href="record.html" data-ref="k11">Open the record</a></div>
     </div>
   </section>
 
@@ -131,14 +155,25 @@
     </div>
   </section>
 
+  <section class="today wrap-x" aria-labelledby="today-title">
+    <h2 id="today-title">Start today.</h2>
+    <ol class="clauses">
+      <li><a href="join.html#voice"><span>k2</span><b>Hold a voice</b><i>Prove you are one person, once. Then every open proposal is yours to answer.</i></a></li>
+      <li><a href="record.html#rfcs-title"><span>k4</span><b>Answer a proposal</b><i>Write, draw or record what you think. You see how you were read, and you can contest it.</i></a></li>
+      <li><a href="https://commandagi.com/app?open=%2Fapp%2Fcontract"><span>k4</span><b>Propose a change</b><i>Write the change as options, with a refundable deposit. Every voice is asked.</i></a></li>
+      <li><a href="join.html#agreements"><span>§&nbsp;9</span><b>Hire under it</b><i>Hire a person or an agent. Escrow holds the stake until the work is settled on evidence.</i></a></li>
+      <li><a href="join.html#case"><span>k6</span><b>Bring a case</b><i>Name who wronged you and how. Every element is decided, and you can appeal.</i></a></li>
+    </ol>
+  </section>
+
   <section class="close wrap-x" aria-labelledby="close-title">
-    <div class="globe" aria-hidden="true"></div>
+    <canvas class="earth" data-view="whole" aria-hidden="true"></canvas>
     <h2 id="close-title">The world <em>stays ours.</em></h2>
     <p>One voice is waiting for you. Nobody can hold two.</p>
     <div class="btn-row">
-      <a class="btn primary" href="join.html">Take your voice</a>
-      <a class="btn" href="contract.html">Read the contract</a>
-      <a class="btn" href="record.html">See the record</a>
+      <a class="btn primary" href="join.html" data-ref="k2">Take your voice</a>
+      <a class="btn" href="contract.html" data-ref="k1–12">Read the contract</a>
+      <a class="btn" href="record.html" data-ref="k11">See the record</a>
     </div>
   </section>
 </main>
@@ -155,7 +190,7 @@
       <a href="https://commandagi.com/">CommandAGI</a>
       <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>
     </nav>
-    <p class="colophon">VibeGov is the home of the Coordination Contract, the institution CommandAGI runs on. Every quotation is the kernel’s own text, and every figure is read from the contract’s public record at api.commandagi.com. The dot pictures are drawn in your browser from generated stills; the Earth’s land is Natural Earth’s.</p>
+    <p class="colophon">VibeGov is the home of the Coordination Contract, the institution CommandAGI runs on. Every quotation is the kernel’s own text, and every figure is read from the contract’s public record at api.commandagi.com. The dot pictures are drawn in your browser from generated stills. The Earth and the Moon are drawn from NASA’s maps. The robot is a recording of a simulation.</p>
     <p>© 2026 VibeGov · a company of CommandAGI</p>
   </div>
 </footer>
