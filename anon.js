@@ -8,10 +8,13 @@
 // contest) is proved here, in this browser, and sent to the API's public routes with no token, no cookie and no
 // referrer (`credentials: 'omit'`).
 //
-// The prover is vendored (vendor/semaphore/semaphore.js, built by redesign/vendor-semaphore.mjs) and its proving
-// artifacts are this site's own files (vendor/semaphore/artifacts/), so no third party learns who is proving. The
-// prover loads only when a person starts an act that needs it (dynamic import), never on page load. A page that proves
-// needs `'wasm-unsafe-eval'` in script-src and `worker-src blob:` in its CSP (the prover's threads are blob workers).
+// Semaphore is vendored (built by redesign/vendor-semaphore.mjs) in two modules, each loaded only when a person starts
+// an act that needs it (dynamic import), never on page load:
+//   vendor/semaphore/identity.js   make, save, load an identity. No WebAssembly: any page's CSP admits it.
+//   vendor/semaphore/semaphore.js  the prover. Its proving artifacts are this site's own files
+//                                  (vendor/semaphore/artifacts/), so no third party learns who is proving. A page that
+//                                  proves needs `'wasm-unsafe-eval'` in script-src and `worker-src blob:` (its threads
+//                                  are blob workers) in its CSP.
 //
 // Nothing here touches `document` at import time, so test/anon.test.mjs runs it in Node.
 import { esc, date } from './live.js';
@@ -26,6 +29,7 @@ export const IDENTITY_FILE_NAME = 'contract.identity';
  * `--depths` of redesign/vendor-semaphore.mjs. A deeper tree is refused by name (`prover_depth_missing`).
  */
 export const MAX_DEPTH = 8;
+export const IDENTITY_URL = new URL('./vendor/semaphore/identity.js', import.meta.url).href;
 export const PROVER_URL = new URL('./vendor/semaphore/semaphore.js', import.meta.url).href;
 export const ARTIFACTS_BASE = new URL('./vendor/semaphore/artifacts/', import.meta.url).href;
 
@@ -124,14 +128,20 @@ export function proverArtifacts(size, base = ARTIFACTS_BASE) {
   return { wasm: `${at}.wasm`, zkey: `${at}.zkey` };
 }
 
+let identities = null;
 let prover = null;
-/** The vendored Semaphore module ({ Identity, Group, generateProof }), loaded once, on the first act that needs it. */
-export const loadProver = () => (prover ??= import(PROVER_URL).catch(e => { prover = null; throw new Refusal('prover_unavailable', e?.message); }));
+const unavailable = e => {
+  throw new Refusal('prover_unavailable', e?.message);
+};
+/** { Identity, Group }, loaded once, on the first act that makes or reads an identity. */
+export const loadIdentityLib = () => (identities ??= import(IDENTITY_URL).catch(e => ((identities = null), unavailable(e))));
+/** { Identity, Group, generateProof }, loaded once, on the first act that proves. */
+export const loadProver = () => (prover ??= import(PROVER_URL).catch(e => ((prover = null), unavailable(e))));
 
 // ─── the identity ──────────────────────────────────────────────────────────
 //
 // Held as the editor's file object: { kind, version: 4, privateKey, commitment, createdAt }. Its `privateKey` IS the
-// identity; the commitment is kept beside it so a page can show and compare it without loading the prover.
+// identity; the commitment is kept beside it so a page can show and compare it without loading any of Semaphore.
 
 const asRecord = (identity, createdAt) => ({ kind: IDENTITY_FILE_KIND, version: 4, privateKey: identity.export(), commitment: identity.commitment.toString(), createdAt });
 
@@ -139,7 +149,7 @@ const wellFormed = f => !!f && f.kind === IDENTITY_FILE_KIND && typeof f.private
 
 /** A new identity, made on this device. */
 export async function makeIdentity(now = new Date()) {
-  const { Identity } = await loadProver();
+  const { Identity } = await loadIdentityLib();
   return asRecord(new Identity(), now.toISOString());
 }
 
@@ -155,7 +165,7 @@ export async function parseIdentityFile(text, now = new Date()) {
     return null;
   }
   if (!f || f.kind !== IDENTITY_FILE_KIND || typeof f.privateKey !== 'string') return null;
-  const { Identity } = await loadProver();
+  const { Identity } = await loadIdentityLib();
   try {
     const id = Identity.import(f.privateKey);
     if (f.commitment && f.commitment !== id.commitment.toString()) return null;
@@ -173,7 +183,7 @@ const store = () => {
   }
 };
 
-/** This device's identity, or null. Reads storage only: the prover is not loaded. */
+/** This device's identity, or null. Reads storage only: nothing of Semaphore is loaded. */
 export function loadIdentity(storage = store()) {
   try {
     const f = JSON.parse(storage?.getItem(STORAGE_KEY) ?? 'null');
@@ -469,7 +479,8 @@ ${s.step ? `<p class="note" role="status">${esc(s.step)}</p>` : ''}${s.note ? `<
 /**
  * Mount the anonymous-voice section in `container` (an element of a desk page; the heading is the caller's): the
  * identity on this device, what the voice registered and whether it is in the public set, with its acts: create,
- * register (or replace), save to a file, load from a file. The prover loads only on create and load.
+ * register (or replace), save to a file, load from a file. vendor/semaphore/identity.js loads only on create and load;
+ * the panel never proves, so its page needs no CSP change.
  */
 export async function renderAnonymityPanel(container) {
   const { signedIn } = await import('./session.js');

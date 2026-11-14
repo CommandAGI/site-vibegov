@@ -4,7 +4,8 @@
 // the depths shipped, and its output is committed.
 //
 // It writes:
-//   vendor/semaphore/semaphore.js         one self-contained ES module: { Identity, Group, generateProof }
+//   vendor/semaphore/identity.js          a self-contained ES module: { Identity, Group } (no WebAssembly)
+//   vendor/semaphore/semaphore.js         a self-contained ES module: { Identity, Group, generateProof }
 //   vendor/semaphore/artifacts/semaphore-<depth>.wasm|.zkey   the proving artifacts for tree depths 1..MAX_DEPTH
 //
 // What it bundles: the versions CommandAGI's contract editor pins (packages/applets/contract/package.json and
@@ -48,33 +49,34 @@ const sha = bytes => createHash('sha256').update(bytes).digest('hex');
 const written = [];
 
 // Only what this script writes: LICENSES.md beside it is kept.
-await rm(join(OUT, 'semaphore.js'), { force: true });
+for (const f of ['identity.js', 'semaphore.js']) await rm(join(OUT, f), { force: true });
 await rm(join(OUT, 'artifacts'), { recursive: true, force: true });
 await mkdir(join(OUT, 'artifacts'), { recursive: true });
 
-const result = await esbuild.build({
-  stdin: {
-    contents: [
-      "export { Identity } from '@semaphore-protocol/identity';",
-      "export { Group } from '@semaphore-protocol/group';",
-      "export { generateProof } from '@semaphore-protocol/proof';",
-    ].join('\n'),
-    resolveDir: EDITOR,
-    sourcefile: 'semaphore-entry.js',
-  },
-  bundle: true,
-  format: 'esm',
-  platform: 'browser',
-  target: 'es2022',
-  minify: true,
-  legalComments: 'eof',
-  charset: 'utf8',
-  write: false,
-  logLevel: 'warning',
-});
-const bundle = result.outputFiles[0].contents;
-await writeFile(join(OUT, 'semaphore.js'), bundle);
-written.push(['semaphore.js', bundle]);
+// Two modules. identity.js makes, reads and groups identities and never compiles WebAssembly, so a page that only keeps
+// an identity (the desk) needs no 'wasm-unsafe-eval'. semaphore.js adds the prover (snarkjs compiles WebAssembly as it
+// loads), for the pages that prove.
+const ENTRIES = {
+  'identity.js': ["export { Identity } from '@semaphore-protocol/identity';", "export { Group } from '@semaphore-protocol/group';"],
+  'semaphore.js': ["export { Identity } from '@semaphore-protocol/identity';", "export { Group } from '@semaphore-protocol/group';", "export { generateProof } from '@semaphore-protocol/proof';"],
+};
+for (const [name, lines] of Object.entries(ENTRIES)) {
+  const result = await esbuild.build({
+    stdin: { contents: lines.join('\n'), resolveDir: EDITOR, sourcefile: `${name}-entry.js` },
+    bundle: true,
+    format: 'esm',
+    platform: 'browser',
+    target: 'es2022',
+    minify: true,
+    legalComments: 'eof',
+    charset: 'utf8',
+    write: false,
+    logLevel: 'warning',
+  });
+  const bytes = result.outputFiles[0].contents;
+  await writeFile(join(OUT, name), bytes);
+  written.push([name, bytes]);
+}
 
 const ART = join(CAGI, 'node_modules/.pnpm/@zk-kit+semaphore-artifacts@4.13.0/node_modules/@zk-kit/semaphore-artifacts');
 for (let d = 1; d <= MAX_DEPTH; d++) {

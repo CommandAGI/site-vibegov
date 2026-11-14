@@ -12,7 +12,7 @@
 // checkout). Two other members are in the `person` set from the start. A registration is dated ten days back, so the two
 // anonymous proposals (ANON_OPEN, opened three days ago; ANON_CLOSED, nine) pinned it: a browser check answers them at
 // once. The fake reads every anonymous voice of ANON_CLOSED as having answered it once.
-import { Group, Identity } from '../vendor/semaphore/semaphore.js';
+import { Group, Identity } from '../vendor/semaphore/identity.js';
 import { anonymousMessage, contractHash, responseDigest, rfcScope, sha256Hex } from '../anon.js';
 const DAY = 86_400_000;
 const T0 = Date.now();

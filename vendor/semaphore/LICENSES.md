@@ -1,15 +1,16 @@
 # vendor/semaphore: licences
 
-The anonymous voice (`anon.js`) proves in the person's browser with Semaphore v4. This folder holds the prover as one
-ES module and its proving artifacts, built by `node redesign/vendor-semaphore.mjs` from the versions CommandAGI's
+The anonymous voice (`anon.js`) proves in the person's browser with Semaphore v4. This folder holds Semaphore as two
+ES modules and the prover's artifacts, built by `node redesign/vendor-semaphore.mjs` from the versions CommandAGI's
 contract editor pins (`packages/applets/contract/package.json`, `pnpm-lock.yaml`). Nothing here is fetched from another
-host: the page loads `semaphore.js` with a dynamic `import()` when a person starts an anonymous act, and the prover reads
-the artifacts from this site.
+host: a page loads `identity.js` or `semaphore.js` with a dynamic `import()` when a person starts an act that needs it,
+and the prover reads the artifacts from this site.
 
 ## what is here
 
 | file | what it is | from |
 |---|---|---|
+| `identity.js` | `Identity` and `Group` only, bundled and minified by esbuild 0.24.2. It compiles no WebAssembly, so a page that only makes, saves or loads an identity needs no CSP change. All MIT | the Semaphore, zk-kit, poseidon-lite and @noble/hashes packages below |
 | `semaphore.js` | `Identity`, `Group` and `generateProof`, bundled and minified by esbuild 0.24.2; the licence comments of the bundled code are kept at its end | the packages below |
 | `artifacts/semaphore-<d>.wasm` | the Semaphore circuit's witness generator for a tree of depth `d` (1 to 8) | `@zk-kit/semaphore-artifacts` 4.13.0, copied as it is |
 | `artifacts/semaphore-<d>.zkey` | the Groth16 proving key of Semaphore's trusted setup for depth `d` (1 to 8) | `@zk-kit/semaphore-artifacts` 4.13.0, copied as it is |
@@ -77,6 +78,7 @@ What `node redesign/vendor-semaphore.mjs` printed (sha256, path, size). `test/an
 lines; rebuilding from the same CommandAGI checkout gives the same bytes.
 
 ```
+93ae321eb7c9baf2c7d7b71138495f58c002257bc134e1db05c4c8efca02e47c  vendor/semaphore/identity.js  (84,773 bytes)
 34de0c1c43faebbe6737a3ecd2aae49450795dfd4b3147f992accb998c0563db  vendor/semaphore/semaphore.js  (454,575 bytes)
 70289ef3bdfa86e97debdb227e76721b392f45b5e73d5e7136d93a04dce0dff9  vendor/semaphore/artifacts/semaphore-1.wasm  (1,798,638 bytes)
 471a978875f91411b21ba5a2fbea41df30ec45eb23e3ac045edf7f30a2846a08  vendor/semaphore/artifacts/semaphore-1.zkey  (1,552,601 bytes)
@@ -96,7 +98,7 @@ d77851ee4bd496c6b5f70fbfa550f113a89bad972efd4c541267e566163d0600  vendor/semapho
 d02521afe7133a97421244374d4bc005c1ebd7d7cf7c51e88b7e99fdaf183146  vendor/semaphore/artifacts/semaphore-8.zkey  (2,231,251 bytes)
 ```
 
-Total: 30,192,161 bytes in 17 files (28.8 MiB). The largest file is
+Total: 30,276,934 bytes in 18 files (28.9 MiB). The largest file is
 2,231,251 bytes, under the host's 25 MB per file.
 
 ## the depths

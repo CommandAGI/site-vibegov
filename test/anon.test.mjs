@@ -109,7 +109,7 @@ test('the depth: a tree proves from its own depth’s files, and a deeper tree t
 
 test('the vendored files are the ones LICENSES.md records, byte for byte', () => {
   const lic = String(read('vendor/semaphore/LICENSES.md'));
-  const files = ['semaphore.js', ...Array.from({ length: A.MAX_DEPTH }, (_, i) => [`artifacts/semaphore-${i + 1}.wasm`, `artifacts/semaphore-${i + 1}.zkey`]).flat()];
+  const files = ['identity.js', 'semaphore.js', ...Array.from({ length: A.MAX_DEPTH }, (_, i) => [`artifacts/semaphore-${i + 1}.wasm`, `artifacts/semaphore-${i + 1}.zkey`]).flat()];
   for (const f of files) {
     const h = createHash('sha256').update(read(`vendor/semaphore/${f}`)).digest('hex');
     assert.ok(lic.includes(`${h}  vendor/semaphore/${f}`), `${f}: its sha256 is recorded (rerun redesign/vendor-semaphore.mjs and copy what it prints)`);
@@ -118,12 +118,14 @@ test('the vendored files are the ones LICENSES.md records, byte for byte', () =>
     assert.ok(lic.includes(`| ${name} | ${version} | ${licence} |`), `${name} ${version} ${licence}`);
 });
 
-test('the prover is never loaded with a page: only an act imports it', () => {
+test('the prover is never loaded with a page: only an act imports it; keeping an identity needs no WebAssembly', () => {
   const src = String(read('anon.js'));
   const imports = [...src.matchAll(/^import .* from '([^']+)';$/gm)].map(m => m[1]);
   assert.deepEqual(imports, ['./live.js', './contract-words.js'], 'anon.js imports no prover at load');
   for (const page of ['rfc.html', 'rfcs.html', 'index.html', 'record.html']) assert.ok(!String(read(page)).includes('vendor/semaphore'), `${page} does not load the prover`);
   assert.ok(!String(read('rfc.js')).includes('vendor/'), 'rfc.js reaches the prover only through anon.js');
+  assert.ok(!String(read('vendor/semaphore/identity.js')).includes('WebAssembly'), 'identity.js compiles nothing: the desk’s CSP admits it');
+  assert.ok(String(read('vendor/semaphore/semaphore.js')).includes('WebAssembly'));
 });
 
 test('the identity: a saved file loads back, here and in the editor’s format; a changed file is refused', async () => {
@@ -134,7 +136,7 @@ test('the identity: a saved file loads back, here and in the editor’s format; 
   assert.deepEqual(Object.keys(JSON.parse(text)), ['kind', 'version', 'privateKey', 'commitment', 'createdAt'], 'the editor’s IdentityFile');
   assert.equal((await A.parseIdentityFile(text)).commitment, rec.commitment);
   const { Identity } = await A.loadProver();
-  assert.equal(Identity.import(rec.privateKey).commitment.toString(), rec.commitment, 'the key is the identity');
+  assert.equal(Identity.import(rec.privateKey).commitment.toString(), rec.commitment, 'the key is the identity, to the prover too');
   assert.equal(await A.parseIdentityFile(text.replace(rec.commitment, '12345')), null, 'a commitment that is not the key’s');
   assert.equal(await A.parseIdentityFile(JSON.stringify({ ...JSON.parse(text), kind: 'other' })), null);
   assert.equal(await A.parseIdentityFile('not json'), null);
