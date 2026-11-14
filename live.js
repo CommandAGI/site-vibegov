@@ -196,7 +196,7 @@ export function renderJudgments(judgments, now) {
     .map(j => {
       const last = (j.judgments ?? []).at(-1) ?? null;
       const claimed = (j.harms ?? []).reduce((a, h) => a + (Number(h.amountCents) || 0), 0);
-      return `<li><span class="verdict">${esc(j.stage ?? '')}</span> ${esc(j.dutyTitle ?? j.id)}${j.criminal ? ' (criminal)' : ''} · ${money(claimed)} claimed${last?.outcome ? ` · <b>${esc(last.outcome)}</b>` : ''}${last?.at ? ` <span class="note">${time(last.at, now)}</span>` : ''} <a href="${esc(editorHref('case', j.id))}">Follow</a></li>`;
+      return `<li><span class="verdict">${esc(j.stage ?? '')}</span> ${esc(j.dutyTitle ?? j.id)}${j.criminal ? ' (criminal)' : ''} · ${money(claimed)} claimed${last?.outcome ? ` · <b>${esc(last.outcome)}</b>` : ''}${last?.at ? ` <span class="note">${time(last.at, now)}</span>` : ''} <a href="case.html?id=${encodeURIComponent(j.id)}">Read</a></li>`;
     })
     .join('')}</ol>`;
 }

@@ -564,3 +564,10 @@ test('nothing on the site moves for show: no keyframes, no twinkle, no pointer g
   assert.doesNotMatch(read('scene.js'), /uTime|scrollY/, 'the stars do not twinkle or follow the scroll');
   assert.doesNotMatch(read('figures.js') + read('page.js'), /pointermove|replay/i);
 });
+
+test('a judgment in the public list links to its case page on this site', () => {
+  const html = L.renderJudgments([{ id: 'case_<1>', stage: 'final', dutyTitle: 'Give <notice>', criminal: false, harms: [{ amountCents: 12_500 }], judgments: [{ outcome: 'liable', at: NOW - 86_400_000 }] }], NOW);
+  assert.match(html, /Give &lt;notice&gt; · \$125\.00 claimed · <b>liable<\/b>/, 'the duty is text, the money exact');
+  assert.match(html, /<a href="case\.html\?id=case_%3C1%3E">Read<\/a>/);
+  assert.match(L.renderJudgments([], NOW), /No judgment yet/);
+});
