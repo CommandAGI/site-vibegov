@@ -148,6 +148,12 @@ test('account: the name and email escaped, and signing out', () => {
   assert.match(html, /href="#anonymous"/);
 });
 
+// Found by test/journeys.py (journey 7): file.html asks for the respondent's account id, and no page showed a person theirs.
+test('account: the account id is shown, to give to someone who files a case or makes an offer', () => {
+  const html = renderAccount({ id: 'c76f5f6e-<x>', name: 'Ada', email: 'ada@example.com' });
+  assert.match(html, /<dt>Account id<\/dt><dd><code>c76f5f6e-&lt;x&gt;<\/code><\/dd>/);
+});
+
 test('the pages\' frames: the CSP, one module each, no inline script, the contents line', () => {
   const CONTENTS = ['index.html', 'record.html', 'contract.html', 'rfcs.html', 'cases.html', 'credit.html'];
   for (const page of ['signin.html', 'desk.html']) {

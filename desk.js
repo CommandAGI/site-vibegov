@@ -181,7 +181,7 @@ export function checkoutWords(code) {
 
 /** The account (`GET /users/:id` of `GET /me`): its name and email, and signing out. */
 export function renderAccount(user) {
-  const rows = user ? `<dl class="kv"><dt>Name</dt><dd>${esc(user.name || '—')}</dd><dt>Email</dt><dd>${esc(user.email || '—')}</dd></dl>` : `<p class="refusal">Your account could not be read.</p>`;
+  const rows = user ? `<dl class="kv"><dt>Name</dt><dd>${esc(user.name || '—')}</dd><dt>Email</dt><dd>${esc(user.email || '—')}</dd><dt>Account id</dt><dd><code>${esc(user.id || '—')}</code></dd></dl><p class="note">Give the account id to someone who files a case against you or for you, or offers you a facility’s units: the contract names a party by it.</p>` : `<p class="refusal">Your account could not be read.</p>`;
   return rows
     + `<p class="note">This is your CommandAGI account. VibeGov acts with your own token and for nobody else; signing out takes that token back.</p>`
     + `<div class="form__act"><button type="button" class="btn small" data-signout>Sign out</button><a href="#anonymous">About anonymous voice</a></div>`;
