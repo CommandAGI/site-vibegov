@@ -1,0 +1,71 @@
+/* propose.html only: what a legislative form needs beyond style.css § the signed-in pages. No motion. */
+.propose__cols { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; }
+.propose__main .form { max-width: none; }
+.propose__side { position: sticky; top: 5rem; }
+.propose__side > section { border-bottom: 0; }
+.propose .btn::after { transition: none; }
+
+/* a reference to the kernel, as an article's number stands in the contract's margin */
+.ref { display: inline-block; margin-right: 0.35rem; padding: 0 0.35rem; border: 1px solid color-mix(in oklab, var(--sun) 55%, transparent); color: var(--sun); font: 500 0.7rem/1.5 var(--mono); letter-spacing: 0.04em; vertical-align: 0.08em; }
+.kernel { margin: 0; color: var(--muted); font-size: 0.92rem; }
+.kernel q { font-family: var(--serif); color: var(--ink); quotes: "“" "”"; }
+.field .label, .field > legend { font: 600 0.78rem var(--sans); letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); padding: 0; }
+fieldset.field { border: 0; margin: 0; padding: 0; min-width: 0; }
+
+/* choices: square boxes, a label beside each */
+.choices { display: grid; gap: 0.5rem; }
+.choice, .check { display: inline-flex; align-items: center; gap: 0.55rem; cursor: pointer; }
+.choice { padding: 0.55rem 0.8rem; border: 1px solid rgb(255 255 255 / 0.22); }
+.choice:has(input:checked) { border-color: var(--sun); }
+.choice input, .check input { accent-color: var(--sun); width: 1.05rem; height: 1.05rem; margin: 0; flex: none; }
+.checks { display: flex; flex-wrap: wrap; gap: 0.45rem 1.25rem; }
+.check:has(input:disabled) { cursor: default; color: var(--muted); }
+.choice input:focus-visible, .check input:focus-visible { outline: 2px solid var(--sun); outline-offset: 2px; }
+
+/* an option, and each change in it */
+.option { gap: 1.1rem; }
+.option > legend { color: var(--sun); }
+.change { display: grid; gap: 1rem; margin: 0; padding: 1rem 0 0; border: 0; border-top: 1px solid var(--rule); min-width: 0; }
+.pair { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 1rem; align-items: start; }
+.reads { padding: 0.6rem 0.8rem; border-left: 2px solid var(--sun); background: var(--shade); font-size: 0.95rem; }
+.reads p { margin: 0; }
+.reads b { font: 600 0.72rem var(--sans); letter-spacing: 0.06em; text-transform: uppercase; color: var(--sun); margin-right: 0.4rem; }
+.reads .now { color: var(--muted); margin-top: 0.2rem; font-size: 0.9rem; }
+.change__act { display: flex; }
+.field textarea.code { font: 400 0.82rem/1.5 var(--mono); min-height: 16rem; }
+.field .hint .btn { margin-top: 0.6rem; }
+
+/* the question as the people asked will read it */
+.ballot__title { font: 520 1.25rem/1.25 var(--serif); margin: 0 0 0.25rem; overflow-wrap: anywhere; }
+.ballot__title--none { color: var(--muted); font-style: italic; }
+.ballot { list-style: none; margin: 1rem 0 0; padding: 0; border-top: 1px solid var(--rule); }
+.ballot > li { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.2rem; padding: 0.75rem 0; border-bottom: 1px solid var(--rule); }
+.ballot .opt { font: 500 0.72rem var(--mono); color: var(--muted); letter-spacing: 0.03em; overflow-wrap: anywhere; }
+.ballot b { font-weight: 600; overflow-wrap: anywhere; }
+.ballot small { display: block; color: var(--muted); font-size: 0.88rem; overflow-wrap: anywhere; }
+.ballot ol { margin: 0.35rem 0 0; padding-left: 1.2rem; font-size: 0.93rem; }
+.ballot ol li { overflow-wrap: anywhere; }
+
+/* refusals said before the act, and the act's own */
+.refused summary { cursor: pointer; color: var(--act); font-weight: 550; }
+.refused ul { margin: 0.6rem 0 0; padding-left: 1.2rem; color: var(--muted); font-size: 0.93rem; }
+.refused code, .refusal code { color: var(--muted); font-size: 0.78rem; }
+.refusal__head { margin: 0 0 0.4rem; font-weight: 600; }
+.refusal li { margin-top: 0.2rem; }
+.refusal__detail { color: var(--ink); opacity: 0.8; font-size: 0.86rem; }
+.propose__open .kv { margin-bottom: 1.5rem; }
+.propose__open .kv dd { max-width: 46rem; }
+.propose__open .refusal, .propose__open .done { margin-bottom: 1.25rem; max-width: 46rem; }
+.propose__open .form__act .hint { margin: 0; }
+.kept { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin: 0 0 1rem; }
+#law-state:empty { display: none; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+@media (max-width: 64rem) {
+  .propose__cols { grid-template-columns: minmax(0, 1fr); }
+  .propose__side { position: static; }
+}
+@media (max-width: 40rem) {
+  .pair { grid-template-columns: minmax(0, 1fr); }
+  .fieldset.option { padding: 0.9rem 0.8rem 1rem; }
+}
