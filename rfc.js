@@ -414,10 +414,10 @@ async function start() {
 <div>
 <section aria-labelledby="h-about"><h2 id="h-about">The proposal</h2><p class="prose">${esc(view.rfc.body)}</p></section>
 <section aria-labelledby="h-options"><h2 id="h-options">Options</h2>${renderOptions(view.rfc.options)}</section>
+<section aria-labelledby="h-you"><h2 id="h-you">Your response</h2><div data-slot="panel"></div></section>
 </div>
 <aside>
 <section aria-labelledby="h-facts"><h2 id="h-facts">Facts</h2>${renderFacts(view, now)}</section>
-<section aria-labelledby="h-you"><h2 id="h-you">Your response</h2><div data-slot="panel"></div></section>
 </aside>
 </div>
 <section aria-labelledby="h-tally"><h2 id="h-tally">${view.tally ? 'Tally' : 'Responses'}</h2>${renderTally(view, now)}</section>
