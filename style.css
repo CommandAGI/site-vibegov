@@ -551,6 +551,60 @@ body:not(.home, .open) .sheet { background: rgb(4 6 11 / 0.80); border-inline: 1
   .part__body { padding-left: 0.25rem; }
 }
 
+/* ---------- the signed-in pages (redesign/APP.md): a desk, not a show. No motion. ---------- */
+.desk { max-width: 76rem; margin: 0 auto; padding: clamp(2rem, 6vh, 4rem) var(--gutter) clamp(3rem, 8vh, 5rem); }
+.desk--narrow { max-width: 34rem; }
+.desk__head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1rem 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--rule); margin-bottom: clamp(1.5rem, 4vh, 2.5rem); }
+.desk__head h1 { font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.02; letter-spacing: -0.03em; }
+.desk__head p { margin: 0.6rem 0 0; color: var(--muted); max-width: 40rem; }
+.desk section { padding-block: clamp(1.25rem, 3vh, 2rem); border-bottom: 1px solid var(--rule); }
+.desk section:last-child { border-bottom: 0; }
+.desk section > h2 { font: 500 0.78rem var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--sun); margin: 0 0 1rem; }
+.desk h3 { font: 520 1.3rem/1.2 var(--serif); letter-spacing: -0.015em; margin: 0 0 0.4rem; }
+.desk p { max-width: 44rem; }
+.cols { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; }
+/* rows of a list: a proposal, a case, a notice. One line each, a reference at the left, a state at the right. */
+.rows { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+.rows > li { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr) auto; gap: 0.25rem 1.25rem; align-items: baseline; padding: 0.9rem 0.25rem; border-bottom: 1px solid var(--rule); }
+.rows > li > span:first-child { font: 500 0.76rem var(--mono); color: var(--muted); letter-spacing: 0.03em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rows a { color: var(--ink); text-decoration: none; font-weight: 550; }
+.rows a:hover { text-decoration: underline; text-decoration-color: var(--sun); }
+.rows small { display: block; font-size: 0.86rem; color: var(--muted); font-weight: 400; margin-top: 0.15rem; }
+.state { display: inline-block; padding: 0.1rem 0.5rem; border: 1px solid var(--rule); font: 500 0.72rem var(--mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.state--open, .state--yours { border-color: color-mix(in oklab, var(--sun) 60%, transparent); color: var(--sun); }
+.state--done { border-color: color-mix(in oklab, var(--ok) 50%, transparent); color: var(--ok); }
+.state--bad { border-color: color-mix(in oklab, var(--bad) 50%, transparent); color: var(--bad); }
+/* forms: square fields, a label above each, a hint under it, the refusal beside the act */
+.form { display: grid; gap: 1.1rem; max-width: 40rem; }
+.field { display: grid; gap: 0.35rem; }
+.field > label, .field > legend, .fieldset > legend { font: 600 0.78rem var(--sans); letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); padding: 0; }
+.field input, .field select, .field textarea { width: 100%; min-height: 2.75rem; padding: 0.6rem 0.8rem; border: 1px solid rgb(255 255 255 / 0.22); border-radius: 0; background: rgb(4 6 11 / 0.6); color: var(--ink); font: 400 1rem/1.5 var(--sans); }
+.field textarea { min-height: 7rem; resize: vertical; }
+.field input:focus-visible, .field select:focus-visible, .field textarea:focus-visible { outline: 2px solid var(--sun); outline-offset: 0; border-color: transparent; }
+.field input[aria-invalid="true"], .field textarea[aria-invalid="true"] { border-color: var(--bad); }
+.field .hint { font-size: 0.86rem; color: var(--muted); margin: 0; }
+.fieldset { border: 1px solid var(--rule); padding: 1rem 1.1rem 1.1rem; margin: 0; display: grid; gap: 1rem; min-width: 0; }
+.fieldset > legend { padding: 0 0.5rem; }
+.form__act { display: flex; flex-wrap: wrap; align-items: center; gap: 0.9rem 1.25rem; }
+button.btn { font-family: var(--sans); }
+button.btn:disabled { opacity: 0.5; cursor: default; }
+.refusal { margin: 0; padding: 0.7rem 0.9rem; border: 1px solid color-mix(in oklab, var(--bad) 55%, transparent); color: var(--bad); font-size: 0.95rem; }
+.refusal ul { margin: 0; padding-left: 1.1rem; }
+.done { margin: 0; padding: 0.7rem 0.9rem; border: 1px solid color-mix(in oklab, var(--ok) 50%, transparent); color: var(--ok); font-size: 0.95rem; }
+.kv { display: grid; grid-template-columns: minmax(8rem, 14rem) minmax(0, 1fr); gap: 0.5rem 1.5rem; margin: 0; }
+.kv dt { font: 600 0.78rem var(--sans); letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); padding-top: 0.15rem; }
+.kv dd { margin: 0; overflow-wrap: anywhere; }
+.tabs { display: flex; flex-wrap: wrap; gap: 0 1.5rem; border-bottom: 1px solid var(--rule); margin: 0 0 1.5rem; padding: 0; list-style: none; }
+.tabs a, .tabs button { display: block; padding: 0.6rem 0; background: none; border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; color: var(--muted); font: 550 0.95rem var(--sans); text-decoration: none; cursor: pointer; }
+.tabs [aria-current], .tabs [aria-selected="true"] { color: var(--ink); border-bottom-color: var(--sun); }
+@media (max-width: 56rem) {
+  .cols { grid-template-columns: minmax(0, 1fr); }
+  .rows > li { grid-template-columns: minmax(0, 1fr) auto; }
+  .rows > li > span:first-child { grid-column: 1 / -1; }
+  .kv { grid-template-columns: minmax(0, 1fr); gap: 0.1rem; }
+  .kv dd { margin-bottom: 0.6rem; }
+}
+
 /* ---------- narrow screens ---------- */
 @media (max-width: 64rem) {
   :root { --margin: 3rem; }
