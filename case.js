@@ -165,7 +165,7 @@ function partyHead(view, now) {
     c.family !== c.id ? `<span class="state">${esc(t('reopening', { id: String(c.family).slice(0, 12) }))}</span>` : '',
     c.expedited ? `<span class="state">${esc(t('expedited'))}</span>` : '',
   ].join('');
-  return `<header class="desk__head"><div><p class="ref-line">Case <span title="${esc(c.id)}">${esc(c.id)}</span></p><h1>${esc(f.act.description)}</h1><p class="parties">${esc(t('parties', { claimant: f.claimant, respondent: f.respondent }))}</p>${f.filedFor ? `<p class="note">${esc(t('filedFor', { person: f.filedFor }))}</p>` : ''}<div class="states">${states}</div></div><a class="btn small quiet" href="cases.html">All cases</a></header>`;
+  return `<header class="desk__head"><div><p class="ref-line">Case <span title="${esc(c.id)}">${esc(c.id)}</span></p><h1 class="case-title">${esc(f.act.description)}</h1><p class="parties">${esc(t('parties', { claimant: f.claimant, respondent: f.respondent }))}</p>${f.filedFor ? `<p class="note">${esc(t('filedFor', { person: f.filedFor }))}</p>` : ''}<div class="states">${states}</div></div><a class="btn small quiet" href="cases.html">All cases</a></header>`;
 }
 
 /** Where the case stands and until when: the editor's lines, in the catalog's words. */
@@ -184,7 +184,7 @@ function standsHtml(view, now) {
     esc(t('stakes', { amount: money(caseStakesCents(c)) })),
     esc(t('deposits', { claimant: money(c.deposits.claimant), respondent: money(c.deposits.respondent), costs: money(c.costCents) })),
   ].filter(Boolean);
-  return `<p class="${clock.act === 'wait' ? 'note' : 'warn'}"><b>${runs}</b></p><ul class="lines">${lines.map(l => `<li>${l}</li>`).join('')}</ul><p class="note">${esc(t('noHuman'))}</p>`;
+  return `<p class="${clock.act === 'wait' ? 'note' : 'warn'}"><b>${runs.charAt(0).toUpperCase()}${runs.slice(1)}</b></p><ul class="lines">${lines.map(l => `<li>${l}</li>`).join('')}</ul><p class="note">${esc(t('noHuman'))}</p>`;
 }
 
 /** Everything a party reads of a case but the acts. */
@@ -252,8 +252,8 @@ export function actionsHtml(view, law, ui, now) {
         ? ['k6', esc('The respondent has not been served yet. What you add now is in the record they will be served with.')]
         : ['k7', c.evidenceDue ? `${say(t, 'evidenceDue', { when: at(c.evidenceDue, now) })}. Then the seats decide on the record as it stands.` : esc('Then the seats decide on the record as it stands.')];
     const figures = a.figures
-      ? `<div class="field"><p class="hint">${esc(ca('figuresNote'))}</p><div class="figures">${c.filing.harms
-          .map(h => `<div class="figure"><label for="fig-${esc(h.id)}"><code>${esc(h.id)}</code></label><input id="fig-${esc(h.id)}" data-figure="${esc(h.id)}" inputmode="decimal" placeholder="0.00" autocomplete="off" value="${esc(ui.figures[h.id] ?? '')}" aria-label="${esc(ca('figureFor', { id: h.id }))}"${centsOf(ui.figures[h.id] ?? '') === null && (ui.figures[h.id] ?? '').trim() ? ' aria-invalid="true"' : ''}><p class="hint">${esc(`Claimed ${money(h.amountCents)}`)}</p></div>`)
+      ? `<div class="field"><p class="hint">${esc(ca('figuresNote'))}</p><div class="offers">${c.filing.harms
+          .map(h => `<div class="offer"><label for="fig-${esc(h.id)}"><code>${esc(h.id)}</code></label><input id="fig-${esc(h.id)}" data-figure="${esc(h.id)}" inputmode="decimal" placeholder="0.00" autocomplete="off" value="${esc(ui.figures[h.id] ?? '')}" aria-label="${esc(ca('figureFor', { id: h.id }))}"${centsOf(ui.figures[h.id] ?? '') === null && (ui.figures[h.id] ?? '').trim() ? ' aria-invalid="true"' : ''}><p class="hint">${esc(`Claimed ${money(h.amountCents)}`)}</p></div>`)
           .join('')}</div></div>`
       : '';
     blocks.push(`<form class="act" data-act="evidence" novalidate><h3>${esc(answer ? ca('answer') : ca('addEvidence'))}${art('k7')}</h3>
@@ -300,8 +300,8 @@ export function partyHtml(view, law, ui, now) {
 
 /** Anyone else's view: the public projection only (k11), and why. */
 export function publicHtml(pc, now) {
-  return `<header class="desk__head"><div><p class="ref-line">Case <span title="${esc(pc.id)}">${esc(pc.id)}</span></p><h1>${esc(t('publicTitle', { claimant: pc.claimant, respondent: pc.respondent }))}</h1><div class="states"><span class="state">${esc(stageWords(pc.stage))}</span><span class="state">${esc(pc.criminal ? t('criminal') : t('civil'))}</span></div></div><a class="btn small quiet" href="cases.html">All cases</a></header>
-${section('public-title', 'The public record', `<p class="warn"><b>You are not a party to this case.</b> You see its public record only: its evidence and its proceedings are seen by its parties alone (k11).</p><p class="note">${esc(t('publicNote'))}</p>${pc.dutyTitle ? `<h3>${esc(pc.dutyTitle)}</h3>` : ''}<ul class="lines">${(pc.harms ?? []).map(h => `<li>${esc(t('harmItem', { id: h.id, interest: hasWords('interests', h.interest) ? it(h.interest) : h.interest, amount: money(h.amountCents) }))}</li>`).join('')}</ul><ul class="lines">${[say(t, 'filed', { when: at(pc.filedAt, now) }), pc.servedAt ? say(t, 'served', { when: at(pc.servedAt, now) }) : '', pc.closedReason ? esc(t('closed', { reason: pc.closedReason })) : ''].filter(Boolean).map(l => `<li>${l}</li>`).join('')}</ul><p><a href="cases.html">Every case’s public judgment is on the cases page.</a></p>`, 'k11')}
+  return `<header class="desk__head"><div><p class="ref-line">Case <span title="${esc(pc.id)}">${esc(pc.id)}</span></p><h1 class="case-title">${esc(t('publicTitle', { claimant: pc.claimant, respondent: pc.respondent }))}</h1><div class="states"><span class="state">${esc(stageWords(pc.stage))}</span><span class="state">${esc(pc.criminal ? t('criminal') : t('civil'))}</span></div></div><a class="btn small quiet" href="cases.html">All cases</a></header>
+${section('public-title', 'The public record', `<p class="warn"><b>You are not a party to this case.</b> ${esc(t('publicNote'))}</p>${pc.dutyTitle ? `<h3>${esc(pc.dutyTitle)}</h3>` : ''}<ul class="lines">${(pc.harms ?? []).map(h => `<li>${esc(t('harmItem', { id: h.id, interest: hasWords('interests', h.interest) ? it(h.interest) : h.interest, amount: money(h.amountCents) }))}</li>`).join('')}</ul><ul class="lines">${[say(t, 'filed', { when: at(pc.filedAt, now) }), pc.servedAt ? say(t, 'served', { when: at(pc.servedAt, now) }) : '', pc.closedReason ? esc(t('closed', { reason: pc.closedReason })) : ''].filter(Boolean).map(l => `<li>${l}</li>`).join('')}</ul><p><a href="cases.html">Every case’s public judgment is on the cases page.</a></p>`, 'k11')}
 ${section('public-judgments', t('judgmentsTitle'), (pc.judgments ?? []).length ? pc.judgments.map(j => judgmentHtml(j, j.instance, now)).join('') : `<p class="empty">${esc(t('noJudgment'))}</p>`, 'k7')}`;
 }
 

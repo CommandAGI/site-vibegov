@@ -117,7 +117,7 @@ export function renderMyCases(rows, clocks, me, now) {
       const clock = clocks.get(r.id);
       const due = clock && clock.act !== 'wait';
       const line = [stageWords(r.stage), r.criminal ? t('criminal') : t('civil'), t('filed', { when: date(r.filedAt) })].join(' · ');
-      return `<li><span title="${esc(r.id)}">${esc(String(r.id).slice(0, 10))}</span><span><a href="case.html?id=${encodeURIComponent(r.id)}">${esc(title)}</a><small>${esc(line)}</small>${clock ? `<small${due ? ' class="warn"' : ''}>${esc(clockWords(clock, now))}</small>` : ''}</span><span class="state${due ? ' state--yours' : ''}">${esc(role === 'claimant' ? needs('roleClaimant') : needs('roleRespondent'))}</span></li>`;
+      return `<li><span title="${esc(r.id)}">${esc(String(r.id).slice(0, 10))}</span><span><a href="case.html?id=${encodeURIComponent(r.id)}">${esc(title)}</a><small>${esc(line)}</small>${due ? `<small class="warn">${esc(clockWords(clock, now))}</small>` : ''}</span><span class="state${due ? ' state--yours' : ''}">${esc(role === 'claimant' ? needs('roleClaimant') : needs('roleRespondent'))}</span></li>`;
     })
     .join('')}</ul>`;
 }

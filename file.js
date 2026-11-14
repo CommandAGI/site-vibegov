@@ -227,7 +227,7 @@ export function formHtml(d, ctx) {
   return `<p class="note">${esc(t('note'))}</p>
 <section aria-labelledby="part-1">${head(1, 'The parties', 'k6')}
 ${field('f-respondent', esc(t('respondent')), input('f-respondent', 'respondent', d.respondent, 'autocomplete="off" spellcheck="false" required'), 'The account id of the one who owed the duty. They are served before anything is decided.')}
-${field('f-filedfor', esc(t('filedFor')), input('f-filedfor', 'filedFor', d.filedFor, `autocomplete="off" spellcheck="false" placeholder="${esc(t('filedForHint'))}"`), esc(`The account id of ${t('filedForHint')}. You file; they are the harmed party.`))}
+${field('f-filedfor', esc(t('filedFor')), input('f-filedfor', 'filedFor', d.filedFor, 'autocomplete="off" spellcheck="false"'), esc(`The account id of ${t('filedForHint')}. You file; they are the harmed party.`))}
 </section>
 <section aria-labelledby="part-2">${head(2, 'Civil or criminal', 'k7')}
 <fieldset class="choice" aria-label="Civil or criminal">${radio('criminal', 'criminal', 'civil', esc(t('civil')), !d.criminal)}${radio('criminal', 'criminal', 'criminal', esc(t('criminal')), d.criminal)}</fieldset>
@@ -256,7 +256,7 @@ ${field('f-evidence', esc(t('evidence')), `<textarea id="f-evidence" data-k="evi
 ${d.media.length ? `<ul class="attached">${d.media.map((m, i) => `<li><span>${esc(md(`modality.${m.modality}`))}</span><span>${esc(m.label ?? m.sha256.slice(0, 12))}</span><code>${esc(m.sha256.slice(0, 12))}</code><button class="btn small quiet" type="button" data-do="remove-media" data-i="${i}">${esc(md('remove'))}</button></li>`).join('')}</ul>` : ''}
 <div class="attach-row"><label class="btn small" for="f-media">${esc(ctx.uploading ? md('uploading') : md('attach'))}</label><input class="vh" id="f-media" type="file" accept="image/*,audio/*" multiple${ctx.uploading ? ' disabled' : ''}></div>
 ${refusalsHtml(ctx.mediaRefusals)}</div>
-${field('f-reopens', esc(t('reopens')), input('f-reopens', 'reopens', d.reopens, `autocomplete="off" spellcheck="false" placeholder="${esc(t('reopensHint'))}"`), esc(`A case id: ${t('reopensHint')} (k6).`))}
+${field('f-reopens', esc(t('reopens')), input('f-reopens', 'reopens', d.reopens, 'autocomplete="off" spellcheck="false"'), esc(`A case id: ${t('reopensHint')} (k6).`))}
 </section>
 <section aria-labelledby="part-8">${head(8, 'File', '')}
 <div id="problems">${problemsHtml(problemsOf(d, ctx.limits))}</div>
