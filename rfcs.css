@@ -1,7 +1,7 @@
 /* The proposal pages (rfcs.html, rfc.html). Small additions to style.css § the signed-in pages; no motion. */
 .desk__act { display: grid; gap: 0.5rem; justify-items: start; max-width: 22rem; }
 .desk__act .note { margin: 0; }
-.desk h2.group { font: 500 0.78rem var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--sun); margin: 0 0 1rem; }
+.desk h2.group { font: 500 1.3rem/1.2 var(--serif); letter-spacing: -0.01em; color: var(--ink); margin: 0 0 1rem; }
 .desk .rows .marks { display: flex; flex-wrap: wrap; gap: 0.35rem; justify-content: flex-end; }
 .desk .rows small time { white-space: nowrap; }
 .prose { white-space: pre-wrap; max-width: 44rem; overflow-wrap: anywhere; }

@@ -8,19 +8,17 @@
 <title>File a case · VibeGov</title>
 <meta name="description" content="File a case under the Coordination Contract: the respondent, the act, the duty, the harm and the remedies you ask for.">
 <link rel="canonical" href="https://vibegov.pro/file.html">
-<meta name="theme-color" content="#04060b">
+<meta name="theme-color" content="#f7f4ed">
 <link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="cases.css">
 <link rel="icon" href="mark.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script src="gov.js" defer></script>
-<script type="module" src="scene.js"></script>
 <script type="module" src="shell.js"></script>
 <script type="module" src="file.js"></script>
 </head>
 <body class="open">
-<canvas id="sky" aria-hidden="true"></canvas>
 <a class="skip" href="#main">Skip to the content</a>
 <header class="runhead">
   <div class="runhead__in">
@@ -41,12 +39,12 @@
     <div class="cols">
       <form class="form" id="case-form" aria-busy="true" novalidate>
         <noscript><p class="empty">This form needs JavaScript.</p></noscript>
-        <p class="note">Reading the law…</p>
+        <p class="note loading">Reading the law…</p>
       </form>
       <aside aria-labelledby="law-title">
         <section>
           <h2 id="law-title">The law in force</h2>
-          <div id="law" aria-busy="true"><p class="note">Reading the law’s parameters…</p></div>
+          <div id="law" aria-busy="true"><p class="note loading">Reading the law’s parameters…</p></div>
           <p class="note">The figures of the contract’s current law, read from <code>/public/contract</code>. The kernel’s articles k6 to k9 bound them; <a href="contract.html#k6">read them</a>.</p>
         </section>
       </aside>
@@ -55,22 +53,7 @@
 </main>
 
 <footer class="site-foot">
-  <div class="wrap">
-    <img class="seal-mark" src="mark.svg" alt="" width="40" height="40">
-    <nav aria-label="Footer">
-      <a href="record.html">The record</a>
-      <a href="contract.html">The contract</a>
-      <a href="join.html">Take part</a>
-      <a href="rfcs.html">Proposals</a>
-      <a href="cases.html">Cases</a>
-      <a href="credit.html">Credit</a>
-      <a href="papers/coordination-contract.pdf">The paper (PDF)</a>
-      <a href="https://commandagi.com/">CommandAGI</a>
-      <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>
-    </nav>
-    <p class="colophon">Every figure on this site is read from the contract's public record at api.commandagi.com.</p>
-    <p>© 2026 VibeGov · a company of CommandAGI</p>
-  </div>
+  <p>© 2026 VibeGov, a company of CommandAGI · <a href="record.html">The record</a> · <a href="contract.html">The contract</a> · <a href="papers/coordination-contract.pdf">The paper</a> · <a href="legal.html">About this site</a> · <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a></p>
 </footer>
 </body>
 </html>

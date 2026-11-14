@@ -149,7 +149,7 @@ test('the frame: CSP, one module, no inline script, the contents line, its own s
   for (const rule of ["default-src 'self'", "script-src 'self'", "connect-src 'self' https://api.commandagi.com;", "form-action 'none'"]) assert.ok(csp.includes(rule), rule);
   assert.match(html, /<meta name="vibegov-api" content="https:\/\/api\.commandagi\.com">/);
   assert.match(html, /<link rel="canonical" href="https:\/\/vibegov\.pro\/propose\.html">/);
-  assert.deepEqual([...html.matchAll(/<script[^>]*>/g)].map(m => m[0]), ['<script src="gov.js" defer>', '<script type="module" src="scene.js">', '<script type="module" src="shell.js">', '<script type="module" src="propose.js">']);
+  assert.deepEqual([...html.matchAll(/<script[^>]*>/g)].map(m => m[0]), ['<script src="gov.js" defer>', '<script type="module" src="shell.js">', '<script type="module" src="propose.js">']);
   assert.ok(!/<script>[^<]|\son[a-z]+="/.test(html), 'no inline script or handler');
   const contents = html.match(/<nav id="contents"[\s\S]*?<\/nav>/)[0];
   assert.deepEqual([...contents.matchAll(/href="([^"]+)"/g)].map(m => m[1]), ['index.html', 'record.html', 'contract.html', 'rfcs.html', 'cases.html', 'credit.html']);

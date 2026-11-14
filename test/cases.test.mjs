@@ -299,7 +299,7 @@ for (const [page, title] of [['cases', 'Cases'], ['file', 'File a case'], ['case
     assert.ok(html.includes(`<link rel="canonical" href="https://vibegov.pro/${page}.html">`));
     const scripts = [...html.matchAll(/<script\b([^>]*)>/g)].map(m => m[1]);
     assert.ok(scripts.every(a => /\bsrc="/.test(a)), 'no inline script');
-    assert.deepEqual(scripts.filter(a => /type="module"/.test(a)).map(a => /src="([^"]+)"/.exec(a)[1]), ['scene.js', 'shell.js', `${page}.js`], 'one module of its own');
+    assert.deepEqual(scripts.filter(a => /type="module"/.test(a)).map(a => /src="([^"]+)"/.exec(a)[1]), ['shell.js', `${page}.js`], 'one module of its own');
     assert.doesNotMatch(html, /\son[a-z]+=/i, 'no inline handler');
     assert.ok(html.includes('<li><a href="cases.html" aria-current="page">Cases</a></li>'), 'the contents line marks Cases');
     assert.ok(html.includes('<link rel="stylesheet" href="cases.css">'));

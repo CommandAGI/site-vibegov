@@ -40,29 +40,6 @@ export function health(stats, now) {
 const tile = (label, value, words, cite) =>
   `<div class="tile"><dt>${esc(label)}</dt><dd><b>${value}</b><span>${words}</span><cite>${esc(cite)}</cite></dd></div>`;
 
-/** The figures of the front door. */
-export function renderFigures(s) {
-  const open = s.rfcs.byStatus.open ?? 0;
-  const decided = (s.rfcs.byStatus.adopted ?? 0) + (s.rfcs.byStatus.rejected ?? 0);
-  const working = sum(s.rfcs.byStatus) - open - decided;
-  const kinds = Object.entries(s.people.withVoice).filter(([, n]) => n > 0);
-  const persons = sum(s.people.withVoice);
-  const anon = sum(s.people.anonymousCommitments);
-  const cases = sum(s.cases.byStage);
-  const closedCases = ['final', 'duplicate', 'unprocessable'].reduce((a, k) => a + (s.cases.byStage[k] ?? 0), 0);
-  const facilities = sum(s.credit.facilitiesByState);
-  return `<dl class="tiles">${[
-    tile('Open RFCs', count(open), open ? `${count(working)} more being read or decided` : 'No RFC is open. Anyone may open one.', '§ RFCs'),
-    tile('RFCs decided', count(decided), decided ? `${count(s.rfcs.byStatus.adopted ?? 0)} adopted, ${count(s.rfcs.byStatus.rejected ?? 0)} kept the status quo` : 'None yet. The genesis law is in force.', '§ RFCs 5–7'),
-    tile('Responses counted', count(s.voices.confirmed), s.voices.confirmed ? `on ${count(s.voices.rfcsAnswered)} RFC${s.voices.rfcsAnswered === 1 ? '' : 's'}, each confirmed by its respondent` : 'No confirmed response yet.', '§ RFCs 2'),
-    tile('Persons with a voice', count(persons), persons ? esc(kinds.map(([k, n]) => `${count(n)} ${k}`).join(' · ')) : 'Nobody holds a voice yet. A human gets one with the identity check.', 'k2 · § people'),
-    tile('Anonymous identities', count(anon), anon ? 'registered for a zero-knowledge voice' : 'None registered. An anonymous voice counts once without saying whose.', '§ anonymous voice'),
-    tile('Cases', count(cases), cases ? `${count(cases - closedCases)} open · ${count(s.cases.judgments)} with a judgment` : 'No case has been filed.', 'k6 · k7 · § justice'),
-    tile('The pool', money(s.pool.balanceCents), s.pool.openClaims ? `${count(s.pool.openClaims)} open claims, ${money(s.pool.owedCents)} owed` : 'No open claim.', 'k9 · § the pool'),
-    tile('Credit open', money(s.credit.openCapitalCents), s.credit.openMandates || facilities ? `${count(s.credit.openMandates)} open mandates · ${count(facilities)} facilities` : 'No mandate is open.', '§ credit'),
-  ].join('')}</dl>`;
-}
-
 /**
  * The proposals as a row of cards: the open ones, soonest deadline first, each with the way to respond, then the
  * decided ones, then the way to open one. With none open or decided, the row is the path a proposal takes, with the
@@ -92,37 +69,6 @@ export function renderRfcStrip(s, now) {
   return `<ol class="strip">${[...open, ...decided, ...path, start].join('')}</ol>`;
 }
 
-export function renderDecided(s, now) {
-  if (!s.rfcs.decided.length) return '<p class="empty">No RFC has been decided yet.</p>';
-  return `<ol class="decided">${s.rfcs.decided
-    .map(r => `<li><span class="verdict verdict--${r.status === 'adopted' ? 'adopted' : 'kept'}">${r.status === 'adopted' ? 'Adopted' : 'Status quo kept'}</span> <a href="${esc(rfcHref(r.id))}">${esc(r.title)}</a> <span class="note">${r.decidedAt ? time(r.decidedAt, now) : ''}</span></li>`)
-    .join('')}</ol>`;
-}
-
-/** The record's own state: the log, the sweep, the anchor, the version in force. */
-export function renderLedger(s, now) {
-  const h = health(s, now);
-  const day = Object.entries(s.log.lastDay ?? {}).sort((a, b) => b[1] - a[1]);
-  const most = day[0]?.[1] ?? 0;
-  const a = s.anchor;
-  const anchored = a.last?.status === 'anchored';
-  const anchorWords = a.last
-    ? anchored
-      ? `Checkpoint ${count(a.last.seq)} is anchored on ${esc(a.last.cluster ?? 'chain')}${a.last.tx ? ` (<code title="${esc(a.last.tx)}">${esc(a.last.tx.slice(0, 10))}…</code>)` : ''}.`
-      : `The last checkpoint (${count(a.last.seq)}) is not anchored on chain${a.key ? '' : `: ${esc(a.detail ?? 'no anchor key')}`}.`
-    : 'No checkpoint yet.';
-  return `<div class="ledger">
-<p class="health health--${h.state}"><span class="dot" aria-hidden="true"></span>${esc(h.words)}</p>
-<dl class="facts">
-<div><dt>Log</dt><dd><b>${count(s.log.length)}</b> entries · the last ${s.log.headAt ? time(s.log.headAt, now) : 'never'} · head ${hash(s.log.headHash)}</dd></div>
-<div><dt>Anchor</dt><dd>${anchorWords} ${count(a.anchoredOfLast.anchored)} of the last ${count(a.anchoredOfLast.of)} checkpoints are anchored.${a.key ? ` Anchor key <code>${esc(a.key)}</code>.` : ''}</dd></div>
-<div><dt>Version</dt><dd>${s.contract ? `${count(s.contract.version)} · in force since ${esc(date(s.contract.effectiveAt))}${s.contract.rfcId ? ` by RFC <code>${esc(s.contract.rfcId)}</code>` : ' (the genesis)'}` : 'none'}</dd></div>
-<div><dt>Engine</dt><dd>${hash(s.contract?.engineHash)}</dd></div>
-</dl>
-${day.length ? `<figure class="kinds"><figcaption>Entries in the last 24 hours, by kind</figcaption><ul>${day.map(([k, n]) => `<li><span>${esc(k)}</span><i style="--w:${Math.max(2, Math.round((n / most) * 100))}%"></i><b>${count(n)}</b></li>`).join('')}</ul></figure>` : '<p class="empty">No entry in the last 24 hours.</p>'}
-</div>`;
-}
-
 const PARAMS = [
   ['lawRfcWindowMs', 'An RFC on the law is open for', duration],
   ['engineRfcWindowMs', 'An RFC on the engine is open for', duration],
@@ -142,29 +88,9 @@ export function renderParameters(s) {
   return `<dl class="params">${rows.map(([k, label, f]) => `<div><dt>${esc(label)}</dt><dd>${esc(f(s.parameters[k]))} <code>${esc(k)}</code></dd></div>`).join('')}</dl>`;
 }
 
-/** The kernel check's line: the hash the API claims, the one recomputed here, the one this site's text holds. */
-export function renderKernelCheck({ claimed, recomputed, pinned }) {
-  const ok = claimed && claimed === recomputed && (!pinned || pinned === recomputed);
-  const words = ok
-    ? `Recomputed in your browser from the kernel's twelve articles: it matches the ledger${pinned ? ' and this site\'s text' : ''}.`
-    : !claimed
-      ? 'The kernel could not be read.'
-      : claimed !== recomputed
-        ? 'The kernel the API serves does not hash to the hash it claims.'
-        : 'The ledger\'s kernel differs from the one this site renders.';
-  return `<p class="check check--${ok ? 'ok' : 'bad'}"><span class="dot" aria-hidden="true"></span><span>${esc(words)}</span> ${hash(recomputed ?? claimed, 16)}</p>`;
-}
-
 // ─── the record page ────────────────────────────────────────────────────────
 
 const STATUS = { open: 'Open', interpreting: 'Reading the responses', contest: 'Open to contest', deciding: 'Deciding', adopted: 'Adopted', rejected: 'Status quo kept' };
-
-export function renderRfcTable(rfcs, now) {
-  if (!rfcs.length) return `<p class="empty">No RFC has been opened. <a href="${PROPOSE}">Open the first one</a>.</p>`;
-  return `<div class="table-wrap" tabindex="0"><table><thead><tr><th>RFC</th><th>Target</th><th>Status</th><th>Opened</th><th>Closes</th></tr></thead><tbody>${rfcs
-    .map(r => `<tr><td><a href="${esc(rfcHref(r.id))}">${esc(r.title)}</a><br><code>${esc(r.id)}</code></td><td>${esc(r.target)}</td><td>${esc(STATUS[r.status] ?? r.status)}${r.adopted ? ` (<code>${esc(r.adopted)}</code>)` : ''}</td><td>${time(r.openedAt, now)}</td><td>${time(r.closesAt, now)}</td></tr>`)
-    .join('')}</tbody></table></div>`;
-}
 
 const SCORES = ['−2', '−1', '0', '+1', '+2'];
 const signed = n => (n > 0 ? `+${count(n)}` : n < 0 ? `−${count(-n)}` : '0');
@@ -255,38 +181,6 @@ export function countdown(ms) {
 /** A time that page.js words again each second: `data-at` for "4 seconds ago", `data-until` for a countdown. */
 const since = (at, now) => `<time datetime="${new Date(at).toISOString()}" title="${esc(date(at))}" data-at="${at}">${esc(relative(at, now))}</time>`;
 const until = (at, now) => `<span class="countdown" data-until="${at}" title="${esc(date(at))}">${esc(countdown(at - now))}</span>`;
-
-/** The vital signs: the ledger's height and its last entry, the next close, the decisions of this week, the voices. */
-export function renderVitals(s, now) {
-  const next = s.rfcs.open[0];
-  const week = s.rfcs.decided.filter(r => r.decidedAt && now - r.decidedAt <= WEEK_MS).length;
-  const persons = sum(s.people.withVoice);
-  const vital = (label, value, words, cls = '') => `<div class="vital${cls}"><dt>${esc(label)}</dt><dd><b>${value}</b><span>${words}</span></dd></div>`;
-  return `<dl class="vitals">${[
-    vital('Ledger height', count(s.log.length), s.log.headAt ? `last entry ${since(s.log.headAt, now)}` : 'no entry yet', ' vital--ledger'),
-    vital('Open RFCs', count(s.rfcs.byStatus.open ?? 0), next ? `the next closes in ${until(next.closesAt, now)}` : 'none open: anyone may open one'),
-    vital('Decided this week', count(week), week ? `RFC${week === 1 ? '' : 's'} decided in the last 7 days` : 'no RFC decided in the last 7 days'),
-    vital('Voices', count(persons), `${count(s.voices.confirmed)} response${s.voices.confirmed === 1 ? '' : 's'} counted`),
-  ].join('')}</dl>`;
-}
-
-/**
- * The commitment's seal, under the kernel check: the version in force, and whether the log's head is anchored on chain
- * (the last checkpoint, its transaction, how many of the recent ones held) or, if not, why not.
- */
-export function renderAnchor(s, now) {
-  const a = s.anchor;
-  const ok = a.last?.status === 'anchored';
-  const where = ok
-    ? `Log entry ${count(a.last.seq)} is anchored on ${esc(a.last.cluster ?? 'chain')} ${since(a.last.at, now)}${a.last.tx ? ` <code title="${esc(a.last.tx)}">${esc(a.last.tx.slice(0, 10))}…</code>` : ''}.`
-    : a.last
-      ? `The log's head is not anchored on chain${a.key ? '' : `: ${esc(a.detail ?? 'no anchor key')}`}.`
-      : 'No checkpoint yet.';
-  const version = s.contract
-    ? `Version ${count(s.contract.version)} in force since ${esc(date(s.contract.effectiveAt))}${s.contract.rfcId ? ` by RFC <a href="${esc(rfcHref(s.contract.rfcId))}"><code>${esc(s.contract.rfcId)}</code></a>` : ', the genesis'}.`
-    : 'No version is in force.';
-  return `<p class="check check--${ok ? 'ok' : 'wait'}"><span class="dot" aria-hidden="true"></span><span>${where} ${count(a.anchoredOfLast.anchored)} of the last ${count(a.anchoredOfLast.of)} checkpoints are anchored.</span></p><p class="seal__version">${version}</p>`;
-}
 
 const cap = t =>t.charAt(0).toUpperCase() + t.slice(1);
 
@@ -433,50 +327,6 @@ export function renderCommands(view, now) {
 }
 
 // ─── a recorded run (robots/labrat/, copied from the run by the repository's scripts/seed/vibegov-contract.mjs) ──
-
-/** A servo stream (`records.jsonl`): the agent's steps, the number of goals, the simulator's states, the seals. */
-export function parseServoRun(text) {
-  const rows = String(text).split('\n').filter(Boolean).map(l => JSON.parse(l));
-  const t0 = Date.parse(rows[0]?.t ?? 0);
-  const ms = r => Date.parse(r.t) - t0;
-  return {
-    started: rows[0]?.t ?? null,
-    durationMs: rows.length ? ms(rows.at(-1)) : 0,
-    by: rows.find(r => r.by)?.by ?? null,
-    goals: rows.filter(r => r.kind === 'command').length,
-    steps: rows.filter(r => r.kind === 'note' && !/: send /.test(r.text)).map(r => ({ at: ms(r), text: String(r.text).replace(/^[^:]+:[^:]+: /, '') })),
-    states: rows.filter(r => r.kind === 'state' && r.values).map(r => ({ at: ms(r), values: r.values })),
-    seals: rows.filter(r => r.kind === 'seal').map(r => r.seal),
-    simulated: rows.some(r => r.src === 'sim'),
-    noGrant: rows.some(r => /simulated: no grant needed/.test(r.text ?? '')),
-  };
-}
-
-/** The joints' paths over the run as one SVG (each joint on its own range), with a rule at each of the agent's steps. */
-export function jointTrace(run, width = 640, height = 160) {
-  if (run.states.length < 2) return '';
-  const joints = Object.keys(run.states[0].values);
-  const end = Math.max(1, run.states.at(-1).at);
-  const x = at => ((at / end) * width).toFixed(1);
-  const paths = joints.map((j, i) => {
-    const vs = run.states.map(s => s.values[j]);
-    const lo = Math.min(...vs), span = Math.max(...vs) - lo || 1;
-    const d = run.states.map((s, k) => `${k ? 'L' : 'M'}${x(s.at)},${(height - 6 - ((s.values[j] - lo) / span) * (height - 12)).toFixed(1)}`).join('');
-    return `<path class="trace trace--${i}" d="${d}"><title>${esc(j.replace(/_/g, ' '))}</title></path>`;
-  });
-  const marks = run.steps.filter(s => s.at > 0 && s.at < end).map(s => `<line class="trace__step" x1="${x(s.at)}" x2="${x(s.at)}" y1="0" y2="${height}"/>`);
-  return `<svg class="traces" viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(`The ${joints.length} joints over ${duration(end)}: ${joints.join(', ').replace(/_/g, ' ')}`)}" preserveAspectRatio="none">${marks.join('')}${paths.join('')}</svg>
-<ul class="traces__key">${joints.map((j, i) => `<li><i class="trace--${i}"></i>${esc(j.replace(/_/g, ' '))}</li>`).join('')}</ul>`;
-}
-
-/** A recorded run as the site shows it: labelled a recording and its reality, its steps, its trace, its seals. */
-export function renderRecording(run) {
-  const seal = run.seals.at(-1);
-  return `<p class="rec__label"><span class="badge badge--recorded">Recording</span><span class="tag">${run.simulated ? 'simulation' : 'physical'}</span><span>${run.started ? esc(date(Date.parse(run.started))) : ''} · ${esc(duration(run.durationMs))} · ${count(run.goals)} goals</span></p>
-<ol class="rec__steps">${run.steps.map(s => `<li><span>${esc((s.at / 1000).toFixed(1))} s</span>${esc(s.text)}</li>`).join('')}</ol>
-${jointTrace(run)}
-<p class="note">Driven by <code>${esc(run.by ?? 'an agent')}</code>; each goal is recorded before the simulator gets it.${run.noGrant ? ' A simulated run needs no grant, and its record says so. A physical run needs a standing grant on the machine.' : ''}${seal ? ` Its ${count(run.seals.length)} seals are signed (${esc(seal.alg)}), and the last is bound to ${esc(seal.block?.chain ?? 'a chain')} slot ${count(seal.block?.slot)}.` : ''}</p>`;
-}
 
 // The tape under every page's header: the contract's figures now, one line, each a label over a value.
 export function renderTape(s, now) {

@@ -14,18 +14,16 @@
 <meta property="og:url" content="https://vibegov.pro/record.html">
 <meta property="og:image" content="https://vibegov.pro/og.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#04060b">
+<meta name="theme-color" content="#f7f4ed">
 <link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="mark.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script src="gov.js" defer></script>
 <script type="module" src="page.js"></script>
-<script type="module" src="scene.js"></script>
 <script type="module" src="shell.js"></script>
 </head>
 <body>
-<canvas id="sky" aria-hidden="true"></canvas>
 <a class="skip" href="#main">Skip to the content</a>
 <header class="runhead">
   <div class="runhead__in">
@@ -40,135 +38,57 @@
 <div class="tape" data-live="tape" aria-label="The contract’s figures now" aria-busy="true"></div>
 
 <main id="main" class="sheet">
-  <section class="hero" aria-labelledby="record-title">
-    <div>
-      <h1 id="record-title">Everything the contract has done, <em>checkable by anyone.</em></h1>
-      <p class="lede">RFCs and judgments are public; a case's evidence stays with its parties. Every act is one entry of a hash-chained log. This page reads it from the API and recomputes the hashes itself, so you need not trust the page or the platform.</p>
-    </div>
-  </section>
+  <div class="desk">
+    <header class="desk__head"><div><h1>The record</h1><p>Every act of the contract is one entry of a hash-chained log. This page reads the log from the API and recomputes its hashes, so you need not trust the page or the platform. Proposals and judgments are public; a case’s evidence stays with its parties.</p></div></header>
 
-  <section class="band band--now" id="now" aria-labelledby="now-title">
-    <div class="band__head">
-      <div>
-        <h2 id="now-title"><span class="livedot" aria-hidden="true"></span>Right now</h2>
+    <section id="now" aria-labelledby="now-title">
+      <h2 id="now-title">Activity</h2>
+      <div class="cols">
+        <div data-live="activity" aria-live="polite" aria-busy="true"><p class="note loading">Reading the log…</p></div>
+        <div>
+          <div data-live="calendar" aria-busy="true"><p class="note loading">Reading the calendar…</p></div>
+          <p class="note"><a href="https://api.commandagi.com/public/contract/calendar.ics">Add the deadlines to your calendar (.ics)</a></p>
+        </div>
       </div>
-      <a class="cite" href="https://api.commandagi.com/public/contract/stats">GET /public/contract/stats</a>
-    </div>
-    <div data-live="vitals" aria-busy="true"><noscript><p class="empty">The live figures need JavaScript. They are public at https://api.commandagi.com/public/contract/stats.</p></noscript><p class="note">Reading the ledger…</p></div>
-    <div class="now">
-      <div class="now__feed">
-        <h3>What just happened</h3>
-        <div data-live="activity" aria-live="polite" aria-busy="true"><p class="note">Reading the log…</p></div>
-      </div>
-      <div class="now__cal">
-        <h3>Coming up</h3>
-        <div data-live="calendar" aria-busy="true"><p class="note">Reading the calendar…</p></div>
-        <p class="cal__sub"><a href="https://api.commandagi.com/public/contract/calendar.ics">Add these to your calendar (.ics)</a>: RFC deadlines, contest windows, the engine’s sittings and case deadlines, kept current.</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
+    <section id="log" aria-labelledby="log-title">
+      <h2 id="log-title">The log</h2>
+      <p>The last 50 entries. An entry carries the digest of what the act committed, never the record and never who.</p>
+      <div data-live="log" aria-busy="true"><p class="note loading">Reading the log…</p></div>
+    </section>
 
-  <section class="band" aria-labelledby="rfcs-title">
-    <div class="band__head"><div><h2 id="rfcs-title">RFCs</h2><p>Newest first. Pick one to read its tally here, or open it in the contract editor to respond.</p></div><span class="cite">§ RFCs</span></div>
-    <div data-live="rfcs" aria-busy="true"><p class="note">Reading the RFCs…</p></div>
-  </section>
+    <section aria-labelledby="checkpoints-title">
+      <h2 id="checkpoints-title">Checkpoints</h2>
+      <p>The log’s head, anchored on the contract’s registry program, or recorded as not anchored with the reason.</p>
+      <div data-live="checkpoints" aria-busy="true"><p class="note loading">Reading the checkpoints…</p></div>
+    </section>
 
-  <section class="band" aria-labelledby="judgments-title">
-    <div class="band__head"><div><h2 id="judgments-title">Judgments</h2><p>The public projection of each case: its duty, its stage and its judgments. Never its record.</p></div><span class="cite">k7 · § justice</span></div>
-    <div data-live="judgments" aria-busy="true"><p class="note">Reading the judgments…</p></div>
-  </section>
+    <section id="engine" aria-labelledby="engine-title">
+      <h2 id="engine-title">The engine</h2>
+      <p>The models that read responses and decide matters, tier by tier: who runs each, what pins it, and what it has done. A seat moves only by an adopted proposal.</p>
+      <div data-live="engine" aria-busy="true"><p class="note loading">Reading the engine…</p></div>
+    </section>
 
-  <section class="band" aria-labelledby="log-title">
-    <div class="band__head"><div><h2 id="log-title">The transparency log</h2><p>The last 50 entries. An entry carries the digest of what the act committed, never the record and never who.</p></div><span class="cite">§ fault tolerance</span></div>
-    <div data-live="log" aria-busy="true"><p class="note">Reading the log…</p></div>
-  </section>
+    <section id="machines" aria-labelledby="machines-title">
+      <h2 id="machines-title">Machines</h2>
+      <p>When an agreement’s verdict lists a command, the engine’s seats sign it on chain, and the machine’s host runs it once, under the standing grant its owner gave. These are the machines their owners put on view, and the commands the contract authorized.</p>
+      <div data-live="robots" aria-live="polite" aria-busy="true"><p class="note loading">Looking for machines on view…</p></div>
+      <div data-live="commands" aria-busy="true"><p class="note loading">Reading the commands…</p></div>
+    </section>
 
-  <section class="band" aria-labelledby="checkpoints-title">
-    <div class="band__head"><div><h2 id="checkpoints-title">Checkpoints on chain</h2><p>The log's head, anchored on the contract's registry program, or recorded as not anchored with the reason.</p></div><span class="cite">§ on-chain</span></div>
-    <div data-live="checkpoints" aria-busy="true"><p class="note">Reading the checkpoints…</p></div>
-  </section>
+    <section id="law" aria-labelledby="law-title">
+      <h2 id="law-title">The law in force</h2>
+      <div data-live="params" aria-busy="true"><p class="note loading">Reading the law’s windows…</p></div>
+      <div data-live="versions" aria-busy="true"><p class="note loading">Reading the versions…</p></div>
+    </section>
 
-  <section class="band" id="engine" aria-labelledby="engine-title">
-    <div class="band__head"><div><h2 id="engine-title">The engine's seats</h2><p>The models that read responses and decide matters, tier by tier: who runs each, what pins it, and what it has done. Seats move only by an engine RFC.</p></div><span class="cite">k10 · § the engine</span></div>
-    <div data-live="engine" aria-busy="true"><p class="note">Reading the engine…</p></div>
-  </section>
-
-  <section class="band band--machines" id="machines" aria-labelledby="machines-title">
-    <div class="band__head">
-      <div>
-        <h2 id="machines-title">Machines under the contract</h2>
-        <p>The contract binds real machines, not only words. When an agreement’s verdict lists a command, the engine’s seats sign it on chain, and the machine’s host runs it once, as the contract, and only under its own standing grant. Here are the machines their owners put on view.</p>
-      </div>
-      <a class="cite" href="https://api.commandagi.com/public/contract/robots">GET /public/contract/robots</a>
-    </div>
-    <div data-live="robots" aria-live="polite" aria-busy="true"><p class="note">Looking for machines on view…</p></div>
-
-    <article class="rec" aria-labelledby="rec-title">
-      <div class="rec__frames">
-        <figure><img src="robots/labrat/pick-at-the-collar.jpg" alt="A simulated SO-101 arm with its jaws at the collar of a pipette tip in the rack" width="988" height="736" loading="lazy"><figcaption>Recording, 0:04: the jaws at the tip’s collar</figcaption></figure>
-        <figure><img src="robots/labrat/pick-lifted.jpg" alt="The simulated arm holding the pipette tip 40 mm above the rack" width="988" height="736" loading="lazy"><figcaption>Recording, 0:06: the tip lifted</figcaption></figure>
-      </div>
-      <div class="rec__body">
-        <h3 id="rec-title">An arm picks a pipette tip: LabRat’s bench</h3>
-        <p>An agent drives an SO-101 arm in the simulated LabRat bench: it opens the gripper, swings over tip A1, goes down to the collar, closes and lifts. The frames are screen captures of the run, and the plot below is drawn from the run’s own servo stream.</p>
-        <div data-live="recording" data-src="robots/labrat/servos.jsonl" aria-busy="true"><p class="note">Reading the recording…</p></div>
-      </div>
-    </article>
-
-    <h3 class="sub-head">Commands the contract authorized</h3>
-    <div data-live="commands" aria-busy="true"><p class="note">Reading the commands…</p></div>
-  </section>
-
-  <section class="band" aria-labelledby="numbers-title">
-    <div class="band__head">
-      <div>
-        <h2 id="numbers-title">The contract by the numbers</h2>
-        <p>Counts from the platform’s ledger. A count never names who.</p>
-      </div>
-    </div>
-    <div data-live="figures" aria-busy="true"><p class="note">Reading the ledger…</p></div>
-    <div class="ledger-wrap" data-live="ledger" aria-busy="true"><p class="note">Reading the log…</p></div>
-  </section>
-
-  <section class="band" id="law" aria-labelledby="law-title">
-    <div class="band__head"><div><h2 id="law-title">How the law changes</h2><p>An RFC is a public proposal to change the law or the engine. These are its steps, and the windows the law sets now.</p></div><span class="cite">k4 · § RFCs</span></div>
-    <ol class="steps">
-      <li><h4>Opened</h4><p>Anyone opens it with distinct options and a refundable deposit. It pins the engine that will read it.</p></li>
-      <li><h4>Answered</h4><p>Each confirmed response gets a receipt. A person in the RFC’s anonymity set answers with a proof.</p></li>
-      <li><h4>Read</h4><p>After the close, the engine scores each response per option from −2 to +2. You see how you were read, and may contest it.</p></li>
-      <li><h4>Tallied</h4><p>An option scores the sum of its voices. The tally is public after the reading.</p></li>
-      <li><h4>Concurred</h4><p>The pinned engine weighs the merits and the strongest objection. A divided engine does not concur.</p></li>
-      <li><h4>Adopted</h4><p>The decision, the deposit and the new version commit in one batch, and go on chain.</p></li>
-    </ol>
-    <div data-live="params" aria-busy="true" class="params-wrap"><p class="note">Reading the law’s windows…</p></div>
-  </section>
-
-  <section class="band" aria-labelledby="versions-title">
-    <div class="band__head"><div><h2 id="versions-title">Versions</h2><p>What each matter was decided under: the kernel, the engine and the state, by hash.</p></div><span class="cite">k4 · k10</span></div>
-    <div data-live="versions" aria-busy="true"><p class="note">Reading the versions…</p></div>
-  </section>
-
-  <p class="notice">To recompute all of it, every determination included: <code>node --import tsx scripts/contract/replica.mjs --api https://api.commandagi.com</code> in the CommandAGI repository.</p>
+    <p class="note">To recompute all of it, every determination included: <code>node --import tsx scripts/contract/replica.mjs --api https://api.commandagi.com</code> in the CommandAGI repository.</p>
+  </div>
 </main>
 
 <footer class="site-foot">
-  <div class="wrap">
-    <img class="seal-mark" src="mark.svg" alt="" width="40" height="40">
-    <nav aria-label="Footer">
-      <a href="record.html">The record</a>
-      <a href="contract.html">The contract</a>
-      <a href="join.html">Take part</a>
-      <a href="rfcs.html">Proposals</a>
-      <a href="cases.html">Cases</a>
-      <a href="credit.html">Credit</a>
-      <a href="papers/coordination-contract.pdf">The paper (PDF)</a>
-      <a href="https://commandagi.com/">CommandAGI</a>
-      <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>
-    </nav>
-    <p class="colophon">Every figure on this site is read from the contract's public record at api.commandagi.com.</p>
-    <p>© 2026 VibeGov · a company of CommandAGI</p>
-  </div>
+  <p>© 2026 VibeGov, a company of CommandAGI · <a href="record.html">The record</a> · <a href="contract.html">The contract</a> · <a href="papers/coordination-contract.pdf">The paper</a> · <a href="legal.html">About this site</a> · <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a></p>
 </footer>
 </body>
 </html>

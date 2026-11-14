@@ -92,18 +92,16 @@ Copy this frame. Change the title, the description, the canonical address, `aria
 <title>PAGE · VibeGov</title>
 <meta name="description" content="…">
 <link rel="canonical" href="https://vibegov.pro/PAGE.html">
-<meta name="theme-color" content="#04060b">
+<meta name="theme-color" content="#f7f4ed">
 <link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="mark.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script src="gov.js" defer></script>
-<script type="module" src="scene.js"></script>
 <script type="module" src="shell.js"></script>
 <script type="module" src="PAGE.js"></script>
 </head>
 <body class="open">
-<canvas id="sky" aria-hidden="true"></canvas>
 <a class="skip" href="#main">Skip to the content</a>
 <header class="runhead">
   <div class="runhead__in">
@@ -124,7 +122,7 @@ Copy this frame. Change the title, the description, the canonical address, `aria
   </div>
 </main>
 
-<footer class="site-foot"> (copy record.html's footer) </footer>
+<footer class="site-foot"> (copy record.html's footer: one line) </footer>
 </body>
 </html>
 ```
@@ -141,7 +139,7 @@ Copy this frame. Change the title, the description, the canonical address, `aria
 
 It is a desk, not a show: the classes are in `style.css` § the signed-in pages.
 
-- `.desk` (the page), `.desk__head` (title and one sentence), a `<section>` per thing with a small mono `<h2>`.
+- `.desk` (the page), `.desk__head` (title and one sentence), a `<section>` per thing with a serif `<h2>`.
 - `.rows` for a list (reference, title with a `<small>` line, a `.state` at the right).
 - `.form`, `.field` (a `<label>` above, a `.hint` under), `.fieldset` for a group that repeats, `.form__act` for the
   button and what it costs.
@@ -149,8 +147,8 @@ It is a desk, not a show: the classes are in `style.css` § the signed-in pages.
   in the catalog's words. `.done` for what was done.
 - Buttons are `.btn` (and one `.btn.primary` for the page's one act). No pill, no rounded corner, no card with a
   shadow, no icon font, no emoji.
-- **No motion**: no animation, no transition that moves something, no confetti, no count-up, no progress
-  theatre. This is a legal and financial system. A thing appears when it is true.
+- **No motion** but a shimmer where something is being read (`<p class="note loading">Reading …</p>`): no other
+  animation, no transition that moves something, no confetti, no count-up. This is a legal and financial system.
 - **Say what an act costs and what it binds before the button**: a deposit and whether it comes back, a deadline, that
   a confirmed response is counted, that a filing is served on the respondent. Money is exact (`money(cents)`).
 - **Say every state in words**: loading ("Reading your cases…"), none ("You have no open case."), refused (the

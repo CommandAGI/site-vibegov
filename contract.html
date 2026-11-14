@@ -15,19 +15,17 @@
 <meta property="og:image" content="https://vibegov.pro/og.png">
 <meta property="og:image:alt" content="VibeGov, the home of the Coordination Contract">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#04060b">
+<meta name="theme-color" content="#f7f4ed">
 <link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="mark.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script src="gov.js" defer></script>
 <script type="module" src="page.js"></script>
-<script type="module" src="scene.js"></script>
 <script type="module" src="shell.js"></script>
 <script type="module" src="contract.js"></script>
 </head>
 <body class="open">
-<canvas id="sky" aria-hidden="true"></canvas>
 <a class="skip" href="#main">Skip to the content</a>
 <header class="runhead">
   <div class="runhead__in">
@@ -45,6 +43,12 @@
   <header class="charter wrap-x">
     <h1>The Coordination <em>Contract.</em></h1>
     <p class="lede">The contract is the institution that CommandAGI runs on. It has four parts and no others: a kernel of twelve articles that do not change, a law that changes only by an adopted proposal, an engine of pinned AI models that decides every question in the open, and a public ledger. It has no offices. Open a part to read it.</p>
+    <div class="btn-row">
+      <a class="btn primary" href="desk.html" data-ref="k2">Take your voice</a>
+      <a class="btn" href="record.html" data-ref="k11">See the record</a>
+      <a class="btn" href="papers/coordination-contract.pdf" data-ref="pdf">The working paper</a>
+      <a class="btn" href="papers/coordination-contract-short.pdf" data-ref="pdf">The short edition</a>
+    </div>
   </header>
 
   <div class="wrap-x">
@@ -404,33 +408,11 @@ account: the person or an agent key. The contract refuses a program's token.</p>
   <section class="charter charter--end wrap-x" aria-labelledby="end-title">
     <h2 id="end-title" class="vh">The source, and what to do next</h2>
     <p class="lede">Nobody edits this page by hand. Every part is rendered from the contract’s source, and CommandAGI’s checks refuse a page that differs from it. So what you read here is what the code holds people and agents to. The working paper sets out the whole contract, with every number computed by the code that runs it.</p>
-    <div data-live="kernel" aria-live="polite" aria-busy="true"><p class="note">Checking the ledger’s kernel against this text…</p></div>
-    <div class="btn-row">
-      <a class="btn primary" href="join.html" data-ref="k2">Take your voice</a>
-      <a class="btn" href="record.html" data-ref="k11">See the record</a>
-      <a class="btn" href="papers/coordination-contract.pdf" data-ref="pdf">The working paper</a>
-      <a class="btn" href="papers/coordination-contract-short.pdf" data-ref="pdf">The short edition</a>
-    </div>
   </section>
 </main>
 
 <footer class="site-foot">
-  <div class="wrap">
-    <img class="seal-mark" src="mark.svg" alt="" width="40" height="40">
-    <nav aria-label="Footer">
-      <a href="record.html">The record</a>
-      <a href="contract.html">The contract</a>
-      <a href="join.html">Take part</a>
-      <a href="rfcs.html">Proposals</a>
-      <a href="cases.html">Cases</a>
-      <a href="credit.html">Credit</a>
-      <a href="papers/coordination-contract.pdf">The paper (PDF)</a>
-      <a href="https://commandagi.com/">CommandAGI</a>
-      <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>
-    </nav>
-    <p class="colophon">VibeGov is the home of the Coordination Contract, the institution CommandAGI runs on. The contract's text on this site is rendered from its source, so it cannot drift from it.</p>
-    <p>© 2026 VibeGov · a company of CommandAGI</p>
-  </div>
+  <p>© 2026 VibeGov, a company of CommandAGI · <a href="record.html">The record</a> · <a href="contract.html">The contract</a> · <a href="papers/coordination-contract.pdf">The paper</a> · <a href="legal.html">About this site</a> · <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a></p>
 </footer>
 </body>
 </html>

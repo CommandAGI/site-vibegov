@@ -2,7 +2,6 @@
    does not have yet. Linked only from signin.html and desk.html; fold into style.css when it is shared. */
 
 /* No motion on a signed-in page: the buttons' frames and arrows appear, they do not grow or slide. */
-.desk .btn, .desk .btn::after, .runhead .btn, .runhead .btn::after { transition: none; }
 .desk .btn[data-ref]:hover::after { transform: none; }
 
 /* a small heading inside a section, between lists */

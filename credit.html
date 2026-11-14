@@ -8,19 +8,17 @@
 <title>Credit · VibeGov</title>
 <meta name="description" content="Credit under the Coordination Contract: open mandates and their terms, and, for an account that signs in, offering capital, borrowing, repaying and selling a claim. It states terms and promises no return.">
 <link rel="canonical" href="https://vibegov.pro/credit.html">
-<meta name="theme-color" content="#04060b">
+<meta name="theme-color" content="#f7f4ed">
 <link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="credit.css">
 <link rel="icon" href="mark.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script src="gov.js" defer></script>
-<script type="module" src="scene.js"></script>
 <script type="module" src="shell.js"></script>
 <script type="module" src="credit.js"></script>
 </head>
 <body class="open">
-<canvas id="sky" aria-hidden="true"></canvas>
 <a class="skip" href="#main">Skip to the content</a>
 <header class="runhead">
   <div class="runhead__in">
@@ -39,7 +37,7 @@
     <header class="desk__head"><div><h1>Credit</h1><p>An investor escrows capital on terms, a borrower draws on it, and the contract collects each installment and keeps the agreement. This page states the terms. It is not investment advice and it promises no return.</p></div></header>
 
     <section aria-labelledby="figures-title"><h2 id="figures-title">The figures</h2>
-      <div data-slot="figures" aria-busy="true"><p class="note">Reading the figures…</p></div>
+      <div data-slot="figures" aria-busy="true"><p class="note loading">Reading the figures…</p></div>
     </section>
 
     <section aria-labelledby="tiers-title"><h2 id="tiers-title">Bond tiers</h2>
@@ -48,17 +46,17 @@
 
     <section aria-labelledby="mandates-title"><h2 id="mandates-title">Open mandates</h2>
       <p class="note">Capital that investors committed, on their terms. The contract sets no rate and refuses no exchange: it keeps the agreement.</p>
-      <div data-slot="mandates" aria-busy="true"><p class="note">Reading the open mandates…</p></div>
+      <div data-slot="mandates" aria-busy="true"><p class="note loading">Reading the open mandates…</p></div>
       <div data-slot="mandates-result" role="status" aria-live="polite"></div>
     </section>
 
     <section aria-labelledby="offer-title"><h2 id="offer-title">Offer capital</h2>
-      <div data-slot="offer"><p class="note">Reading your session…</p></div>
+      <div data-slot="offer"><p class="note loading">Reading your session…</p></div>
       <div data-slot="offer-result" role="status" aria-live="polite"></div>
     </section>
 
     <section aria-labelledby="mine-title"><h2 id="mine-title">Your facilities</h2>
-      <div data-slot="mine"><p class="note">Reading your session…</p></div>
+      <div data-slot="mine"><p class="note loading">Reading your session…</p></div>
       <div data-slot="mine-result" role="status" aria-live="polite"></div>
     </section>
 
@@ -70,22 +68,7 @@
 </main>
 
 <footer class="site-foot">
-  <div class="wrap">
-    <img class="seal-mark" src="mark.svg" alt="" width="40" height="40">
-    <nav aria-label="Footer">
-      <a href="record.html">The record</a>
-      <a href="contract.html">The contract</a>
-      <a href="join.html">Take part</a>
-      <a href="rfcs.html">Proposals</a>
-      <a href="cases.html">Cases</a>
-      <a href="credit.html">Credit</a>
-      <a href="papers/coordination-contract.pdf">The paper (PDF)</a>
-      <a href="https://commandagi.com/">CommandAGI</a>
-      <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>
-    </nav>
-    <p class="colophon">Every figure on this site is read from the contract's public record at api.commandagi.com.</p>
-    <p>© 2026 VibeGov · a company of CommandAGI</p>
-  </div>
+  <p>© 2026 VibeGov, a company of CommandAGI · <a href="record.html">The record</a> · <a href="contract.html">The contract</a> · <a href="papers/coordination-contract.pdf">The paper</a> · <a href="legal.html">About this site</a> · <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a></p>
 </footer>
 </body>
 </html>

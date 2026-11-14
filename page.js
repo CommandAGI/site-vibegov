@@ -2,7 +2,7 @@
 // (`<meta name="vibegov-api">`). With no script, or with the API out of reach, each part says so and names the address
 // to read it at. The front door reads its public views each 30 s while it is seen, and words its times again each second.
 import * as L from './live.js';
-import { kernelHash, logProblems } from './verify.js';
+import { logProblems } from './verify.js';
 
 const base = document.querySelector('meta[name="vibegov-api"]')?.content || L.API;
 const el = name => document.querySelector(`[data-live="${name}"]`);
@@ -21,18 +21,13 @@ async function figures() {
   try {
     const s = (stats = await get('/public/contract/stats'));
     const now = Date.now();
-    put('vitals', L.renderVitals(s, now));
-    put('anchor', L.renderAnchor(s, now));
-    put('figures', L.renderFigures(s));
     put('rfc-strip', L.renderRfcStrip(s, now));
-    put('decided', L.renderDecided(s, now));
-    put('ledger', L.renderLedger(s, now));
     put('params', L.renderParameters(s));
     put('plate-voice', L.renderVoicePlate(s));
     put('plate-change', L.renderChangePlate(s));
     put('plate-case', L.renderCasePlate(s));
   } catch (e) {
-    unreachable(['vitals', 'anchor', 'figures', 'rfc-strip', 'decided', 'ledger', 'params', 'plate-voice', 'plate-change', 'plate-case'], e, '/public/contract/stats');
+    unreachable(['rfc-strip', 'params', 'plate-voice', 'plate-change', 'plate-case'], e, '/public/contract/stats');
   }
 }
 
@@ -60,19 +55,6 @@ const machines = async () => {
     unreachable(['robots', 'commands'], e, '/public/contract/robots');
   }
 };
-
-// A recorded run, copied into this site byte for byte; it never changes, so it is read once.
-async function recording() {
-  const node = el('recording');
-  if (!node) return;
-  try {
-    const res = await fetch(node.dataset.src);
-    if (!res.ok) throw new Error(`${node.dataset.src} answered ${res.status}`);
-    put('recording', L.renderRecording(L.parseServoRun(await res.text())));
-  } catch (e) {
-    put('recording', `<p class="empty">The recording could not be read (${L.esc(e.message)}).</p>`);
-  }
-}
 
 // The front door's ledger: the log's three newest entries as blocks, the newest on top. They stand still. When the
 // log gains an entry while the page is open, its block comes in at the top and pushes the others down: the one
@@ -120,17 +102,6 @@ function tick() {
   document.querySelectorAll('[data-until]').forEach(t => { t.textContent = L.countdown(Number(t.dataset.until) - now); });
 }
 
-async function kernel() {
-  if (!el('kernel')) return;
-  try {
-    const [contract, page] = await Promise.all([get('/public/contract'), fetch('contract.html').then(r => (r.ok ? r.text() : ''))]);
-    const pinned = page.match(/<dt>Kernel<\/dt><dd><code title="([0-9a-f]{64})"/)?.[1] ?? null;
-    put('kernel', L.renderKernelCheck({ claimed: contract.kernel.hash, recomputed: await kernelHash(contract.kernel), pinned }));
-  } catch (e) {
-    unreachable(['kernel'], e, '/public/contract');
-  }
-}
-
 async function record() {
   const now = Date.now();
   const part = async (names, path, render) => {
@@ -141,8 +112,6 @@ async function record() {
     }
   };
   await Promise.all([
-    el('rfcs') && part(['rfcs'], '/public/contract/rfcs', d => put('rfcs', L.renderRfcTable(d.rfcs, now))),
-    el('judgments') && part(['judgments'], '/public/contract/judgments', d => put('judgments', L.renderJudgments(d.judgments, now))),
     el('checkpoints') && part(['checkpoints'], '/public/contract/checkpoints', d => put('checkpoints', L.renderCheckpoints(d, now))),
     el('versions') && part(['versions'], '/public/contract/versions', d => put('versions', L.renderVersions(d.versions))),
     el('engine') && part(['engine'], '/public/contract/engine', d => put('engine', L.renderEngine(d))),
@@ -161,7 +130,7 @@ const refresh = async () => {
   await figures();
   await Promise.all([activity(), calendar(), machines(), chain()]);
 };
-if (el('figures') || el('plate-voice') || el('vitals')) {
+if (el('params') || el('plate-voice') || el('rfc-strip')) {
   refresh();
   let timer = setInterval(refresh, 30_000);
   let ticker = setInterval(tick, 1000);
@@ -175,6 +144,4 @@ if (el('figures') || el('plate-voice') || el('vitals')) {
     }
   });
 }
-recording();
-kernel();
 record();

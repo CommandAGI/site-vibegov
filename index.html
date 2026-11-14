@@ -15,7 +15,7 @@
 <meta property="og:image" content="https://vibegov.pro/og.png">
 <meta property="og:image:alt" content="VibeGov: A World in Command">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#04060b">
+<meta name="theme-color" content="#f7f4ed">
 <link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/ibm-plex-serif-500-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
@@ -30,7 +30,6 @@
 <script type="module" src="figures.js"></script>
 </head>
 <body class="home">
-<canvas id="sky" aria-hidden="true"></canvas>
 <a class="skip" href="#main">Skip to the content</a>
 <header class="runhead">
   <div class="runhead__in">
@@ -45,6 +44,8 @@
 <div class="tape" data-live="tape" aria-label="The contract’s figures now" aria-busy="true"></div>
 
 <main id="main" class="sheet">
+  <div class="night">
+    <canvas id="sky" aria-hidden="true"></canvas>
   <section class="cosmos" aria-labelledby="top-title">
     <canvas class="earth" aria-hidden="true"></canvas>
     <div class="cosmos__words wrap-x">
@@ -61,12 +62,13 @@
     <p>AI can cure disease, end drudgery and put an expert beside every person. <b>We want all of it.</b> And we want the world it builds to stay ours: decided by people, in the open, with no one above the rules.</p>
     <p class="creed__what">VibeGov is the home of the <a href="contract.html">Coordination Contract</a>, a working constitution for a world shared with AI. It is in force today on CommandAGI. This is what it holds.</p>
   </section>
+  </div>
 
   <section class="feature wrap-x" aria-labelledby="f-voice">
     <div class="feature__art">
       <div class="pane pane--plate">
         <p class="pane__head">voice · kernel article 2<a href="https://api.commandagi.com/public/contract/stats">GET /public/contract/stats</a></p>
-        <div data-live="plate-voice" aria-busy="true"><p class="note">Reading the record…</p></div>
+        <div data-live="plate-voice" aria-busy="true"><p class="note loading">Reading the record…</p></div>
       </div>
     </div>
     <div class="feature__words">
@@ -94,7 +96,7 @@
     <div class="feature__art">
       <div class="pane pane--plate">
         <p class="pane__head">change · kernel article 4<a href="https://api.commandagi.com/public/contract/stats">GET /public/contract/stats</a></p>
-        <div data-live="plate-change" aria-busy="true"><p class="note">Reading the record…</p></div>
+        <div data-live="plate-change" aria-busy="true"><p class="note loading">Reading the record…</p></div>
       </div>
     </div>
     <div class="feature__words">
@@ -104,7 +106,7 @@
     </div>
     <div class="feature__strip">
       <h3>Proposals</h3>
-      <div data-live="rfc-strip" aria-busy="true"><p class="note">Reading the proposals…</p></div>
+      <div data-live="rfc-strip" aria-busy="true"><p class="note loading">Reading the proposals…</p></div>
     </div>
   </section>
 
@@ -132,7 +134,7 @@
     <div class="feature__art">
       <div class="pane pane--chain" aria-label="The public ledger: its newest entries">
         <p class="pane__head">the public ledger · newest first<a href="https://api.commandagi.com/public/contract/log/head">GET /public/contract/log</a></p>
-        <div class="chain" data-live="chain" aria-busy="true"><p class="note">Reading the ledger…</p></div>
+        <div class="chain" data-live="chain" aria-busy="true"><p class="note loading">Reading the ledger…</p></div>
         <div data-live="chain-check" aria-live="polite"></div>
       </div>
     </div>
@@ -148,7 +150,7 @@
     <div class="feature__art">
       <div class="pane pane--plate">
         <p class="pane__head">a case · kernel articles 6 to 9<a href="https://api.commandagi.com/public/contract/stats">GET /public/contract/stats</a></p>
-        <div data-live="plate-case" aria-busy="true"><p class="note">Reading the record…</p></div>
+        <div data-live="plate-case" aria-busy="true"><p class="note loading">Reading the record…</p></div>
       </div>
     </div>
     <div class="feature__words">
@@ -201,23 +203,7 @@
 </main>
 
 <footer class="site-foot">
-  <div class="wrap">
-    <img class="seal-mark" src="mark.svg" alt="" width="40" height="40">
-    <nav aria-label="Footer">
-      <a href="record.html">The record</a>
-      <a href="contract.html">The contract</a>
-      <a href="join.html">Take part</a>
-      <a href="rfcs.html">Proposals</a>
-      <a href="cases.html">Cases</a>
-      <a href="credit.html">Credit</a>
-      <a href="papers/coordination-contract.pdf">The paper (PDF)</a>
-      <a href="https://api.commandagi.com/public/contract/calendar.ics">The calendar (.ics)</a>
-      <a href="https://commandagi.com/">CommandAGI</a>
-      <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>
-    </nav>
-    <p class="colophon">VibeGov is the home of the Coordination Contract, the institution CommandAGI runs on. Every quotation is the kernel’s own text, and every figure is read from the contract’s public record at api.commandagi.com. The Earth and the Moon are drawn from NASA’s maps. The robot is a recording of a simulation. The two diagrams are drawings of an idea, not data.</p>
-    <p>© 2026 VibeGov · a company of CommandAGI</p>
-  </div>
+  <p>© 2026 VibeGov, a company of CommandAGI · <a href="record.html">The record</a> · <a href="contract.html">The contract</a> · <a href="papers/coordination-contract.pdf">The paper</a> · <a href="legal.html">About this site</a> · <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a></p>
 </footer>
 </body>
 </html>

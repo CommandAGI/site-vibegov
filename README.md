@@ -6,27 +6,22 @@ https://vibegov.commandagi.app serving the same site. The design and the reasons
 `docs/vibegov.md`.
 
 - `index.html`: the front door, **A World in Command**: AI should answer to the people who live with it. The first
-  screen is the earthrise: the Earth's horizon, the sun coming up, the moon. Then the reason, and what the contract
-  holds, one short section each with the kernel's own words (one person one voice, no throne, governed by human
-  voice, everything on the record, an autonomous judicial system, free to leave). Between them: a diagram (no throne),
-  the proposals in a row, a film of a simulated robot arm at work (robots by permission) and the ledger's newest
-  entries as blocks. The last picture is a diagram of people, agents and machines at work as one graph. Then five things to do today. The
-  act is "Take your voice".
-- `record.html`: the public record and everything alive now: the ledger's height and last entry ticking, the activity
-  feed in plain words (`/public/contract/activity`), what comes next (`/public/contract/calendar`, with its `.ics`
-  feed), the machines their owners made public (`/public/contract/robots`) and a recorded run, the figures, how the law
-  changes; every RFC, the judgments, the last 50 log entries with each hash recomputed in the
-  page, the checkpoints, the engine's seats (who runs each, what pins its model, its figures;
-  `/public/contract/engine`), the versions. `record.html#rfc=<id>` shows one RFC (`/public/contract/rfcs/:id/tally`):
-  before its responses are read, its options and how many responses count, and no score (the contract publishes the
-  tally only after interpretation, § RFCs 4); after, each option's score, its histogram from −2 to +2 and the
-  decision with the determinations it rests on. The overview's RFCs link here.
-- `contract.html`: the contract's text: an opening paragraph, the contents (each entry opens its part; a process is a diagram the source declares), and a closing paragraph with the kernel check and the buttons. Between its `<!-- contract:begin … -->` and `<!-- contract:end -->` markers,
+  screen is the night: the Earth's horizon, the sun coming up, the moon, and the reason on the night side. The rest is
+  paper: what the contract holds, one short section each with the kernel's own words and a fact under it (a plate of
+  figures from the record, a diagram, a film of a simulated robot arm, the ledger's newest entries), the proposals in
+  a row, five things to do, and a diagram of people, agents and machines as one graph. The act is "Take your voice".
+- `record.html`: the ledger and what stands on it, each under one heading: activity and what comes next
+  (`/public/contract/activity`, `/calendar`), the last 50 log entries with each hash recomputed in the page, the
+  checkpoints, the engine's seats (`/public/contract/engine`), the machines their owners put on view and the
+  commands the contract authorized (`/public/contract/robots`), the law's windows and the versions.
+- `contract.html`: the contract's text: an opening paragraph with the acts, the contents (each entry opens its part;
+  a process is a diagram the source declares), and the source line. Between its markers
   the clauses are **rendered from `docs/coordination-contract.md`** in the CommandAGI repository by
   `node scripts/seed/vibegov-contract.mjs`. Do not edit that region here. The repository's
   `scripts/checks/check-generated-files.mjs` refuses a page that differs from the doc.
-- `join.html`: how to take part, with links into the contract editor, and a prompt box that opens the visitor's words
-  in the CommandAGI workbench (`https://commandagi.com/app?prompt=…`).
+- `legal.html`: who runs the site, where its words, figures and pictures come from, and the licences.
+- The signed-in pages (`redesign/APP.md`): `signin.html`, `desk.html`, `rfcs.html`, `rfc.html`, `propose.html`,
+  `cases.html`, `case.html`, `file.html`, `credit.html`, each with its module and its test under `test/`.
 - `live.js`: the live record as HTML (pure: data in, escaped markup out). `page.js` fetches the public API
   (`<meta name="vibegov-api">`, https://api.commandagi.com) and places each `data-live` part. `verify.js` recomputes
   the kernel's hash and the log's hashes with Web Crypto, by the contract's own rules. `gov.js`: the contents popover
@@ -77,7 +72,7 @@ then commit here, push this repository's `main`, and move the gitlink in Command
 
 ## test
 
-`node --test site.test.mjs` (Node 22 or 24, no dependencies) checks the four pages (contents line, canonical
+`node --test site.test.mjs` (Node 22 or 24, no dependencies) checks the pages (contents line, canonical
 address, links on disk, CSP), the pictures, that every quotation on the front door is the kernel's text, that the contract page holds the twelve
 kernel articles and the two PDFs, `live.js` against a fake API on a local port (empty states, escaping, deadlines, the
 Respond link, a refusing API), and `verify.js` against real kernel and log entries (and that a changed word or digest

@@ -3,7 +3,6 @@
 .propose__main .form { max-width: none; }
 .propose__side { position: sticky; top: 5rem; }
 .propose__side > section { border-bottom: 0; }
-.propose .btn::after { transition: none; }
 
 /* a reference to the kernel, as an article's number stands in the contract's margin */
 .ref { display: inline-block; margin-right: 0.35rem; padding: 0 0.35rem; border: 1px solid color-mix(in oklab, var(--sun) 55%, transparent); color: var(--sun); font: 500 0.7rem/1.5 var(--mono); letter-spacing: 0.04em; vertical-align: 0.08em; }
@@ -15,7 +14,7 @@ fieldset.field { border: 0; margin: 0; padding: 0; min-width: 0; }
 /* choices: square boxes, a label beside each */
 .choices { display: grid; gap: 0.5rem; }
 .choice, .check { display: inline-flex; align-items: center; gap: 0.55rem; cursor: pointer; }
-.choice { padding: 0.55rem 0.8rem; border: 1px solid rgb(255 255 255 / 0.22); }
+.choice { padding: 0.55rem 0.8rem; border: 1px solid var(--rule); }
 .choice:has(input:checked) { border-color: var(--sun); }
 .choice input, .check input { accent-color: var(--sun); width: 1.05rem; height: 1.05rem; margin: 0; flex: none; }
 .checks { display: flex; flex-wrap: wrap; gap: 0.45rem 1.25rem; }

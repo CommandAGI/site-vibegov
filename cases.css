@@ -1,9 +1,8 @@
 /* The courts' pages (cases.html, file.html, case.html): the few things style.css § the signed-in pages does not have.
    Linked only from those three pages. Square, no shadow, and no motion: a clause's arrow does not move here. */
 
-.desk .btn[data-ref]::after { transition: none; }
 .desk .btn[data-ref]:hover::after { transform: none; }
-.desk .btn.quiet { --edge: rgb(242 238 228 / 0.3); color: var(--muted); }
+.desk .btn.quiet { border-color: var(--rule); color: var(--muted); }
 .desk .btn.quiet:hover { color: var(--ink); }
 
 /* A kernel article beside the rule it applies: mono, gold, as an article's number stands in the margin. */
@@ -13,7 +12,7 @@
 
 /* A choice of one (civil or criminal; where the duty comes from) or of several (the harm items a remedy answers). */
 .choice { display: flex; flex-wrap: wrap; gap: 0.5rem; border: 0; padding: 0; margin: 0; min-width: 0; }
-.choice label { display: inline-flex; align-items: center; gap: 0.55rem; min-height: 2.75rem; padding: 0.45rem 0.95rem; border: 1px solid rgb(255 255 255 / 0.22); background: rgb(4 6 11 / 0.6); color: var(--ink); font: 500 0.95rem var(--sans); letter-spacing: 0; text-transform: none; cursor: pointer; }
+.choice label { display: inline-flex; align-items: center; gap: 0.55rem; min-height: 2.75rem; padding: 0.45rem 0.95rem; border: 1px solid var(--rule); background: var(--panel); color: var(--ink); font: 500 0.95rem var(--sans); letter-spacing: 0; text-transform: none; cursor: pointer; }
 .choice label:has(input:checked) { border-color: var(--sun); }
 .choice label:has(input:focus-visible) { outline: 2px solid var(--sun); outline-offset: 0; }
 .choice label, .choice code { white-space: nowrap; }
@@ -28,7 +27,7 @@ aside .kv { grid-template-columns: minmax(7rem, 10rem) minmax(0, 1fr); }
 .file-cta { display: grid; gap: 1rem; max-width: 52rem; }
 
 /* A heading inside a part's head is the desk's small mono heading, as a section's own h2 is. */
-.desk .part-head h2 { font: 500 0.78rem var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--sun); margin: 0; }
+.desk .part-head h2 { font: 500 1.3rem/1.2 var(--serif); letter-spacing: -0.01em; color: var(--ink); margin: 0; }
 .desk section > .part-head { margin-bottom: 1rem; }
 .desk__head h1.case-title { font-size: clamp(1.6rem, 2.8vw, 2.3rem); line-height: 1.15; letter-spacing: -0.02em; max-width: 52rem; }
 
@@ -62,7 +61,7 @@ aside .kv { grid-template-columns: minmax(7rem, 10rem) minmax(0, 1fr); }
 .ref-line { font: 500 0.76rem var(--mono); color: var(--muted); overflow-wrap: anywhere; margin: 0 0 0.4rem; }
 .record { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
 .record > li { padding: 1rem 0.25rem; border-bottom: 1px solid var(--rule); display: grid; gap: 0.5rem; }
-.record .by { font: 500 0.76rem var(--mono); letter-spacing: 0.03em; color: var(--muted); text-transform: uppercase; }
+.record .by { font: 600 0.8rem var(--sans); color: var(--muted); }
 .said { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; max-width: 44rem; }
 .media { border-left: 2px solid var(--rule); padding: 0.2rem 0 0.2rem 0.9rem; display: grid; gap: 0.3rem; font-size: 0.93rem; }
 .media ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.25rem; }

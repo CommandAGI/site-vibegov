@@ -54,43 +54,47 @@ be in the view of the hero."
 
 ## the sky (`scene.js`)
 
-One WebGL canvas (`#sky`) is fixed behind every page: about 10,000 stars as points, more along one band, the same sky
+One WebGL canvas (`#sky`) fills the night band of the front door, and is on no other page: about 10,000 stars as points, more along one band, the same sky
 on every visit. It turns once in 20 minutes. The stars do not twinkle and do not follow the scroll. Nothing else is in it.
 
-## a professional system (owner, 2026-11-13)
+## a serious document (owner, 2026-11-13)
 
-"The subtle animations across all the pages feel a bit too gamified. This is a financial and legal system, so it
-needs to feel professional. The spacey Earth is to give a sense of futurism. But it needs an honest self-examination
-regarding the other design elements."
+Two rounds of the same correction. First: "the subtle animations feel a bit too gamified. This is a financial and
+legal system, so it needs to feel professional. The spacey Earth is to give a sense of futurism. But it needs an
+honest self-examination regarding the other design elements." Then, after that pass: "the design style is still way
+too game-y; it needs to be much more serious. Think about the idealistic people who would be supporting the
+Coordination Contract and design with that audience in mind", with the taste skill (tasteskill.dev) as the measure.
 
-The examination, and what it decided:
+What made it a game: a dark screen everywhere, stars behind every page, gold on black, buttons with corner brackets
+and a cut corner, labels in mono capitals, boxes inside boxes, things that pulsed. That is a game's interface. The
+people this is for read constitutions, court opinions and central-bank reports. So:
 
-| element | verdict | now |
-|---|---|---|
-| the earthrise and the stars | keep: the one piece of futurism | the sun rises once; the stars turn slowly and do not twinkle or follow the scroll |
-| dot pictures (a hand, a ballot, scales, a door) | remove: generated stock symbols, and they moved for show | a plate of facts under each thing the contract holds |
-| the pyramid that turned into a ring | still | two structures side by side: "not this", "this" |
-| the ledger that replayed old entries | remove the replay: it made the record look busier than it is | the three newest entries, still; a block moves only when the log gains one |
-| pulsing dots, a breathing "next" slot | remove | a state is a word and a still colour |
-| buttons that drew a frame, rows that slid, arrows that nudged | remove | a hover changes a colour |
-| the caption in the header ("36,493 entries…") | unaligned, and one figure | the tape |
-| the globe of systems at work | keep, slower | one turn in 4 minutes, a few pieces of work, no flash |
-| the film of the robot | keep: it is a recording of a real run | plays while seen |
-
-Rules that follow:
-
-- **Nothing moves for show.** No keyframe animation. One transition moves a thing: the ledger's new block.
-  `site.test.mjs` holds this.
-- **Under a claim there is a fact.** A plate (`.pane--plate`, `.plate`) is a few rows: a figure read from the public
-  record ("now, from the record") or a rule of the kernel or the law, with its source in the plate's header.
+- **It is a document.** Ink on warm paper. A serif for what is said, a sans for what is done. Structure is a
+  hairline, not a box. A thing is in at most one box, and most things are in none.
+- **The night is the first screen only.** The Earth from orbit, with the reason on its night side, is the one image
+  of the future. Every other page, and the rest of the front door, is paper. No stars behind text.
+- **One system** (the taste skill's rule): one button (an ink outline; the page's one act is filled), one heading
+  scale, one page frame (`.desk`: a title, then sections between hairlines), one pair of left and right edges for the
+  header, the tape, the content and the footer.
+- **Under a claim there is a fact.** A plate (`.pane`, `.plate`) is a ruled table: a figure read from the public
+  record ("now, from the record") or a rule of the kernel or the law, with its source above it.
 - **No generated picture.** The pictures are the Earth (NASA's maps), two diagrams, one film and the record itself.
+- **What moves:** the tape; a shimmer where something is being read; a block the ledger gained while the page was
+  open; the globe's slow turn; the sun rising once. Nothing else. `site.test.mjs` holds the stylesheet to this.
+- **The footer is one small line.** Where the words, figures and pictures come from, and the licences, are on
+  `legal.html`.
 
-## the tape (`live.js` `renderTape`)
+## the tape (`live.js` `renderTape`, `shell.js`)
 
-Under the header of every page, on the page's grid: the record's state in a word, the ledger's length and last entry,
-the version, the kernel's hash, proposals, voices, responses, cases, judgments, the pool, open credit and how many
-checkpoints are anchored. One line, each a label over a value. It does not scroll by itself; on a narrow screen a
-person scrolls it sideways.
+Under the header of every page: the record's state in a word, the ledger's length and last entry, the version, the
+kernel's hash, proposals, voices, responses, cases, judgments, the pool, open credit and how many checkpoints are
+anchored. One small line. It holds the figures twice, end to end, and moves slowly to the left; it stops under a
+pointer, a person can drag it either way, and with reduced motion it moves only when dragged.
+
+## loading
+
+A thing that is being read has a shimmer in its place (`.loading`), with its words kept for a screen reader
+("Reading the proposals…"). When it is read, the thing stands there; when it cannot be read, the page says so.
 
 ## the pictures
 
@@ -138,29 +142,25 @@ contract itself could use diagrams instead of ugly markdown."
   `docs/coordination-contract.md`). The generator draws it as SVG, top to bottom, so it fits a phone: the spine in
   solid boxes, branches in dashed gold ones. The site only colours it (`.flow`).
 
-## controls: a line of the contract (owner, 2026-11-13)
+## controls
 
-"The style shouldn't use round pill buttons as much if it can find something more CC-coded, more original."
-
-- **A button is a clause.** Square. Its reference is in a small margin cell at its left, in mono and gold (`k2`,
-  `k11`, `sim`: the `data-ref` attribute), as an article's number stands in the contract's margin. Four corner marks
-  frame it, as on a printed ballot; the whole frame draws when it is pointed at.
-- **The one act a page asks for** is a gold stub with one corner cut, as a ballot's is.
-- **A list of acts is a list of clauses** (`.clauses`): reference, act, one sentence, an arrow, between hairlines.
-- **A pane** (`.pane`) frames something real: square, a mono header with its name and its source.
-- No pill anywhere. The contents line marks its page with a gold underline. Radius is 3 px at most.
+- **A button** is a rectangle with an ink outline; pointed at, it fills. The one act a page asks for is filled.
+  No corner mark, no cut corner, no reference cell, no arrow, no pill. (The `data-ref` attribute stays in the markup:
+  it names the kernel article an act stands on, for a reader of the source.)
+- **The desk's acts** (`.acts`) are four tall rectangles, first on the desk: open a proposal, file a case, answer a
+  proposal, lend or borrow.
+- **A list of acts** (`.clauses`) and the contract's contents (`.toc`): reference, title, one sentence, between
+  hairlines.
 
 ## rules
 
 - **Time moves.** "4 seconds ago" and every countdown are re-worded each second; the views are read each 30 s.
 - **A number is read, never typed.** Every figure comes from `/public/contract/*` at load. A zero is said in words.
   An unreachable API says so and names the address.
-- **A check the visitor can repeat.** The kernel's hash and the log's hashes are recomputed in the page.
-- **Colour has one meaning each.** Gold: the sun, the page's first heading, the kernel's words, a reference, and the
-  one act a page asks for. Blue: a link. Green: a check that holds. Amber: not done. Red: a check that failed.
-- **Text on the sky has no box** on the front door. The other pages put their text on one dark sheet, so long text
-  reads well. A record (a figure, an RFC, an act) is a rounded panel.
-- **One edge, square corners.** A line on one edge only never sits on a rounded corner.
+- **A check the visitor can repeat.** The log's hashes are recomputed in the page.
+- **Colour has one meaning each.** Ochre: a reference. Blue: a link. Green: a check that holds. Amber: not done.
+  Red: a check that failed. Emphasis is italic, never a colour.
+- **Two boxes deep at most**, and one where possible. A section is never inside a section.
 
 ## type
 
@@ -177,17 +177,15 @@ All three are under the SIL Open Font License and are served from this site (`fo
 
 ## colour
 
-| role | value |
-|---|---|
-| sky | `#04060b` |
-| panel | `rgb(13 18 32 / 0.72)` |
-| ink | `#f2eee4` |
-| muted | `#a4adc2` |
-| sun (gold) | `#ffc65a` |
-| link (blue) | `#a9c1ff` |
-| ok / wait / bad | `#5fd39a` / `#f0b45a` / `#ff8a80` |
-
-One scheme, dark: the page is the night sky.
+| role | paper | the night (first screen) |
+|---|---|---|
+| ground | `#f7f4ed` | `#04060b` |
+| ink | `#15181e` | `#f2eee4` |
+| muted | `#5d636e` | `#b0b8c9` |
+| rule | ink at 16% | white at 18% |
+| link | `#1f3a66` | ink |
+| reference (ochre) | `#8a5a0b` | `#ffc65a` |
+| ok / wait / bad | `#1d6b45` / `#8a5a0b` / `#a12a1f` | |
 
 ## the mark and the share card
 
@@ -196,5 +194,11 @@ picture of `redesign/og.html` at 1200 × 630, on a GPU: the title over the earth
 
 ## pages
 
-`index.html` (the front door), `record.html` (the record, and everything that is alive now), `contract.html` (the
-text), `join.html` (take part). One contents line on each.
+`index.html` (the front door), `record.html` (the ledger and what stands on it), `contract.html` (the text),
+`legal.html` (about the site), and the signed-in pages (`APP.md`). One contents line on each.
+
+## to address later
+
+- Owner, 2026-11-13: the case plate's "penalty at most 2× the proved harm" should read "penalty at most 2× the proved
+  risk-adjusted harm". That is the law's own measure, not the site's wording: the change belongs in the contract
+  (CommandAGI `docs/coordination-contract.md` § justice and k8) and then in `renderCasePlate`.

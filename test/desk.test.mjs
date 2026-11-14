@@ -161,7 +161,7 @@ test('the pages\' frames: the CSP, one module each, no inline script, the conten
     const csp = text.match(/http-equiv="Content-Security-Policy" content="([^"]+)"/)[1];
     for (const rule of ["default-src 'self'", "connect-src 'self' https://api.commandagi.com;", "object-src 'none'", "form-action 'none'"]) assert.ok(csp.includes(rule), `${page}: ${rule}`);
     const scripts = [...text.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)];
-    assert.deepEqual(scripts.map(m => m[1].match(/src="([^"]+)"/)?.[1]), ['gov.js', 'scene.js', 'shell.js', page.replace('.html', '.js')], `${page}: scripts`);
+    assert.deepEqual(scripts.map(m => m[1].match(/src="([^"]+)"/)?.[1]), ['gov.js', 'shell.js', page.replace('.html', '.js')], `${page}: scripts`);
     assert.ok(scripts.every(m => m[2].trim() === ''), `${page}: no inline script`);
     assert.ok(!/\son[a-z]+=/i.test(text), `${page}: no inline handler`);
     assert.deepEqual([...text.match(/<nav id="contents"[\s\S]*?<\/nav>/)[0].matchAll(/href="([^"]+)"/g)].map(m => m[1]), CONTENTS, `${page}: contents`);

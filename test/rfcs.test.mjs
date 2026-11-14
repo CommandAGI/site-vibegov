@@ -284,7 +284,7 @@ for (const page of ['rfcs', 'rfc']) {
     // Only the page that proves may compile WebAssembly and start the prover's blob workers.
     assert.equal(csp.includes("'wasm-unsafe-eval'"), page === 'rfc');
     assert.equal(/worker-src blob:;/.test(csp), page === 'rfc');
-    assert.equal((html.match(/<script type="module" src="[^"]+"/g) ?? []).length, 3, 'scene, shell and the page module');
+    assert.equal((html.match(/<script type="module" src="[^"]+"/g) ?? []).length, 2, 'shell and the page module');
     assert.ok(html.includes(`<script type="module" src="${page}.js">`));
     assert.ok(!/<script(?![^>]*\bsrc=)/.test(html), 'no inline script');
     assert.ok(!/\son[a-z]+="/.test(html), 'no inline handler');

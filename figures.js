@@ -3,8 +3,8 @@
 // the page's colophon says so. `apex` is still. `world` turns slowly while it is seen; with reduced motion it is
 // drawn once.
 const calm = matchMedia('(prefers-reduced-motion: reduce)');
-const INK = '242 238 228', SUN = '255 198 90', ACT = '169 193 255', OK = '95 211 154';
-const smooth = t => t * t * (3 - 2 * t);
+// Ink on paper: people are solid ink, agents a deep blue, machines a deep green; the one accent is ochre.
+const INK = '21 24 30', SUN = '138 90 11', ACT = '31 58 102', OK = '29 107 69';
 // A fixed random sequence: a figure is the same figure on every visit.
 function random(seed) {
   let a = seed >>> 0;
@@ -82,8 +82,7 @@ function apex() {
   return { paint, moves: false };
 }
 
-// The world at work: people, agents and machines as one graph on a globe that turns slowly. A piece of work starts
-// at a person and passes from system to system along the lines.
+// The world as one graph: people, agents and machines on a globe that turns slowly, each joined to its neighbours.
 function world() {
   const rnd = random(20261113), N = 150;
   const nodes = Array.from({ length: N }, (_, i) => {
@@ -97,15 +96,8 @@ function world() {
     const near = nodes.map((o, j) => [far(n, o), j]).sort((a, b) => a[0] - b[0]).slice(1, 4);
     for (const [, j] of near) if (!n.to.includes(j)) { n.to.push(j); nodes[j].to.push(i); edges.push([i, j]); }
   });
-  const people = nodes.map((n, i) => (n.kind === 0 ? i : -1)).filter(i => i >= 0);
-  // A piece of work: where it is, where it goes next, how far along, and how many more systems it will pass.
-  const start = w => { w.a = people[Math.floor(rnd() * people.length)]; w.b = nodes[w.a].to[Math.floor(rnd() * nodes[w.a].to.length)]; w.u = 0; w.left = 3 + Math.floor(rnd() * 5); w.speed = 0.22 + rnd() * 0.16; return w; };
-  const work = Array.from({ length: 16 }, () => { const w = start({}); w.u = rnd(); return w; });
-  const COLOUR = [SUN, ACT, OK];
-  let last = 0;
+  const COLOUR = [INK, ACT, OK];
   const paint = (g, s, h, t) => {
-    const dt = Math.min(0.05, Math.max(0, t - last));
-    last = t;
     const a = t * ((2 * Math.PI) / 240) + 0.6, ca = Math.cos(a), sa = Math.sin(a), ct = Math.cos(0.38), st = Math.sin(0.38);
     // Turn about the pole, tip the pole toward the reader, and draw a little smaller what is farther away.
     const see = v => {
@@ -115,7 +107,7 @@ function world() {
     const P = nodes.map(n => see(n.v));
     for (const side of [-1, 1]) {
       g.lineWidth = Math.max(1, s * 0.0016);
-      g.strokeStyle = `rgb(${INK} / ${side < 0 ? 0.07 : 0.24})`;
+      g.strokeStyle = `rgb(${INK} / ${side < 0 ? 0.08 : 0.3})`;
       g.beginPath();
       for (const [i, j] of edges) if ((P[i][2] + P[j][2] < 0 ? -1 : 1) === side) { g.moveTo(P[i][0], P[i][1]); g.lineTo(P[j][0], P[j][1]); }
       g.stroke();
@@ -126,26 +118,6 @@ function world() {
         g.arc(P[i][0], P[i][1], s * (n.kind === 0 ? 0.0085 : 0.0062), 0, 6.2832);
         g.fill();
       });
-      g.lineWidth = Math.max(1, s * 0.003);
-      g.strokeStyle = `rgb(${INK} / ${side < 0 ? 0.2 : 0.8})`;
-      g.beginPath();
-      for (const w of work) {
-        const A = P[w.a], B = P[w.b];
-        if ((A[2] + (B[2] - A[2]) * w.u < 0 ? -1 : 1) !== side) continue;
-        const e = smooth(w.u), tail = Math.max(0, e - 0.3);
-        g.moveTo(A[0] + (B[0] - A[0]) * tail, A[1] + (B[1] - A[1]) * tail);
-        g.lineTo(A[0] + (B[0] - A[0]) * e, A[1] + (B[1] - A[1]) * e);
-      }
-      g.stroke();
-    }
-    for (const w of work) {
-      w.u += dt * w.speed;
-      if (w.u < 1) continue;
-      if ((w.left -= 1) <= 0) { start(w); continue; }
-      const next = nodes[w.b].to.filter(j => j !== w.a);
-      w.a = w.b;
-      w.b = next[Math.floor(rnd() * next.length)] ?? nodes[w.a].to[0];
-      w.u = 0;
     }
   };
   return { paint, moves: true };

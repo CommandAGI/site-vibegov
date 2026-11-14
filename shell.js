@@ -24,13 +24,34 @@ document.addEventListener('session', draw);
 // Another tab signed in or out.
 addEventListener('storage', e => { if (e.key === 'vibegov.session') draw(); });
 
+// The tape: one line. It holds the figures twice, end to end, and moves slowly to the left, so the line never ends;
+// it stops under a pointer, a person can drag it either way, and with reduced motion it moves only when dragged.
 const tape = document.querySelector('[data-live="tape"]');
+const calm = matchMedia('(prefers-reduced-motion: reduce)');
+let track = null, offset = 0, lap = 0, held = null, over = false, last = 0;
+function lay(html) {
+  if (!track) {
+    tape.innerHTML = '<div class="tape__track"></div>';
+    track = tape.firstElementChild;
+  }
+  track.innerHTML = html + html.replace('<dl class="tape__in"', '<dl class="tape__in" aria-hidden="true"');
+  lap = track.firstElementChild.getBoundingClientRect().width;
+}
+function move(now) {
+  if (track && lap) {
+    if (!held && !over && !calm.matches && !document.hidden) offset += ((now - last) / 1000) * 22;
+    offset = ((offset % lap) + lap) % lap;
+    track.style.transform = `translateX(${-offset}px)`;
+  }
+  last = now;
+  requestAnimationFrame(move);
+}
 async function figures() {
   if (!tape || document.hidden) return;
   try {
-    tape.innerHTML = renderTape(await getJson(fetch, API, '/public/contract/stats'), Date.now());
+    lay(renderTape(await getJson(fetch, API, '/public/contract/stats'), Date.now()));
   } catch {
-    if (!tape.firstElementChild) tape.innerHTML = '<p class="empty">The public record could not be reached.</p>';
+    if (!track) tape.innerHTML = '<p class="empty">The public record could not be reached.</p>';
   }
   tape.removeAttribute('aria-busy');
 }
@@ -39,6 +60,12 @@ if (tape) {
   setInterval(figures, 30_000);
   setInterval(() => tape.querySelectorAll('[data-at]').forEach(t => { t.textContent = relative(Number(t.dataset.at), Date.now()); }), 1000);
   document.addEventListener('visibilitychange', figures);
+  tape.addEventListener('pointerenter', () => { over = true; });
+  tape.addEventListener('pointerleave', () => { over = false; });
+  tape.addEventListener('pointerdown', e => { held = { x: e.clientX, at: offset }; tape.setPointerCapture(e.pointerId); });
+  tape.addEventListener('pointermove', e => { if (held) offset = held.at - (e.clientX - held.x); });
+  for (const end of ['pointerup', 'pointercancel']) tape.addEventListener(end, () => { held = null; });
+  requestAnimationFrame(now => { last = now; move(now); });
 }
 
 // The contract's signed-in doors are closed for this account (contract-api.js): say so once, under the tape.

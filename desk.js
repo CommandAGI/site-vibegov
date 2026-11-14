@@ -164,7 +164,7 @@ export function checkoutOutcome({ canceled = false, checkout } = {}) {
   if (status === 'paid') return `<p class="done">Paid. The credits are in your balance.</p>`;
   if (status === 'failed') return `<p class="refusal">The payment failed${checkout.reason ? `: ${esc(checkout.reason)}` : ''}. Nothing was charged.</p>`;
   if (status === 'canceled' || canceled) return `<p class="note">The payment was canceled. Nothing was charged.</p>`;
-  if (status === 'reading') return `<p class="note">Reading what came of the payment…</p>`;
+  if (status === 'reading') return `<p class="note loading">Reading what came of the payment…</p>`;
   if (status === 'unread') return `<p class="note">What came of the payment could not be read. Reload to see your balance.</p>`;
   return `<p class="note">Stripe has not confirmed the payment yet. The credits arrive when it does; reload to see them.</p>`;
 }
