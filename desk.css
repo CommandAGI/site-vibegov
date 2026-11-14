@@ -36,7 +36,7 @@
 
 /* facts in the desk's narrow column: a short label column, the value beside it */
 .cols > div:last-child .kv { grid-template-columns: minmax(5rem, 7.5rem) minmax(0, 1fr); }
-.desk__body { font-size: 0.98rem; line-height: 1.5; }
+.desk__body { font-size: 0.98rem; line-height: 1.5; overflow-wrap: anywhere; }
 .desk section .rows:last-child > li:last-child { border-bottom: 0; }
 #anonymous p { font-size: 0.95rem; }
 /* `.form` is a grid: a form or a message the page hides stays hidden */
