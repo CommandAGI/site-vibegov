@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://api.commandagi.com; media-src 'self' blob: https://api.commandagi.com; connect-src 'self' https://api.commandagi.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="vibegov-api" content="https://api.commandagi.com">
+<title>Cases · VibeGov</title>
+<meta name="description" content="The Coordination Contract's courts: file a case, follow it to judgment, and read every public judgment.">
+<link rel="canonical" href="https://vibegov.pro/cases.html">
+<meta name="theme-color" content="#04060b">
+<link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="cases.css">
+<link rel="icon" href="mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<script src="gov.js" defer></script>
+<script type="module" src="scene.js"></script>
+<script type="module" src="shell.js"></script>
+<script type="module" src="cases.js"></script>
+</head>
+<body class="open">
+<canvas id="sky" aria-hidden="true"></canvas>
+<a class="skip" href="#main">Skip to the content</a>
+<header class="runhead">
+  <div class="runhead__in">
+    <a class="wordmark" href="index.html" aria-label="VibeGov, home"><img src="mark.svg" alt="" width="26" height="26">VibeGov</a>
+    <button class="btn small contents-btn" type="button" popovertarget="contents" aria-controls="contents">Contents</button>
+    <nav id="contents" class="contents" popover aria-label="Site">
+      <ol><li><a href="index.html">Home</a></li><li><a href="record.html">The record</a></li><li><a href="contract.html">The contract</a></li><li><a href="rfcs.html">Proposals</a></li><li><a href="cases.html" aria-current="page">Cases</a></li><li><a href="credit.html">Credit</a></li></ol>
+    </nav>
+    <span class="runhead__act" data-account></span>
+  </div>
+</header>
+
+<main id="main" class="sheet">
+  <div class="desk">
+    <header class="desk__head"><div><h1>Cases</h1><p>The contract’s courts. A person files a case here and follows it to judgment. The engine’s seats decide each case; no human does.</p></div></header>
+
+    <section aria-labelledby="file-title">
+      <h2 id="file-title">File a case</h2>
+      <div class="cols">
+        <div id="file-terms" aria-busy="true"><noscript><p class="empty">These pages need JavaScript.</p></noscript><p class="note">Reading the law’s terms…</p></div>
+        <div class="form__act" id="file-act"><a class="btn primary" data-ref="k6" href="file.html">File a case</a></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="mine-title">
+      <h2 id="mine-title">Your cases</h2>
+      <div id="my-cases" aria-live="polite"><p class="note">Reading your cases…</p></div>
+    </section>
+
+    <section aria-labelledby="stages-title">
+      <h2 id="stages-title">Cases by stage</h2>
+      <div id="stage-counts" aria-busy="true"><p class="note">Reading the counts…</p></div>
+    </section>
+
+    <section aria-labelledby="judgments-title">
+      <h2 id="judgments-title">Judgments</h2>
+      <p class="note">The public projection of each case with a judgment: its duty, its stage, the money claimed and the outcome. Never its record (k11).</p>
+      <div id="judgments" aria-busy="true"><p class="note">Reading the judgments…</p></div>
+    </section>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <img class="seal-mark" src="mark.svg" alt="" width="40" height="40">
+    <nav aria-label="Footer">
+      <a href="record.html">The record</a>
+      <a href="contract.html">The contract</a>
+      <a href="join.html">Take part</a>
+      <a href="papers/coordination-contract.pdf">The paper (PDF)</a>
+      <a href="https://commandagi.com/">CommandAGI</a>
+      <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>
+    </nav>
+    <p class="colophon">Every figure on this site is read from the contract's public record at api.commandagi.com.</p>
+    <p>© 2026 VibeGov · a company of CommandAGI</p>
+  </div>
+</footer>
+</body>
+</html>

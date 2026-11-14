@@ -1,0 +1,93 @@
+/* The courts' pages (cases.html, file.html, case.html): the few things style.css § the signed-in pages does not have.
+   Linked only from those three pages. Square, no shadow, and no motion: a clause's arrow does not move here. */
+
+.desk .btn[data-ref]::after { transition: none; }
+.desk .btn[data-ref]:hover::after { transform: none; }
+.desk .btn.quiet { --edge: rgb(242 238 228 / 0.3); color: var(--muted); }
+.desk .btn.quiet:hover { color: var(--ink); }
+
+/* A kernel article beside the rule it applies: mono, gold, as an article's number stands in the margin. */
+.art { display: inline-block; margin-left: 0.5rem; font: 500 0.72rem var(--mono); letter-spacing: 0.04em; color: var(--sun); text-transform: none; vertical-align: 0.05em; }
+.art a { color: inherit; text-decoration: none; }
+.art a:hover { text-decoration: underline; }
+
+/* A choice of one (civil or criminal; where the duty comes from) or of several (the harm items a remedy answers). */
+.choice { display: flex; flex-wrap: wrap; gap: 0.5rem; border: 0; padding: 0; margin: 0; min-width: 0; }
+.choice label { display: inline-flex; align-items: center; gap: 0.55rem; min-height: 2.75rem; padding: 0.45rem 0.95rem; border: 1px solid rgb(255 255 255 / 0.22); background: rgb(4 6 11 / 0.6); color: var(--ink); font: 500 0.95rem var(--sans); letter-spacing: 0; text-transform: none; cursor: pointer; }
+.choice label:has(input:checked) { border-color: var(--sun); }
+.choice label:has(input:focus-visible) { outline: 2px solid var(--sun); outline-offset: 0; }
+.choice input { margin: 0; accent-color: var(--sun); }
+.choice code { font-size: 0.9rem; }
+
+/* The form's parts: a numbered heading per part, the article it applies at the right. */
+.part-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.25rem 1rem; }
+.form .fieldset > legend { display: flex; gap: 0.75rem; align-items: baseline; }
+.fieldset__foot { display: flex; justify-content: flex-end; }
+.pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1rem; }
+.facts-list { margin: 0; padding: 0 0 0 1.1rem; display: grid; gap: 0.3rem; color: var(--muted); font-size: 0.93rem; }
+.facts-list code { color: var(--ink); }
+
+/* What the kernel would refuse, said before the button: amber (not done), never red (red is a refusal). */
+.problems { margin: 0; padding: 0.7rem 0.9rem; border: 1px solid color-mix(in oklab, var(--wait) 55%, transparent); color: var(--wait); font-size: 0.95rem; }
+.problems ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.3rem; }
+.problems .art { margin: 0 0.6rem 0 0; color: var(--wait); }
+
+/* What an act costs and binds, before its button. */
+.terms { margin: 0; padding: 0.9rem 1rem; border: 1px solid var(--rule); border-left: 2px solid var(--sun); list-style: none; display: grid; gap: 0.55rem; font-size: 0.95rem; }
+.terms li { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); gap: 0.5rem; }
+.terms .art { margin: 0; padding-top: 0.15rem; }
+
+/* Media attached to a filing or a submission. */
+.attached { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; }
+.attached li { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 0.9rem; padding: 0.4rem 0; border-bottom: 1px solid var(--rule); font-size: 0.93rem; }
+.attached li code { color: var(--muted); }
+.attach-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1rem; }
+
+/* One case: its states in a line, the record, the deciding. */
+.states { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.9rem 0 0; }
+.desk__head .parties { margin-top: 0.4rem; color: var(--ink); }
+.ref-line { font: 500 0.76rem var(--mono); color: var(--muted); overflow-wrap: anywhere; margin: 0 0 0.4rem; }
+.record { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+.record > li { padding: 1rem 0.25rem; border-bottom: 1px solid var(--rule); display: grid; gap: 0.5rem; }
+.record .by { font: 500 0.76rem var(--mono); letter-spacing: 0.03em; color: var(--muted); text-transform: uppercase; }
+.said { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; max-width: 44rem; }
+.media { border-left: 2px solid var(--rule); padding: 0.2rem 0 0.2rem 0.9rem; display: grid; gap: 0.3rem; font-size: 0.93rem; }
+.media ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.25rem; }
+.media .seat { font: 500 0.76rem var(--mono); color: var(--muted); margin-right: 0.5rem; }
+.warn { color: var(--wait); }
+.bad { color: var(--bad); }
+.lines { margin: 0; padding: 0 0 0 1.1rem; display: grid; gap: 0.3rem; }
+.lines code { color: var(--muted); }
+
+.instance { border: 1px solid var(--rule); padding: 1rem 1.1rem; display: grid; gap: 0.6rem; margin-bottom: 1rem; }
+.instance h3 { font: 600 1rem var(--sans); letter-spacing: 0; margin: 0; }
+.findings { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.findings td { padding: 0.4rem 0; border-top: 1px solid var(--rule); vertical-align: top; }
+.findings td:first-child { font-family: var(--mono); font-size: 0.82rem; color: var(--muted); padding-right: 1rem; width: 40%; overflow-wrap: anywhere; }
+.judgment { border-left: 2px solid var(--sun); padding: 0.2rem 0 0.2rem 1rem; display: grid; gap: 0.45rem; }
+.judgment p { margin: 0; }
+.determination { border: 1px solid var(--rule); padding: 0.6rem 0.9rem; margin-top: 0.5rem; font-size: 0.9rem; }
+.determination summary { cursor: pointer; }
+.determination ol { margin: 0.6rem 0 0; padding-left: 1.1rem; display: grid; gap: 0.5rem; }
+
+/* The acts of a party: one block per act, the terms above its button. */
+.acts-list { display: grid; gap: 1.75rem; }
+.act { display: grid; gap: 0.9rem; max-width: 44rem; }
+.act h3 { display: flex; align-items: baseline; gap: 0.5rem; }
+.figures { display: grid; gap: 0.6rem; }
+.figure { display: grid; grid-template-columns: minmax(6rem, 12rem) minmax(0, 14rem) minmax(0, 1fr); gap: 0.4rem 1rem; align-items: center; }
+.figure code { overflow-wrap: anywhere; }
+.figure .hint { margin: 0; }
+.inline { display: flex; flex-wrap: wrap; align-items: end; gap: 0.75rem; }
+.inline .field { flex: 1 1 12rem; max-width: 16rem; }
+
+.tally { display: grid; grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr)); gap: 0; margin: 0; border-top: 1px solid var(--rule); }
+.tally div { padding: 0.7rem 0.25rem; border-bottom: 1px solid var(--rule); display: flex; justify-content: space-between; gap: 1rem; }
+.tally dt { color: var(--muted); font-size: 0.93rem; }
+.tally dd { margin: 0; font-variant-numeric: tabular-nums; font-weight: 600; }
+
+@media (max-width: 40rem) {
+  .pair, .figure { grid-template-columns: minmax(0, 1fr); }
+  .terms li { grid-template-columns: minmax(0, 1fr); gap: 0.1rem; }
+  .inline .field { max-width: none; }
+}
