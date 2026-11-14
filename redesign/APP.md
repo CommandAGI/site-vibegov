@@ -122,7 +122,7 @@ Copy this frame. Change the title, the description, the canonical address, `aria
   </div>
 </main>
 
-<footer class="site-foot"> (copy record.html's footer: one line) </footer>
+<footer class="site-foot"> (copy record.html's footer: one line, "a company of CommandAGI" linked to commandagi.com) </footer>
 </body>
 </html>
 ```
