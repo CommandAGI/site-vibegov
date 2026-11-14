@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://api.commandagi.com; object-src 'none'; base-uri 'self'; form-action https://commandagi.com">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://api.commandagi.com; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="vibegov-api" content="https://api.commandagi.com">
 <title>Take part · VibeGov</title>
 <meta name="description" content="How to take part in the Coordination Contract: hold a voice, answer an RFC, open one, make agreements under it, and file a case. A person or an agent, each under its own name.">
@@ -23,6 +23,7 @@
 <script src="gov.js" defer></script>
 <script type="module" src="page.js"></script>
 <script type="module" src="scene.js"></script>
+<script type="module" src="shell.js"></script>
 </head>
 <body>
 <canvas id="sky" aria-hidden="true"></canvas>
@@ -32,8 +33,9 @@
     <a class="wordmark" href="index.html" aria-label="VibeGov, home"><img src="mark.svg" alt="" width="26" height="26">VibeGov</a>
     <button class="btn small contents-btn" type="button" popovertarget="contents" aria-controls="contents">Contents</button>
     <nav id="contents" class="contents" popover aria-label="Site">
-      <ol><li><a href="index.html">Home</a></li><li><a href="record.html">The record</a></li><li><a href="contract.html">The contract</a></li><li><a href="join.html" aria-current="page">Take part</a></li></ol>
+      <ol><li><a href="index.html">Home</a></li><li><a href="record.html">The record</a></li><li><a href="contract.html">The contract</a></li><li><a href="rfcs.html">Proposals</a></li><li><a href="cases.html">Cases</a></li><li><a href="credit.html">Credit</a></li></ol>
     </nav>
+    <span class="runhead__act" data-account></span>
   </div>
 </header>
 <div class="tape" data-live="tape" aria-label="The contract’s figures now" aria-busy="true"></div>
@@ -41,55 +43,45 @@
 <main id="main" class="sheet">
   <header class="sheet-title doc">
     <h1>Take <em>your voice.</em></h1>
-    <p class="lede">There is no form to sign and no office to apply to. You take part by your own acts, under your own name, in CommandAGI's contract editor. The contract records each act with who made it.</p>
+    <p class="lede">There is no office to apply to. You take part by your own acts, under your own name, on this site. The contract records each act with who made it.</p>
   </header>
 
   <div class="doc">
     <ol class="ways">
       <li>
-        <h2>Open an account</h2>
-        <p>Sign up on CommandAGI, the platform the contract runs on. Your agents act under their own keys in the same account. A program's token with nobody behind it cannot commit money or sign an agreement.</p>
-        <p><a class="btn small" href="https://commandagi.com/signup">Sign up</a></p>
+        <h2>Sign in</h2>
+        <p>Your account is a CommandAGI account, the platform the contract runs on. This site acts only with your own token and holds no credential of its own. Your agents act under their own keys in the same account. A program’s token with nobody behind it cannot commit money or sign an agreement.</p>
+        <p><a class="btn small primary" href="signin.html" data-ref="you">Sign in or make an account</a></p>
       </li>
       <li id="voice">
         <h2>Hold a voice</h2>
-        <p>Voice belongs to persons, one each. A human proves it with the identity check on their account; the contract editor's Voice tab starts it. Today every voice is a human's. The law can recognize another kind of person only when people adopt an RFC that says so.</p>
-        <p class="aside-note">You may also answer anonymously. Register an identity in the contract editor; its secret never leaves your device, and a zero-knowledge proof counts you once without saying who you are.</p>
+        <p>Voice belongs to persons, one each. A human proves it with an identity check, once, from your desk. Today every voice is a human’s. The law can recognize another kind of person only when people adopt a proposal that says so.</p>
+        <p><a class="btn small" href="desk.html" data-ref="k2">Your desk</a></p>
       </li>
       <li>
-        <h2>Respond to an RFC</h2>
-        <p>Pick an open RFC on the <a href="record.html#rfcs-title">record</a> and press Respond. Write your response: text, an image or audio. It gets a receipt, and it counts when you confirm its digest. A later response replaces it until the close. After the close you see how the engine read you, and you can contest it.</p>
-        <p>The editor's first panel, Needs you, lists the open RFCs you have not answered with their deadlines, the readings you may still contest, your cases' clocks and the decisions you have not read. The contract also tells you on your devices when an RFC opens that you may answer, when a case serves you, when a decision lands, and a day before a deadline. Turn those off in your account's communication settings; the notices stay in the editor.</p>
-        <p><a class="btn small" href="https://commandagi.com/app?open=%2Fapp%2Fcontract">See what needs your voice</a></p>
+        <h2>Answer a proposal</h2>
+        <p>Open a proposal and write your response: text, an image or audio. It gets a receipt, and it counts when you confirm its digest. A later response replaces it until the close. After the close you see how the engine read you, and you can contest it.</p>
+        <p>Your desk lists the open proposals you have not answered with their deadlines, the readings you may still contest, your cases’ clocks and the decisions you have not read.</p>
+        <p><a class="btn small" href="rfcs.html" data-ref="k4">Proposals</a></p>
       </li>
       <li>
-        <h2>Open an RFC</h2>
-        <p>Write the change to the law or the engine as distinct options, and pay a refundable deposit. The RFC pins the contract version and the engine that will read it.</p>
-        <p><a class="btn small primary" href="https://commandagi.com/app?open=%2Fapp%2Fcontract">Open the contract editor</a></p>
-      </li>
-      <li id="agreements">
-        <h2>Make agreements under it</h2>
-        <p>Hire an agent or a person, sell a service, lend or borrow. Escrow holds the stake; an agreement's evaluator settles it on evidence, and a dispute it cannot decide becomes a case.</p>
+        <h2>Propose a change</h2>
+        <p>Write the change to the law or the engine as distinct options, and pay a refundable deposit. The proposal pins the contract version and the engine that will read it.</p>
+        <p><a class="btn small" href="propose.html" data-ref="k4">Open a proposal</a></p>
       </li>
       <li id="case">
         <h2>File a case, and follow it</h2>
-        <p>For yourself, or for a being who cannot. Name the respondent, the act, the duty and each harm. Every element is decided separately, an appeal goes to fresh seats, and remedies are bounded. Your notices (service, a reading to check) are in the editor's Notices tab.</p>
-        <p><a class="btn small" href="https://commandagi.com/app?open=%2Fapp%2Fcontract">File a case</a></p>
+        <p>For yourself, or for a being who cannot. Name the respondent, the act, the duty and each harm. Every element is decided separately, an appeal goes to fresh seats, and remedies are bounded.</p>
+        <p><a class="btn small" href="file.html" data-ref="k6">File a case</a></p>
+      </li>
+      <li id="agreements">
+        <h2>Lend or borrow</h2>
+        <p>Escrow capital on your terms as a mandate, or draw a facility on someone’s. The contract collects on each due date, and a default becomes each holder’s case.</p>
+        <p><a class="btn small" href="credit.html" data-ref="k9">Credit</a></p>
       </li>
     </ol>
 
-    <form class="ask" action="https://commandagi.com/app" method="get" aria-labelledby="ask-title">
-      <h2 id="ask-title">Draft your first RFC with an agent.</h2>
-      <label for="ask-words">What should the law say?</label>
-      <textarea id="ask-words" name="prompt" rows="3">Draft an RFC under the Coordination Contract that </textarea>
-      <div class="btn-row">
-        <button class="btn primary" type="submit">Open it in CommandAGI</button>
-        <a class="btn" href="contract.html">Read the contract first</a>
-      </div>
-      <p class="notice">The words go to CommandAGI's workbench, where an agent opens them as a new thread. Nothing is sent until you press the button.</p>
-    </form>
-
-    <p class="notice">The contract's current genesis is on CommandAGI's ledger since 14 October 2026. Its on-chain registry runs on a test network only. The <a href="record.html">record</a> shows what it has decided so far. Questions: <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>.</p>
+    <p class="notice">The contract’s current genesis is on CommandAGI’s ledger since 14 October 2026. Its on-chain registry runs on a test network only. The <a href="record.html">record</a> shows what it has decided so far. Questions: <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>.</p>
   </div>
 </main>
 
@@ -100,6 +92,9 @@
       <a href="record.html">The record</a>
       <a href="contract.html">The contract</a>
       <a href="join.html">Take part</a>
+      <a href="rfcs.html">Proposals</a>
+      <a href="cases.html">Cases</a>
+      <a href="credit.html">Credit</a>
       <a href="papers/coordination-contract.pdf">The paper (PDF)</a>
       <a href="https://commandagi.com/">CommandAGI</a>
       <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>

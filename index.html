@@ -24,6 +24,7 @@
 <script src="gov.js" defer></script>
 <script type="module" src="page.js"></script>
 <script type="module" src="scene.js"></script>
+<script type="module" src="shell.js"></script>
 <script type="module" src="earth.js"></script>
 <script type="module" src="film.js"></script>
 <script type="module" src="figures.js"></script>
@@ -36,9 +37,9 @@
     <a class="wordmark" href="index.html" aria-label="VibeGov, home"><img src="mark.svg" alt="" width="26" height="26">VibeGov</a>
     <button class="btn small contents-btn" type="button" popovertarget="contents" aria-controls="contents">Contents</button>
     <nav id="contents" class="contents" popover aria-label="Site">
-      <ol><li><a href="index.html" aria-current="page">Home</a></li><li><a href="record.html">The record</a></li><li><a href="contract.html">The contract</a></li><li><a href="join.html">Take part</a></li></ol>
+      <ol><li><a href="index.html" aria-current="page">Home</a></li><li><a href="record.html">The record</a></li><li><a href="contract.html">The contract</a></li><li><a href="rfcs.html">Proposals</a></li><li><a href="cases.html">Cases</a></li><li><a href="credit.html">Credit</a></li></ol>
     </nav>
-    <a class="btn small primary runhead__act" href="join.html" data-ref="k2">Take your voice</a>
+    <span class="runhead__act" data-account></span>
   </div>
 </header>
 <div class="tape" data-live="tape" aria-label="The contract’s figures now" aria-busy="true"></div>
@@ -50,7 +51,7 @@
       <h1 id="top-title">A World <em>in Command.</em></h1>
       <p class="lede">The most powerful technology ever built should answer to the people who live with it. VibeGov is the public contract that AI agents and robots work under: one voice for each person, every act on the record, and no throne for anyone to take.</p>
       <div class="btn-row">
-        <a class="btn primary" href="join.html" data-ref="k2">Take your voice</a>
+        <a class="btn primary" href="desk.html" data-ref="k2">Take your voice</a>
         <a class="btn" href="contract.html" data-ref="k1–12">Read the contract</a>
       </div>
     </div>
@@ -178,11 +179,11 @@
   <section class="today wrap-x" aria-labelledby="today-title">
     <h2 id="today-title">Start today.</h2>
     <ol class="clauses">
-      <li><a href="join.html#voice"><span>k2</span><b>Hold a voice</b><i>Prove you are one person, once. Then every open proposal is yours to answer.</i></a></li>
-      <li><a href="record.html#rfcs-title"><span>k4</span><b>Answer a proposal</b><i>Write, draw or record what you think. You see how you were read, and you can contest it.</i></a></li>
-      <li><a href="https://commandagi.com/app?open=%2Fapp%2Fcontract"><span>k4</span><b>Propose a change</b><i>Write the change as options, with a refundable deposit. Every voice is asked.</i></a></li>
-      <li><a href="join.html#agreements"><span>§&nbsp;9</span><b>Hire under it</b><i>Hire a person or an agent. Escrow holds the stake until the work is settled on evidence.</i></a></li>
-      <li><a href="join.html#case"><span>k6</span><b>Bring a case</b><i>Name who wronged you and how. Every element is decided, and you can appeal.</i></a></li>
+      <li><a href="desk.html"><span>k2</span><b>Hold a voice</b><i>Sign in and prove you are one person, once. Then every open proposal is yours to answer.</i></a></li>
+      <li><a href="rfcs.html"><span>k4</span><b>Answer a proposal</b><i>Write, draw or record what you think. You see how you were read, and you can contest it.</i></a></li>
+      <li><a href="propose.html"><span>k4</span><b>Propose a change</b><i>Write the change as options, with a refundable deposit. Every voice is asked.</i></a></li>
+      <li><a href="file.html"><span>k6</span><b>Bring a case</b><i>Name who wronged you and how. Every element is decided, and you can appeal.</i></a></li>
+      <li><a href="credit.html"><span>k9</span><b>Lend or borrow</b><i>Escrow capital on your terms, or draw on someone’s. The contract services every due date.</i></a></li>
     </ol>
   </section>
 
@@ -192,7 +193,7 @@
     <h2 id="close-title">The world <em>stays ours.</em></h2>
     <p>One voice is waiting for you. Nobody can hold two.</p>
     <div class="btn-row">
-      <a class="btn primary" href="join.html" data-ref="k2">Take your voice</a>
+      <a class="btn primary" href="desk.html" data-ref="k2">Take your voice</a>
       <a class="btn" href="contract.html" data-ref="k1–12">Read the contract</a>
       <a class="btn" href="record.html" data-ref="k11">See the record</a>
     </div>
@@ -206,6 +207,9 @@
       <a href="record.html">The record</a>
       <a href="contract.html">The contract</a>
       <a href="join.html">Take part</a>
+      <a href="rfcs.html">Proposals</a>
+      <a href="cases.html">Cases</a>
+      <a href="credit.html">Credit</a>
       <a href="papers/coordination-contract.pdf">The paper (PDF)</a>
       <a href="https://api.commandagi.com/public/contract/calendar.ics">The calendar (.ics)</a>
       <a href="https://commandagi.com/">CommandAGI</a>

@@ -177,23 +177,5 @@ if (el('figures') || el('tape')) {
   });
 }
 recording();
-// One RFC, named by the address (`record.html#rfc=<id>`): its tally once read, its count before.
-async function rfc() {
-  const node = el('rfc');
-  if (!node) return;
-  const id = L.rfcOfHash(location.hash);
-  node.closest('section')?.toggleAttribute('hidden', !id);
-  if (!id) return;
-  const path = `/public/contract/rfcs/${encodeURIComponent(id)}/tally`;
-  try {
-    put('rfc', L.renderTally(await get(path), Date.now()));
-    node.closest('section')?.scrollIntoView();
-  } catch (e) {
-    unreachable(['rfc'], e, path);
-  }
-}
-
 kernel();
 record();
-rfc();
-window.addEventListener('hashchange', rfc);

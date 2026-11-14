@@ -23,6 +23,7 @@
 <script src="gov.js" defer></script>
 <script type="module" src="page.js"></script>
 <script type="module" src="scene.js"></script>
+<script type="module" src="shell.js"></script>
 <script type="module" src="contract.js"></script>
 </head>
 <body class="open">
@@ -33,8 +34,9 @@
     <a class="wordmark" href="index.html" aria-label="VibeGov, home"><img src="mark.svg" alt="" width="26" height="26">VibeGov</a>
     <button class="btn small contents-btn" type="button" popovertarget="contents" aria-controls="contents">Contents</button>
     <nav id="contents" class="contents" popover aria-label="Site">
-      <ol><li><a href="index.html">Home</a></li><li><a href="record.html">The record</a></li><li><a href="contract.html" aria-current="page">The contract</a></li><li><a href="join.html">Take part</a></li></ol>
+      <ol><li><a href="index.html">Home</a></li><li><a href="record.html">The record</a></li><li><a href="contract.html" aria-current="page">The contract</a></li><li><a href="rfcs.html">Proposals</a></li><li><a href="cases.html">Cases</a></li><li><a href="credit.html">Credit</a></li></ol>
     </nav>
+    <span class="runhead__act" data-account></span>
   </div>
 </header>
 <div class="tape" data-live="tape" aria-label="The contract’s figures now" aria-busy="true"></div>
@@ -419,6 +421,9 @@ account: the person or an agent key. The contract refuses a program's token.</p>
       <a href="record.html">The record</a>
       <a href="contract.html">The contract</a>
       <a href="join.html">Take part</a>
+      <a href="rfcs.html">Proposals</a>
+      <a href="cases.html">Cases</a>
+      <a href="credit.html">Credit</a>
       <a href="papers/coordination-contract.pdf">The paper (PDF)</a>
       <a href="https://commandagi.com/">CommandAGI</a>
       <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>

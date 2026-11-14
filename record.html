@@ -22,6 +22,7 @@
 <script src="gov.js" defer></script>
 <script type="module" src="page.js"></script>
 <script type="module" src="scene.js"></script>
+<script type="module" src="shell.js"></script>
 </head>
 <body>
 <canvas id="sky" aria-hidden="true"></canvas>
@@ -31,8 +32,9 @@
     <a class="wordmark" href="index.html" aria-label="VibeGov, home"><img src="mark.svg" alt="" width="26" height="26">VibeGov</a>
     <button class="btn small contents-btn" type="button" popovertarget="contents" aria-controls="contents">Contents</button>
     <nav id="contents" class="contents" popover aria-label="Site">
-      <ol><li><a href="index.html">Home</a></li><li><a href="record.html" aria-current="page">The record</a></li><li><a href="contract.html">The contract</a></li><li><a href="join.html">Take part</a></li></ol>
+      <ol><li><a href="index.html">Home</a></li><li><a href="record.html" aria-current="page">The record</a></li><li><a href="contract.html">The contract</a></li><li><a href="rfcs.html">Proposals</a></li><li><a href="cases.html">Cases</a></li><li><a href="credit.html">Credit</a></li></ol>
     </nav>
+    <span class="runhead__act" data-account></span>
   </div>
 </header>
 <div class="tape" data-live="tape" aria-label="The contract’s figures now" aria-busy="true"></div>
@@ -66,10 +68,6 @@
     </div>
   </section>
 
-  <section class="band" id="rfc" aria-labelledby="rfc-title" hidden>
-    <div class="band__head"><div><h2 id="rfc-title">One RFC</h2><p>Its options and how many responses count. Once the responses are read, each option's score, how the voices scored it from −2 to +2, and the decision. Before that the contract shows no score.</p></div><span class="cite">§ RFCs 4–7</span></div>
-    <div data-live="rfc" aria-live="polite" aria-busy="true"><p class="note">Reading the RFC…</p></div>
-  </section>
 
   <section class="band" aria-labelledby="rfcs-title">
     <div class="band__head"><div><h2 id="rfcs-title">RFCs</h2><p>Newest first. Pick one to read its tally here, or open it in the contract editor to respond.</p></div><span class="cite">§ RFCs</span></div>
@@ -161,6 +159,9 @@
       <a href="record.html">The record</a>
       <a href="contract.html">The contract</a>
       <a href="join.html">Take part</a>
+      <a href="rfcs.html">Proposals</a>
+      <a href="cases.html">Cases</a>
+      <a href="credit.html">Credit</a>
       <a href="papers/coordination-contract.pdf">The paper (PDF)</a>
       <a href="https://commandagi.com/">CommandAGI</a>
       <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>

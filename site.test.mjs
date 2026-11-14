@@ -15,6 +15,9 @@ import { contractHash, kernelHash, logProblems } from './verify.js';
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const ORIGIN = 'https://vibegov.pro';
 const PAGES = ['index.html', 'record.html', 'contract.html', 'join.html'];
+// The signed-in pages (redesign/APP.md); each has its own test under test/.
+const APP = ['signin.html', 'desk.html', 'rfcs.html', 'rfc.html', 'propose.html', 'cases.html', 'case.html', 'file.html', 'credit.html'];
+const NAV = ['index.html', 'record.html', 'contract.html', 'rfcs.html', 'cases.html', 'credit.html'];
 const read = path => readFileSync(join(ROOT, path), 'utf8');
 const NOW = Date.UTC(2026, 10, 2, 12, 0, 0);
 
@@ -29,16 +32,18 @@ test('the site manifest names VibeGov and no build', () => {
   assert.deepEqual(Object.keys(JSON.parse(read('package.json'))).sort(), ['private', 'type'], 'package.json names no framework: only that the scripts are modules');
 });
 
-test('four pages, in English, each with its canonical address and the same contents line', () => {
+test('the pages, in English, each with its canonical address, the same contents line and the account control', () => {
   const html = readdirSync(ROOT, { recursive: true }).filter(f => String(f).endsWith('.html') && !String(f).startsWith('redesign'));
-  assert.deepEqual(html.sort(), [...PAGES].sort(), 'the pages are these four');
-  for (const page of PAGES) {
+  assert.deepEqual(html.sort(), [...PAGES, ...APP].sort(), 'the public pages and the signed-in pages');
+  for (const page of [...PAGES, ...APP]) {
     const text = read(page);
     assert.match(text, /<html lang="en">/, `${page}: English`);
     assert.match(text, new RegExp(`<link rel="canonical" href="${ORIGIN}/${page === 'index.html' ? '' : page}">`), `${page}: canonical`);
     const contents = text.match(/<nav id="contents"[\s\S]*?<\/nav>/)[0];
-    assert.deepEqual([...contents.matchAll(/href="([^"]+)"/g)].map(m => m[1]), PAGES, `${page}: the contents line`);
-    assert.match(contents, new RegExp(`href="${page}" aria-current="page"`), `${page}: marks itself`);
+    assert.deepEqual([...contents.matchAll(/href="([^"]+)"/g)].map(m => m[1]), NAV, `${page}: the contents line`);
+    if (NAV.includes(page)) assert.match(contents, new RegExp(`href="${page}" aria-current="page"`), `${page}: marks itself`);
+    assert.match(text, /<span class="runhead__act" data-account><\/span>/, `${page}: the account control's place`);
+    assert.match(text, /<script type="module" src="shell\.js"><\/script>/, `${page}: shell.js fills it`);
   }
 });
 
@@ -63,13 +68,12 @@ test('a page connects to the public API and nothing else; no asset comes from an
     assert.ok(csp, `${page}: a CSP`);
     for (const rule of ["default-src 'self'", "script-src 'self'", "connect-src 'self' https://api.commandagi.com;"]) assert.ok(csp.includes(rule), `${page}: ${rule}`);
     assert.match(text, /<meta name="vibegov-api" content="https:\/\/api\.commandagi\.com">/, `${page}: the API it reads`);
-    assert.match(csp, page === 'join.html' ? /form-action https:\/\/commandagi\.com(;|$)/ : /form-action 'none'/, `${page}: form-action`);
+    assert.match(csp, /form-action 'none'/, `${page}: form-action`);
     for (const [, ref] of text.matchAll(/<(?:script|img|source|link rel="(?:stylesheet|preload|icon|apple-touch-icon)")[^>]*(?:src|href)="(https?:[^"]+)"/g))
       assert.fail(`${page}: an asset from another host (${ref})`);
   }
-  const form = read('join.html').match(/<form[^>]*>/)[0];
-  assert.match(form, /action="https:\/\/commandagi\.com\/app" method="get"/, 'the prompt goes to the workbench as ?prompt=');
-  assert.match(read('join.html'), /<textarea[^>]*name="prompt"/);
+  // No page sends a person to the workbench to act: every act is on this site.
+  for (const page of [...PAGES, ...APP]) assert.doesNotMatch(read(page), /commandagi\.com\/app/, `${page}: no link into the workbench`);
 });
 
 test('the pictures: the mark, the Earth from NASA\'s maps, plates of facts, two diagrams, and recordings labelled as recordings', () => {
@@ -189,7 +193,7 @@ test('an empty contract says so in words, and every count is zero, not missing',
     assert.match(figures, /<b>\$0\.00<\/b>/, 'the pool is $0.00');
     const open = L.renderRfcStrip(s, NOW);
     assert.match(open, /with a refundable deposit of \$10\.00\.[\s\S]*none open today<\/span><\/p><h4>Open the first proposal/);
-    assert.match(open, /href="https:\/\/commandagi\.com\/app\?open=%2Fapp%2Fcontract"/, 'the way to open one');
+    assert.match(open, /<a class="btn small" href="propose\.html" data-ref="k4">Open a proposal<\/a>/, 'the way to open one, on this site');
     assert.match(L.renderDecided(s, NOW), /No RFC has been decided yet/);
     const ledger = L.renderLedger(s, NOW);
     assert.match(ledger, /health--live/, 'a beacon 30 s ago is live');
@@ -227,7 +231,7 @@ test('proposals are a row of cards: open ones soonest first with a Respond link,
     assert.match(open, /A longer &lt;script&gt;alert\(1\)&lt;\/script&gt; appeal/);
     assert.ok(open.indexOf('rfc_a') < open.indexOf('rfc_b'), 'soonest deadline first');
     assert.match(open, /Closes <time datetime="[^"]+" title="[^"]+">in 13 days<\/time>/);
-    assert.match(open, /href="https:\/\/commandagi\.com\/app\?open=%2Fapp%2Fcontract%3Frfc%3Drfc_a">Respond/, 'Respond opens the editor on that RFC');
+    assert.match(open, /<a class="btn small primary" href="rfc\.html\?id=rfc_a">Respond/, 'Respond opens that RFC\'s page on this site');
     assert.match(open, /binding score/);
     const figures = L.renderFigures(s);
     assert.match(figures, /<dt>Open RFCs<\/dt><dd><b>2<\/b><span>1 more being read or decided/);
@@ -235,8 +239,8 @@ test('proposals are a row of cards: open ones soonest first with a Respond link,
     assert.match(figures, /<b>15<\/b><span>12 human · 3 agent/, 'persons with a voice, by kind');
     assert.match(figures, /<b>3<\/b><span>2 open · 1 with a judgment/);
     assert.match(figures, /<b>\$1,234\.56<\/b><span>1 open claims, \$50\.00 owed/);
-    assert.match(L.renderDecided(s, NOW), /Adopted<\/span> <a href="record\.html#rfc=rfc_z">Lower the deposit/, 'a decision links to its tally on this site');
-    assert.match(open, /<h4><a href="record\.html#rfc=rfc_a">/, 'an open RFC links to its page here');
+    assert.match(L.renderDecided(s, NOW), /Adopted<\/span> <a href="rfc\.html\?id=rfc_z">Lower the deposit/, 'a decision links to its tally on this site');
+    assert.match(open, /<h4><a href="rfc\.html\?id=rfc_a">/, 'an open RFC links to its page here');
     assert.ok(open.indexOf('rfc_b') < open.indexOf('Lower the deposit') && open.indexOf('Lower the deposit') < open.indexOf('Propose a change'), 'open, then decided, then the way to open one');
     assert.doesNotMatch(open, /card--step/, 'no path cards beside real proposals');
     const none = L.renderRfcStrip(statsOf({}), NOW);
@@ -283,47 +287,6 @@ const tallyOf = over => ({
   tally: null,
   decision: null,
   ...over,
-});
-
-test('the record page reads the RFC its address names', () => {
-  assert.equal(L.rfcOfHash('#rfc=rfc_t'), 'rfc_t');
-  assert.equal(L.rfcOfHash(`#rfc=${encodeURIComponent('rfc a/b')}`), 'rfc a/b');
-  for (const h of ['', '#', '#rfcs', '#rfc=', '#rfc=%E0%A4%A']) assert.equal(L.rfcOfHash(h), null, `"${h}" names no RFC`);
-  assert.equal(L.rfcHref('rfc_t'), 'record.html#rfc=rfc_t');
-  assert.match(read('record.html'), /<section class="band" id="rfc"[^>]*hidden>/, 'the RFC band shows only when an RFC is named');
-  assert.match(read('record.html'), /data-live="engine"/);
-});
-
-test('an open RFC shows its count and no score; a read one its scores, histogram and decision; a title stays text', async () => {
-  const decided = tallyOf({
-    status: 'adopted',
-    closesAt: NOW - 5 * 86_400_000,
-    responses: 3,
-    tally: { respondents: 3, scores: { longer: 4 }, histogram: { longer: [0, 0, 1, 0, 2] }, unscored: { longer: 0 }, favored: 'longer', recordDigest: 'd'.repeat(64), provisional: false },
-    decision: { adopted: 'longer', reason: 'selected after consideration of comments; the engine concurs', decidedAt: NOW - 86_400_000, decisionHash: 'f'.repeat(64), depositReturned: true, participation: { respondents: 3, representativeness: 'three self-selected comments' }, determinations: [{ id: 'det_1', kind: 'rfc.concur', outcome: 'decided', label: 'concur', tier: 3 }] },
-  });
-  const api = await fakeApi({ '/public/contract/rfcs/rfc_t/tally': tallyOf({}), '/public/contract/rfcs/rfc_d/tally': decided });
-  try {
-    const open = L.renderTally(await L.getJson(fetch, api.base, '/public/contract/rfcs/rfc_t/tally'), NOW);
-    assert.match(open, /<b>7<\/b> confirmed responses so far/);
-    assert.match(open, /publishes the tally once the responses are read/);
-    assert.doesNotMatch(open, /<table|Score|favored/, 'no score before the responses are read');
-    assert.match(open, /href="https:\/\/commandagi\.com\/app\?open=%2Fapp%2Fcontract%3Frfc%3Drfc_t">Respond/);
-    assert.ok(open.includes('Fourteen &lt;b&gt;days&lt;/b&gt;') && !open.includes('<b>days</b>'), 'an option title is escaped');
-
-    const read = L.renderTally(await L.getJson(fetch, api.base, '/public/contract/rfcs/rfc_d/tally'), NOW);
-    assert.match(read, /<b>3<\/b> voices read\./);
-    assert.match(read, /<td class="num">\+4<\/td>/, 'the option\'s score');
-    assert.match(read, /favored/);
-    assert.equal([...read.matchAll(/<li title="[^"]+"><i style="--h:(\d+)%"><\/i><span>([^<]+)<\/span><b>(\d+)<\/b><\/li>/g)].map(m => `${m[2]}:${m[3]}`).join(' '), '−2:0 −1:0 0:1 +1:0 +2:2', 'the histogram from −2 to +2');
-    assert.match(read, /Adopted: Fourteen &lt;b&gt;days&lt;\/b&gt;/);
-    assert.match(read, /<code>rfc\.concur<\/code> decided: <b>concur<\/b> at tier 3/);
-    assert.match(read, /returned to the opener/);
-    assert.deepEqual(api.seen, ['/public/contract/rfcs/rfc_t/tally', '/public/contract/rfcs/rfc_d/tally']);
-  } finally {
-    await api.close();
-  }
-  assert.match(L.renderTally(tallyOf({ status: 'contest', tally: { ...decided.tally, provisional: true } }), NOW), /may still contest/, 'a tally that contests may still move says so');
 });
 
 test('the engine\'s seats: operator, pin and figures per tier, the renderers apart', () => {
@@ -424,11 +387,11 @@ test('the activity feed says what happened in plain words, counts runs of one ac
     const html = L.renderActivity(await L.getJson(fetch, api.base, '/public/contract/activity'), statsOf({}), NOW);
     const lines = [...html.matchAll(/<li class="feed__item feed--([a-z]+)"><a href="([^"]+)">([^<]*(?:<(?!\/a>)[^<]*)*)<\/a>/g)].map(m => [m[1], m[2], m[3]]);
     assert.deepEqual(lines, [
-      ['rfc', 'record.html#rfc=rfc_12', '3 responses to “Twelve &lt;i&gt;days&lt;/i&gt;” were confirmed'],
+      ['rfc', 'rfc.html?id=rfc_12', '3 responses to “Twelve &lt;i&gt;days&lt;/i&gt;” were confirmed'],
       ['case', 'record.html', 'A case was decided'],
       ['people', 'record.html', 'A human’s voice was confirmed'],
       ['machine', 'record.html#machines', 'The contract authorized a command to a machine'],
-      ['rfc', 'record.html#rfc=rfc_12', 'RFC “Twelve &lt;i&gt;days&lt;/i&gt;” opened'],
+      ['rfc', 'rfc.html?id=rfc_12', 'RFC “Twelve &lt;i&gt;days&lt;/i&gt;” opened'],
       ['law', 'record.html', 'something.new was recorded'],
     ]);
     assert.ok(!html.includes('case_abc'), 'a case is not named in the feed');
@@ -532,7 +495,7 @@ test('the front door: A World in Command, what the contract holds in the kernel\
     assert.ok(kernel[id].includes(words.replace(/^…|…$/g, '').replaceAll('’', "'")), `“${words}” is in ${id}`);
   }
   assert.equal([...text.matchAll(/<blockquote>/g)].length, quotes.length, 'no quotation that is not the kernel\'s');
-  assert.match(text, /<a class="btn primary" href="join\.html" data-ref="k2">Take your voice<\/a>/, 'the one act the page asks for');
+  assert.match(text, /<a class="btn primary" href="desk\.html" data-ref="k2">Take your voice<\/a>/, 'the one act the page asks for');
   assert.equal([...text.matchAll(/<ol class="clauses">[\s\S]*?<\/ol>/g)][0][0].match(/<li>/g).length, 5, 'five things to do today');
 });
 

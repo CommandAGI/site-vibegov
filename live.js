@@ -3,24 +3,10 @@
 // zero says so in words, and nothing here is made up.
 
 export const API = 'https://api.commandagi.com';
-export const WORKBENCH = 'https://commandagi.com/app';
-
-/** The workbench's contract editor on a record (an untitled document: following the link writes no file). */
-export const editorHref = (kind, id) => `${WORKBENCH}?open=${encodeURIComponent(kind ? `/app/contract?${kind}=${id}` : '/app/contract')}`;
-
-/** This site's page for one RFC: its options, its count, and once read its tally (record.html reads the hash). */
-export const rfcHref = id => `record.html#rfc=${encodeURIComponent(id)}`;
-
-/** The RFC a record page's address names (`#rfc=<id>`), or null. */
-export function rfcOfHash(hash) {
-  const m = /^#rfc=([^&]+)$/.exec(hash ?? '');
-  if (!m) return null;
-  try {
-    return decodeURIComponent(m[1]);
-  } catch {
-    return null;
-  }
-}
+/** This site's page for one RFC: its options, its count or tally, its decision, and the acts of a voice on it. */
+export const rfcHref = id => `rfc.html?id=${encodeURIComponent(id)}`;
+/** This site's page that opens an RFC. */
+export const PROPOSE = 'propose.html';
 
 export const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
@@ -88,7 +74,7 @@ export function renderRfcStrip(s, now) {
 <p class="card__meta"><span class="tag">${esc(r.target)}</span><span class="tag">${esc(r.procedure === 'binding_score' ? 'binding score' : 'deliberative')}</span>${until(r.closesAt, now)}</p>
 <h4><a href="${esc(rfcHref(r.id))}">${esc(r.title)}</a></h4>
 <p class="card__words">Closes ${time(r.closesAt, now)} · ${count(r.options)} option${r.options === 1 ? '' : 's'} and the status quo</p>
-<p class="card__act"><a class="btn small primary" href="${esc(editorHref('rfc', r.id))}">Respond</a></p>
+<p class="card__act"><a class="btn small primary" href="${esc(rfcHref(r.id))}">Respond</a></p>
 </li>`);
   const decided = s.rfcs.decided.map(r => `<li class="card">
 <p class="card__meta"><span class="verdict verdict--${r.status === 'adopted' ? 'adopted' : 'kept'}">${r.status === 'adopted' ? 'Adopted' : 'Status quo kept'}</span></p>
@@ -102,7 +88,7 @@ export function renderRfcStrip(s, now) {
     step(3, 'Read in full', `Every answer is read. You see how yours was read, and you have ${esc(duration(s.parameters.extractionContestMs))} to contest it.`),
     step(4, 'Decided on the record', 'The choice and its reasons are published. Silence counts for nothing.'),
   ];
-  const start = `<li class="card card--new"><p class="card__meta"><span>${open.length ? 'yours' : 'none open today'}</span></p><h4>${open.length ? 'Propose a change' : 'Open the first proposal'}</h4><p class="card__act"><a class="btn small" href="${esc(editorHref())}" data-ref="k4">Open a proposal</a></p></li>`;
+  const start = `<li class="card card--new"><p class="card__meta"><span>${open.length ? 'yours' : 'none open today'}</span></p><h4>${open.length ? 'Propose a change' : 'Open the first proposal'}</h4><p class="card__act"><a class="btn small" href="${PROPOSE}" data-ref="k4">Open a proposal</a></p></li>`;
   return `<ol class="strip">${[...open, ...decided, ...path, start].join('')}</ol>`;
 }
 
@@ -174,55 +160,14 @@ export function renderKernelCheck({ claimed, recomputed, pinned }) {
 const STATUS = { open: 'Open', interpreting: 'Reading the responses', contest: 'Open to contest', deciding: 'Deciding', adopted: 'Adopted', rejected: 'Status quo kept' };
 
 export function renderRfcTable(rfcs, now) {
-  if (!rfcs.length) return `<p class="empty">No RFC has been opened. <a href="${esc(editorHref())}">Open the first one</a>.</p>`;
+  if (!rfcs.length) return `<p class="empty">No RFC has been opened. <a href="${PROPOSE}">Open the first one</a>.</p>`;
   return `<div class="table-wrap" tabindex="0"><table><thead><tr><th>RFC</th><th>Target</th><th>Status</th><th>Opened</th><th>Closes</th></tr></thead><tbody>${rfcs
-    .map(r => `<tr><td><a href="${esc(rfcHref(r.id))}">${esc(r.title)}</a><br><code>${esc(r.id)}</code> · <a href="${esc(editorHref('rfc', r.id))}">${r.status === 'open' ? 'Respond' : 'In the editor'}</a></td><td>${esc(r.target)}</td><td>${esc(STATUS[r.status] ?? r.status)}${r.adopted ? ` (<code>${esc(r.adopted)}</code>)` : ''}</td><td>${time(r.openedAt, now)}</td><td>${time(r.closesAt, now)}</td></tr>`)
+    .map(r => `<tr><td><a href="${esc(rfcHref(r.id))}">${esc(r.title)}</a><br><code>${esc(r.id)}</code></td><td>${esc(r.target)}</td><td>${esc(STATUS[r.status] ?? r.status)}${r.adopted ? ` (<code>${esc(r.adopted)}</code>)` : ''}</td><td>${time(r.openedAt, now)}</td><td>${time(r.closesAt, now)}</td></tr>`)
     .join('')}</tbody></table></div>`;
 }
 
 const SCORES = ['−2', '−1', '0', '+1', '+2'];
 const signed = n => (n > 0 ? `+${count(n)}` : n < 0 ? `−${count(-n)}` : '0');
-
-/**
- * One RFC from `/public/contract/rfcs/:id/tally`. Before its responses are read the API sends the count and no score
- * (§ RFCs 4), and this says so; after, each option's score, its histogram from −2 to +2 and the unscored, then the
- * decision and the determinations it rests on.
- */
-export function renderTally(v, now) {
-  const head = `<header class="tally__head">
-<p class="rfc__meta"><span class="tag">${esc(v.target)}</span><span class="tag">${esc(v.procedure === 'binding_score' ? 'binding score' : 'deliberative')}</span><span>${esc(STATUS[v.status] ?? v.status)}</span></p>
-<h3>${esc(v.title)}</h3>
-<p class="rfc__clock">${v.status === 'open' ? 'Closes' : 'Closed'} ${time(v.closesAt, now)} · opened ${time(v.openedAt, now)} · <code>${esc(v.id)}</code></p>
-</header>`;
-  const options = v.options.filter(o => o.id !== 'status_quo');
-  if (!v.tally) {
-    const act = v.status === 'open' ? ` <a class="btn small primary" href="${esc(editorHref('rfc', v.id))}">Respond</a>` : '';
-    return `${head}<p class="tally__count"><b>${count(v.responses)}</b> confirmed response${v.responses === 1 ? '' : 's'} so far.</p>
-<p class="note">The contract publishes the tally once the responses are read (§ RFCs 4). Until then nobody, the platform included, shows a score.${act}</p>
-<ul class="options">${options.map(o => `<li><b>${esc(o.title)}</b>${o.summary ? ` <span>${esc(o.summary)}</span>` : ''}</li>`).join('')}</ul>`;
-  }
-  const t = v.tally;
-  const rows = options
-    .map(o => {
-      const h = t.histogram[o.id] ?? [0, 0, 0, 0, 0];
-      const most = Math.max(1, ...h);
-      const bars = h.map((n, i) => `<li title="${esc(`${count(n)} at ${SCORES[i]}`)}"><i style="--h:${Math.round((n / most) * 100)}%"></i><span>${SCORES[i]}</span><b>${count(n)}</b></li>`).join('');
-      const fav = t.favored === o.id ? ' <span class="verdict verdict--adopted">favored</span>' : '';
-      return `<tr><td><b>${esc(o.title)}</b>${fav}<br><code>${esc(o.id)}</code></td><td class="num">${signed(t.scores[o.id] ?? 0)}</td><td><ol class="hist" aria-label="${esc(`How the ${count(t.respondents)} voices scored ${o.title}`)}">${bars}</ol></td><td class="num">${count(t.unscored[o.id] ?? 0)}</td></tr>`;
-    })
-    .join('');
-  const d = v.decision;
-  const decision = d
-    ? `<div class="decision"><p><span class="verdict verdict--${d.adopted ? 'adopted' : 'kept'}">${d.adopted ? `Adopted: ${esc(v.options.find(o => o.id === d.adopted)?.title ?? d.adopted)}` : 'Status quo kept'}</span>${d.decidedAt ? ` <span class="note">${time(d.decidedAt, now)}</span>` : ''}</p>
-<p>${esc(d.reason)}</p>
-<dl class="facts"><div><dt>Decision</dt><dd>${hash(d.decisionHash, 16)}</dd></div><div><dt>Deposit</dt><dd>${d.depositReturned ? 'returned to the opener' : 'to the commons'}</dd></div>${d.participation ? `<div><dt>Participation</dt><dd>${count(d.participation.respondents)} respondents. ${esc(d.participation.representativeness)}</dd></div>` : ''}</dl>
-${d.determinations.length ? `<ul class="dets">${d.determinations.map(x => `<li><code>${esc(x.kind)}</code> ${esc(x.outcome)}${x.label ? `: <b>${esc(x.label)}</b>` : ''}${x.tier ? ` at tier ${esc(x.tier)}` : ''} <a href="${esc(`${API}/public/contract/determinations/${encodeURIComponent(x.id)}`)}">its seats' answers</a></li>`).join('')}</ul>` : ''}</div>`
-    : '<p class="note">Not decided yet.</p>';
-  return `${head}<p class="tally__count"><b>${count(t.respondents)}</b> voice${t.respondents === 1 ? '' : 's'} read.${t.provisional ? ' A respondent may still contest how their response was read, so the scores may move.' : ''}</p>
-<div class="table-wrap" tabindex="0"><table><thead><tr><th>Option</th><th>Score</th><th>Voices from −2 to +2</th><th>Unscored</th></tr></thead><tbody>${rows}</tbody></table></div>
-<p class="note">Record digest ${hash(t.recordDigest, 16)}: the interpretations it sums are public at <a href="${esc(`${API}/public/contract/rfcs/${encodeURIComponent(v.id)}/record`)}">the RFC's record</a>, each voice as a pseudonym.</p>
-${decision}`;
-}
 
 const pin = p => (p.kind === 'weights' ? `weights ${hash(p.sha256, 10)}` : `version <code>${esc(p.id)}</code>`);
 const permille = n => (n === null || n === undefined ? '—' : `${(n / 10).toLocaleString('en-US', { maximumFractionDigits: 1 })}%`);
@@ -232,6 +177,8 @@ function seatRows(seats) {
     .map(s => `<tr><td><code>${esc(s.id)}</code><br>${esc(s.model)}</td><td>${esc(s.operator)}${s.upstream ? ` via ${esc(s.upstream)}` : ''}</td><td>${pin(s.pin)}</td><td>${esc(s.modalities.join(', '))}</td><td class="num">${s.measured ? `${count(s.measured.calls)} calls · ${permille(s.measured.errorUpperPermille)} wrong at most` : s.economics ? `${permille(s.economics.errorPermille)} wrong (${esc(s.economics.source === 'prior' ? 'prior' : 'measured')})` : '—'}</td></tr>`)
     .join('');
 }
+
+/** The engine's seats from `/public/contract/engine`: who runs each and what pins its model. Models and companies only. */
 
 /** The engine's seats from `/public/contract/engine`: who runs each and what pins its model. Models and companies only. */
 export function renderEngine(e) {
