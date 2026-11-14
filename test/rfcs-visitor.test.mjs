@@ -11,3 +11,9 @@ test('a visitor is asked to sign in to open a proposal, and comes back to the fo
   assert.match(html, /deposit of \$10\.00/);
   assert.ok(!html.includes('href="propose.html"'));
 });
+
+test('opening a proposal needs an account and the deposit, not a voice (the route asks no personhood: openRfcFor)', () => {
+  const html = L.renderOpenAct({ rfcDepositCents: 1000 });
+  assert.doesNotMatch(html, /voice/);
+  assert.match(html, /needs a CommandAGI account and a deposit of \$10\.00/);
+});

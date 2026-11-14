@@ -79,7 +79,7 @@ export function renderWindows(parameters) {
 /** What opening a proposal costs, said before the act. A visitor's act is "Sign in to …", which comes back to the form. */
 export function renderOpenAct(parameters, { signedIn = true } = {}) {
   const dep = parameters?.rfcDepositCents;
-  const cost = typeof dep === 'number' ? `Opening a proposal needs an account with a voice and a deposit of ${money(dep)}.` : 'Opening a proposal needs an account with a voice and a deposit.';
+  const cost = typeof dep === 'number' ? `Opening a proposal needs a CommandAGI account and a deposit of ${money(dep)}.` : 'Opening a proposal needs a CommandAGI account and a deposit.';
   const act = signedIn ? '<a class="btn primary" href="propose.html">Open a proposal</a>' : '<a class="btn primary" href="signin.html?next=propose.html">Sign in to open a proposal</a>';
   return `${act}<p class="note">${esc(cost)} The deposit comes back when someone other than you supports a change.</p>`;
 }
