@@ -17,6 +17,16 @@ function draw() {
       ? `<a class="btn small" href="home.html" data-ref="you"${here === 'home.html' ? ' aria-current="page"' : ''}>Home</a>`
       : `<a class="btn small" href="signin.html${here && !['signin.html', 'index.html', ''].includes(here) ? `?next=${encodeURIComponent(here + location.search + location.hash)}` : ''}">Sign in</a>`;
   }
+  // On a narrow screen the header holds only the wordmark and the three bars, so the menu ends with the same control.
+  const list = document.querySelector('#contents ol');
+  if (list) {
+    const here = location.pathname.split('/').pop();
+    let you = list.querySelector('.contents__you');
+    if (!you) { you = document.createElement('li'); you.className = 'contents__you'; list.append(you); }
+    you.innerHTML = signedIn()
+      ? `<a href="home.html"${here === 'home.html' ? ' aria-current="page"' : ''}>Home</a>`
+      : `<a href="signin.html${here && !['signin.html', 'index.html', ''].includes(here) ? `?next=${encodeURIComponent(here + location.search + location.hash)}` : ''}">Sign in</a>`;
+  }
   document.documentElement.dataset.session = signedIn() ? 'in' : 'out';
 }
 draw();

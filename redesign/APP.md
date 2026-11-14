@@ -127,6 +127,9 @@ Copy this frame. Change the title, the description, the canonical address, `aria
 </html>
 ```
 
+- **On a narrow screen the header is the wordmark and three bars.** The bars open the menu over the whole screen
+  under the header and turn into an X; `shell.js` ends the menu with the account control (Home or Sign in), which
+  the header shows only on a wide screen.
 - **No inline script and no inline event handler**: the CSP refuses them. One module per page (`PAGE.js`).
 - **No library, no build, no framework.** Plain DOM. A render function is pure where it can be (data in, escaped
   HTML out, like `live.js`), so a test can call it with no browser.

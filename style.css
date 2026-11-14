@@ -89,18 +89,33 @@ code { font-family: var(--mono); font-size: 0.86em; overflow-wrap: anywhere; }
 .contents-btn span { position: relative; }
 .contents-btn span::before, .contents-btn span::after { content: ""; position: absolute; left: 0; }
 .contents-btn span::before { top: -0.42rem; } .contents-btn span::after { top: 0.42rem; }
+.contents-btn span, .contents-btn span::before, .contents-btn span::after { transition: transform 0.25s ease, background-color 0.15s ease; }
+/* open: the bars turn into an X */
+.runhead:has(.contents:popover-open) .contents-btn span, .runhead:has(.contents.is-open) .contents-btn span { background-color: transparent; }
+.runhead:has(.contents:popover-open) .contents-btn span::before, .runhead:has(.contents.is-open) .contents-btn span::before { transform: translateY(0.42rem) rotate(45deg); }
+.runhead:has(.contents:popover-open) .contents-btn span::after, .runhead:has(.contents.is-open) .contents-btn span::after { transform: translateY(-0.42rem) rotate(-45deg); }
+@media (prefers-reduced-motion: reduce) { .contents-btn span, .contents-btn span::before, .contents-btn span::after { transition: none; } }
 .contents { margin: 0 0 0 auto; padding: 0; border: 0; background: none; color: inherit; display: block; position: static; inset: auto; overflow: visible; }
 .contents ol { display: flex; gap: 0.25rem; list-style: none; margin: 0; padding: 0; }
 .contents a { display: block; padding: 0.4rem 0.7rem; text-decoration: none; color: var(--muted); font: 500 0.92rem var(--sans); white-space: nowrap; }
 .contents a:hover, .contents a[aria-current="page"] { color: var(--ink); }
 .contents a[aria-current="page"] { text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 0.45em; }
 .runhead__act { flex: none; }
+.contents__you { display: none; }
 @media (max-width: 56rem) {
   .contents-btn { display: inline-flex; order: 3; margin-left: 0; }
-  .runhead__act { margin-left: auto; }
-  .contents { position: fixed; inset: 3.75rem var(--gutter) auto auto; margin: 0; width: min(18rem, calc(100vw - 2rem)); padding: 0.5rem; background: var(--panel); border: 1px solid var(--ink); }
+  .contents-btn { margin-left: auto; }
+  /* the account control lives in the menu on a narrow screen */
+  .runhead__act { display: none; }
+  .contents__you { display: block; }
+  /* the menu: the whole screen under the header, so the X stays in reach */
+  .contents { position: fixed; inset: calc(3.5rem + 1px) 0 0 0; width: auto; height: auto; max-width: none; max-height: none; margin: 0; padding: 1rem var(--gutter) 2rem; background: var(--paper); border: 0; overflow-y: auto; overscroll-behavior: contain; }
   .contents:not(:popover-open):not(.is-open) { display: none; }
-  .contents ol { flex-direction: column; }
+  .contents ol { flex-direction: column; gap: 0; }
+  .contents li { border-bottom: 1px solid var(--rule); }
+  .contents a { padding: 1rem 0; color: var(--ink); font: 500 1.35rem var(--sans); }
+  .contents__you a { color: var(--ink); }
+  html:has(.contents:popover-open) { overflow: hidden; }
 }
 /* the tape: the contract's figures on one small line, moving slowly; a person can drag it */
 .tape { overflow: hidden; border-bottom: 1px solid var(--rule); min-height: 1.7rem; cursor: grab; user-select: none; touch-action: pan-y; }

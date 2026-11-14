@@ -496,11 +496,11 @@ test('the plates state a figure from the record and a rule from the law, exactly
   assert.equal(row(kase, 'Pool cover for an unpaid victim'), 'up to $10,000.00');
 });
 
-test('what moves, and nothing else: the tape, a shimmer where something is being read, and the ledger\'s new block', () => {
+test('what moves, and nothing else: the tape, a shimmer where something is being read, the ledger\'s new block and the menu\'s bars turning into an X', () => {
   const css = read('style.css').replace(/@media \(prefers-reduced-motion: reduce\) \{[\s\S]*?\n\}/, '');
   assert.deepEqual([...css.matchAll(/@keyframes (\w+)/g)].map(m => m[1]), ['shimmer'], 'one keyframe animation: the shimmer');
   assert.deepEqual([...css.matchAll(/([.\w# -]+) \{[^}]*animation: /g)].map(m => m[1].trim()), ['.loading'], 'on a thing that is being read, and nothing else');
-  assert.deepEqual([...css.matchAll(/transition: ([^;]+);/g)].map(m => m[1]).filter(t => !/^opacity /.test(t)), ['transform 0.6s ease'], 'the one transition that moves a thing is the ledger\'s new block');
+  assert.deepEqual([...css.matchAll(/transition: ([^;]+);/g)].map(m => m[1]).filter(t => !/^opacity /.test(t)), ['transform 0.25s ease, background-color 0.15s ease', 'transform 0.6s ease'], 'the transitions that move a thing: the menu\'s bars into an X (owner, 2026-11-13), the ledger\'s new block');
   for (const f of ['rfcs.css', 'cases.css', 'home.css', 'credit.css', 'propose.css']) assert.doesNotMatch(read(f), /@keyframes|animation:|transition:/, `${f}: no motion`);
   assert.doesNotMatch(read('scene.js'), /uTime|scrollY/, 'the stars do not twinkle or follow the scroll');
   assert.match(read('shell.js'), /calm\.matches/, 'the tape rests for a reader who asked for less motion');
