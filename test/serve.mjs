@@ -19,7 +19,12 @@ const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '
 
 export async function serve({ port = 0, api = null, fake = null } = {}) {
   const answer = typeof fake === 'string' ? (await import(pathToFileURL(resolve(fake)).href)).default : fake;
-  const server = createServer(async (req, res) => {
+  const server = createServer((req, res) => handle(req, res).catch(e => {
+    // A browser that leaves a page mid-request aborts it: that ends this request, never the server.
+    if (!res.headersSent) res.writeHead(502, { 'content-type': 'application/json' });
+    res.end(JSON.stringify({ error: 'aborted', message: String(e?.message ?? e) }));
+  }));
+  async function handle(req, res) {
     const url = new URL(req.url, 'http://x');
     const origin = `http://${req.headers.host}`;
     let file = normalize(decodeURIComponent(url.pathname)).replace(/^(\.\.[/\\])+/, '');
@@ -47,7 +52,7 @@ export async function serve({ port = 0, api = null, fake = null } = {}) {
     const out = (await answer?.({ method: req.method, path: url.pathname, query: Object.fromEntries(url.searchParams), headers: req.headers, body })) ?? { status: 404, body: { error: 'not_found' } };
     res.writeHead(out.status ?? 200, { 'content-type': 'application/json' });
     res.end(JSON.stringify(out.body ?? null));
-  });
+  }
   await new Promise(done => server.listen(port, '127.0.0.1', done));
   return { origin: `http://127.0.0.1:${server.address().port}`, close: () => new Promise(done => server.close(done)) };
 }
