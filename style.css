@@ -50,6 +50,8 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
+/* `hidden` wins over a class that sets `display` (a form that is not this tab's). */
+[hidden] { display: none !important; }
 html { -webkit-text-size-adjust: 100%; scroll-padding-top: 4.5rem; }
 body { margin: 0; background: var(--paper) radial-gradient(120% 80% at 70% 0%, #0b1226 0%, var(--paper) 60%) fixed; color: var(--ink); font: 400 1.0625rem/1.6 var(--sans); font-kerning: normal; }
 img, svg { display: block; max-width: 100%; }

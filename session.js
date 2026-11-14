@@ -53,10 +53,12 @@ const keep = (body, more = {}) => {
   keepSession(s);
   return s;
 };
+// `/me` names the account's id; its name and email are the user's record.
 async function named() {
   const me = await api('/me');
-  keepSession({ ...session(), userId: me.id, name: me.name ?? me.displayName ?? me.email ?? '' });
-  return me;
+  const user = await api(`/users/${encodeURIComponent(me.id)}`).catch(() => ({}));
+  keepSession({ ...session(), userId: me.id, name: user.name ?? user.email ?? '' });
+  return { ...me, ...user };
 }
 
 /** Sign in with a CommandAGI account's email and password (the token endpoint's password grant for this client). */
