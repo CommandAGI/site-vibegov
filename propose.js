@@ -7,7 +7,7 @@
 // The part above `boot` is pure (data in, escaped HTML out), so test/propose.test.mjs runs it with no browser. The
 // session and the API are imported only when the page boots, because session.js reads the document.
 import { words, hasWords, PARAMETER_KEYS, parameterUnit, parameterValue, describeLawChange, parseElements, refusalKey } from './contract-words.js';
-import { esc, money, duration } from './live.js';
+import { esc, money, duration, date } from './live.js';
 
 export const DRAFT_KEY = 'vibegov.propose.draft';
 export const OPS = ['set_parameter', 'add_duty', 'amend_duty', 'repeal_duty', 'recognize_people', 'unrecognize_people', 'set_evidence_modalities'];
@@ -330,6 +330,9 @@ export function renderCosts(overview, target) {
   return `<dl class="kv">${rows.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${v}</dd>`).join('')}</dl>`;
 }
 
+/** A route's detail names a moment in epoch milliseconds (`cooldown until 1802396563027`); a person reads a date. */
+export const momentsAsDates = detail => String(detail).replace(/\b1\d{12}\b/g, ms => date(Number(ms)));
+
 /** The refusals the API (or the form) gave, in the catalog's words; the route's own detail follows as data (Refusals.tsx). */
 export function renderRefusals(refusals) {
   if (!refusals?.length) return '';
@@ -337,7 +340,7 @@ export function renderRefusals(refusals) {
     .map(r => {
       const key = refusalKey(String(r.code));
       const said = key && hasWords('refusals', key) ? refusalWords(key) : refusalWords('unknown', { code: r.code });
-      return `<li><span>${esc(said)}</span>${r.detail ? ` <span class="refusal__detail">${esc(r.detail)}</span>` : ''} <code>${esc(r.code)}</code></li>`;
+      return `<li><span>${esc(said)}</span>${r.detail ? ` <span class="refusal__detail">${esc(momentsAsDates(r.detail))}</span>` : ''} <code>${esc(r.code)}</code></li>`;
     })
     .join('')}</ul></div>`;
 }

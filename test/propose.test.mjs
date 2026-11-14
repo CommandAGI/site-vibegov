@@ -159,3 +159,11 @@ test('the frame: CSP, one module, no inline script, the contents line, its own s
   assert.match(read('propose.js'), /requireSignIn\(\)/);
   assert.ok(!/transition:(?!\s*none)|animation:/.test(read('propose.css')), 'no motion');
 });
+
+// Found by test/journeys.py (journey 5, a repeat refused by a local platform): the route's detail named the cooldown's
+// end in epoch milliseconds.
+test('a refusal detail says a moment as a date, not as epoch milliseconds', () => {
+  const html = P.renderRefusals([{ code: 'rfc.repeat', detail: 'the same options were rejected in a46a; cooldown until 1802396563027' }]);
+  assert.doesNotMatch(html, /1802396563027/);
+  assert.match(html, /cooldown until 12 Feb 2027, 01:42 UTC/);
+});
