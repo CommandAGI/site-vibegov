@@ -128,6 +128,7 @@ export function renderMandates(mandates, ctx) {
 export const buildMandate = (form, now) => mandateRequest(form, now);
 
 export function mandateStatement(form, now, law) {
+  if (!form.capital.trim() && !form.min.trim() && !form.max.trim() && !form.ratePercent.trim()) return `<p class="hint">Fill in the terms to see exactly what they commit.</p>`;
   const built = buildMandate(form, now);
   if ('problems' in built) return `<p class="hint">${built.problems.map(k => esc(t(k))).join(' ')}</p>`;
   const q = built.request;

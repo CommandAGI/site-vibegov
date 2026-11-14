@@ -24,3 +24,4 @@ fieldset.field > legend { margin-bottom: 0.35rem; }
   .two, .three { grid-template-columns: minmax(0, 1fr); }
   .rows--credit > li > .more { grid-column: 1 / -1; }
 }
+.sched th, .sched td { white-space: nowrap; padding-left: 0.7rem; padding-right: 0.7rem; }
