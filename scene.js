@@ -1,5 +1,5 @@
 // The sky behind every page (redesign/DESIGN.md § the sky): stars as points of light, in one WebGL canvas with no
-// library. The sky turns once in 20 minutes and drifts a little as the page scrolls. Nothing else is in it: the
+// library. The sky turns once in 20 minutes; the stars do not twinkle and do not follow the scroll. Nothing else is in it: the
 // sun, the moon and the Earth belong to the front door's first screen (earth.js). With no WebGL the page keeps its
 // plain dark ground. With reduced motion the sky is drawn still.
 const canvas = document.getElementById('sky');
@@ -7,15 +7,14 @@ const gl = canvas?.getContext('webgl', { alpha: false, antialias: false, powerPr
 
 const VS = `
 attribute vec3 aPos; attribute vec2 aData;
-uniform mat3 uRot; uniform float uF, uAspect, uTime, uDpr;
+uniform mat3 uRot; uniform float uF, uAspect, uDpr;
 varying vec3 vColor;
 void main() {
   vec3 v = uRot * aPos;
   gl_Position = vec4(v.x * uF / uAspect, v.y * uF, 0.0, v.z);
-  float tw = 0.72 + 0.28 * sin(uTime * (0.5 + aData.y * 2.4) + aData.y * 43.0);
   vec3 tint = mix(vec3(0.70, 0.80, 1.0), vec3(1.0, 0.90, 0.74), fract(aData.y * 7.31));
   gl_PointSize = max(1.0, aData.x * uDpr);
-  vColor = tint * tw * min(1.0, 0.25 + aData.x * 0.42);
+  vColor = tint * 0.86 * min(1.0, 0.25 + aData.x * 0.42);
 }`;
 const FS = `
 precision mediump float; varying vec3 vColor;
@@ -94,14 +93,12 @@ function start() {
   const t0 = performance.now();
   function draw() {
     const time = still.matches ? 0 : (performance.now() - t0) / 1000;
-    // The stars slide up a little as the page goes down, slower than the page: they are far away.
-    const view = mul(rotX(-0.06 + scrollY * 0.00006), rotY(time * ((2 * Math.PI) / 1200)));
+    const view = mul(rotX(-0.06), rotY(time * ((2 * Math.PI) / 1200)));
     gl.clearColor(0.016, 0.022, 0.043, 1);
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.uniformMatrix3fv(u('uRot'), false, view);
     gl.uniform1f(u('uF'), 1 / Math.tan(FOV / 2));
     gl.uniform1f(u('uAspect'), canvas.width / canvas.height);
-    gl.uniform1f(u('uTime'), time);
     gl.uniform1f(u('uDpr'), dpr);
     gl.drawArrays(gl.POINTS, 0, data.length / 5);
   }
@@ -113,7 +110,6 @@ function start() {
   const wake = () => { if (!frame) frame = requestAnimationFrame(loop); };
   size();
   addEventListener('resize', () => { size(); draw(); });
-  addEventListener('scroll', () => { if (!frame) draw(); }, { passive: true });
   document.addEventListener('visibilitychange', wake);
   still.addEventListener('change', wake);
   canvas.classList.add('is-on');

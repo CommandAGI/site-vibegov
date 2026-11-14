@@ -72,23 +72,19 @@ test('a page connects to the public API and nothing else; no asset comes from an
   assert.match(read('join.html'), /<textarea[^>]*name="prompt"/);
 });
 
-test('the pictures: the mark, the Earth from NASA\'s maps, dot pictures from their maps, and recordings labelled as recordings', () => {
+test('the pictures: the mark, the Earth from NASA\'s maps, plates of facts, two diagrams, and recordings labelled as recordings', () => {
   assert.ok(!existsSync(join(ROOT, 'media')), 'no media folder');
   const run = readdirSync(join(ROOT, 'robots/labrat')).sort();
   assert.deepEqual(run, ['pick-at-the-collar.jpg', 'pick-lifted.jpg', 'run.json', 'servos.jsonl'], 'the run, copied from its world by scripts/seed/vibegov-contract.mjs');
   assert.equal(JSON.parse(read('robots/labrat/run.json')).reality, 'simulation');
   const home = read('index.html');
-  // A dot picture is a canvas that dots.js fills from a small grey map; the page never shows a generated still itself.
-  // Each one moves in its own way (dots.js MOTION).
-  const dots = [...home.matchAll(/<canvas class="dots" data-src="art\/([a-z]+)\.png" data-motion="([a-z]+)" aria-hidden="true"><\/canvas>/g)];
-  const maps = dots.map(m => m[1]);
-  assert.deepEqual(dots.map(m => `${m[1]} ${m[2]}`), ['voice wave', 'ballot drop', 'scales sway', 'door beam'], 'the dot pictures, each hidden from a screen reader');
-  for (const [, , motion] of dots) assert.match(read('dots.js'), new RegExp(`\\n  ${motion}\\(d, t\\) \\{`), `dots.js moves a picture by "${motion}"`);
+  // No generated picture: under a thing the contract holds there is a plate of facts, a diagram, a film or the ledger.
+  assert.ok(!existsSync(join(ROOT, 'art')) && !existsSync(join(ROOT, 'dots.js')), 'no dot pictures');
+  assert.doesNotMatch(home, /class="dots"/);
+  assert.deepEqual([...home.matchAll(/data-live="(plate-[a-z]+)"/g)].map(m => m[1]), ['plate-voice', 'plate-change', 'plate-case'], 'the plates read from the record');
   // A diagram is a canvas that figures.js draws, and it says in words what it shows.
   assert.deepEqual([...home.matchAll(/<canvas class="figure" data-figure="([a-z]+)" role="img" aria-label="Diagram: [^"]{60,}"><\/canvas>/g)].map(m => m[1]), ['apex', 'world']);
   assert.match(read('figures.js'), /const FIGURES = \{ apex, world \};/);
-  assert.deepEqual(readdirSync(join(ROOT, 'art')).sort(), maps.map(m => `${m}.png`).sort(), 'art/ holds the maps, nothing else');
-  for (const f of readdirSync(join(ROOT, 'art'))) assert.ok(readFileSync(join(ROOT, 'art', f)).length < 16_000, `art/${f} is a small map, not a photograph`);
   // The Earth: one canvas on the first screen, which earth.js draws from the maps in sky/.
   assert.equal([...home.matchAll(/<canvas class="earth" aria-hidden="true"><\/canvas>/g)].length, 1);
   assert.deepEqual(readdirSync(join(ROOT, 'sky')).sort(), ['earth-day-2k.jpg', 'earth-day.jpg', 'earth-night-2k.jpg', 'earth-night.jpg', 'moon.jpg']);
@@ -98,7 +94,7 @@ test('the pictures: the mark, the Earth from NASA\'s maps, dot pictures from the
   assert.equal(films.length, 1);
   assert.match(films[0][0], /<video data-loop muted loop playsinline preload="none" poster="robots\/so101-cube\/poster\.jpg"[^>]*aria-label="[^"]{20,}"/, 'muted, not loaded until it is seen, and named');
   assert.match(films[0][1], /^Recording, 13 November 2026: a simulated /, 'the film is labelled a recording of a simulation');
-  assert.match(home, /The dot pictures are drawn in your browser from generated stills\. The Earth and the Moon are drawn from NASA’s maps\. The robot is a recording of a simulation\. The two diagrams are drawings of an idea, not data\./, 'the page says where its pictures come from');
+  assert.match(home, /The Earth and the Moon are drawn from NASA’s maps\. The robot is a recording of a simulation\. The two diagrams are drawings of an idea, not data\./, 'the page says where its pictures come from');
   for (const page of PAGES) {
     const text = read(page);
     assert.match(text, /<canvas id="sky" aria-hidden="true"><\/canvas>/, `${page}: the sky`);
@@ -523,7 +519,7 @@ test('the front door: A World in Command, what the contract holds in the kernel\
   const text = read('index.html');
   assert.match(text, /<title>VibeGov: A World in Command<\/title>/);
   assert.match(text, /<h1 id="top-title">A World <em>in Command\.<\/em><\/h1>/);
-  const order = ['class="earth"', 'id="top-title"', 'data-live="pulse"', 'class="creed', 'id="f-voice"', 'id="f-throne"', 'id="f-change"', 'data-live="rfc-strip"', 'id="f-robots"', 'data-live="chain-next"', 'data-live="chain"', 'data-live="chain-check"', 'id="f-record"', 'id="f-justice"', 'id="f-exit"', 'id="today-title"', 'data-figure="world"', 'id="close-title"'];
+  const order = ['data-live="tape"', 'class="earth"', 'id="top-title"', 'class="creed', 'id="f-voice"', 'id="f-throne"', 'id="f-change"', 'data-live="rfc-strip"', 'id="f-robots"', 'data-live="chain"', 'data-live="chain-check"', 'id="f-record"', 'id="f-justice"', 'id="f-exit"', 'id="today-title"', 'data-figure="world"', 'id="close-title"'];
   const at = order.map(s => text.indexOf(s));
   assert.ok(at.every(i => i > 0), `each part is on the page: ${order.filter((_, i) => at[i] < 0)}`);
   assert.deepEqual([...at].sort((a, b) => a - b), at, 'in this order');
@@ -557,7 +553,6 @@ test('the front door\'s ledger is blocks, all alike: number, time, plain words, 
   assert.match(L.renderChainCheck(3, await logProblems(entries)), /check--ok.*recomputed the last 3 hashes/);
   entries[1].at += 1;
   assert.match(L.renderChainCheck(3, await logProblems(entries)), /check--bad.*entry 2: its hash does not recompute/, 'a changed entry is named');
-  assert.equal(L.renderNextBlock(36494, 'will appear here'), '<p class="block block--next"><b>Entry 36,494</b><span>will appear here</span></p>');
 });
 
 test('the record page holds what is alive: now, the RFCs, the log, the machines, the figures, how the law changes', () => {
@@ -566,4 +561,42 @@ test('the record page holds what is alive: now, the RFCs, the log, the machines,
   const at = order.map(s => text.indexOf(s));
   assert.ok(at.every(i => i > 0), `each part is on the page: ${order.filter((_, i) => at[i] < 0)}`);
   assert.deepEqual([...at].sort((a, b) => a - b), at, 'in this order');
+});
+
+test('the tape under every header: the contract\'s figures in one line, each a label over a value', () => {
+  for (const page of PAGES) assert.match(read(page), /<\/header>\n<div class="tape" data-live="tape" aria-label="[^"]+" aria-busy="true"><\/div>/, `${page}: the tape follows the header`);
+  const html = L.renderTape(statsOf({ people: { withVoice: { human: 12, agent: 3 }, anonymousCommitments: {} }, voices: { confirmed: 41, rfcsAnswered: 3 }, pool: { balanceCents: 123_456, openClaims: 0, owedCents: 0 } }), NOW);
+  const cells = Object.fromEntries([...html.matchAll(/<div><dt>([^<]+)<\/dt><dd>([\s\S]*?)<\/dd><\/div>/g)].map(m => [m[1], m[2].replace(/<[^>]+>/g, '')]));
+  assert.deepEqual(Object.keys(cells), ['Record', 'Ledger', 'Last entry', 'Version', 'Kernel', 'Proposals', 'Open now', 'Voices', 'Responses', 'Cases', 'Judgments', 'Pool', 'Credit open', 'Anchored']);
+  assert.equal(cells.Record, 'live');
+  assert.equal(cells.Ledger, '36,178 entries');
+  assert.equal(cells.Voices, '15');
+  assert.equal(cells.Pool, '$1,234.56');
+  assert.equal(cells.Anchored, '0 of 200');
+  assert.match(L.renderTape(statsOf({ log: { length: 10, headHash: 'e'.repeat(64), headAt: NOW - 3_600_000, lastBeaconAt: null, lastDay: {} } }), NOW), /tape__state--quiet">quiet/, 'a record with no recent beacon is quiet, in words');
+});
+
+test('the plates state a figure from the record and a rule from the law, exactly', () => {
+  const s = statsOf({ people: { withVoice: { human: 2 }, anonymousCommitments: {} }, parameters: { lawRfcWindowMs: 1_209_600_000, engineRfcWindowMs: 2_419_200_000, extractionContestMs: 259_200_000, rfcDepositCents: 1000, caseResponseMs: 604_800_000, caseEvidenceMs: 604_800_000, caseDepositCents: 500, appealMs: 604_800_000, poolClaimCapCents: 1_000_000, penaltyMultiplePermille: 2000 } });
+  const row = (html, label) => html.match(new RegExp(`<th scope="row">${label}(?:<small>[^<]*</small>)?</th><td>([\\s\\S]*?)</td>`))?.[1];
+  const voice = L.renderVoicePlate(s);
+  assert.equal(row(voice, 'Persons with a voice'), '2 <span>2 human</span>');
+  for (const w of ['Wealth', 'Stake', 'Activity', 'Intelligence', 'Position']) assert.equal(row(voice, `${w} adds`), '0', `${w} adds nothing (k2)`);
+  const change = L.renderChangePlate(s);
+  assert.equal(row(change, 'A change to the law stays open'), '14 days');
+  assert.equal(row(change, 'A change to the engine stays open'), '28 days');
+  assert.equal(row(change, 'Deposit to open one, refundable'), '$10.00');
+  const kase = L.renderCasePlate(s);
+  assert.equal(row(kase, '1. Filing'), 'cost deposit $5.00, never a bar');
+  assert.equal(row(kase, '6. Appeal'), '7 days, to seats that took no part');
+  assert.equal(row(kase, '7. Execution'), 'penalty at most 2× the proved harm');
+  assert.equal(row(kase, 'Pool cover for an unpaid victim'), 'up to $10,000.00');
+});
+
+test('nothing on the site moves for show: no keyframes, no twinkle, no pointer game', () => {
+  const css = read('style.css');
+  assert.doesNotMatch(css.replace(/@media \(prefers-reduced-motion: reduce\) \{[\s\S]*?\n\}/, ''), /@keyframes|animation:/, 'no CSS animation');
+  assert.deepEqual([...css.matchAll(/transition: ([^;]+);/g)].map(m => m[1]).filter(t => !/^opacity /.test(t)), ['transform 0.6s ease'], 'the one transition that moves a thing is the ledger\'s new block');
+  assert.doesNotMatch(read('scene.js'), /uTime|scrollY/, 'the stars do not twinkle or follow the scroll');
+  assert.doesNotMatch(read('figures.js') + read('page.js'), /pointermove|replay/i);
 });

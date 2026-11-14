@@ -55,59 +55,75 @@ be in the view of the hero."
 ## the sky (`scene.js`)
 
 One WebGL canvas (`#sky`) is fixed behind every page: about 10,000 stars as points, more along one band, the same sky
-on every visit. It turns once in 20 minutes and drifts a little with the scroll. Nothing else is in it.
+on every visit. It turns once in 20 minutes. The stars do not twinkle and do not follow the scroll. Nothing else is in it.
 
-## pictures: more than one kind (owner, 2026-11-13)
+## a professional system (owner, 2026-11-13)
 
-"We shouldn't only do dotted visuals, just in some places. In others we'll have a real embed or 3D or photos or
-videos." And: "the content on the homepage could offer a bit more for practical-minded people to pick up, like the
-robot simulation."
+"The subtle animations across all the pages feel a bit too gamified. This is a financial and legal system, so it
+needs to feel professional. The spacey Earth is to give a sense of futurism. But it needs an honest self-examination
+regarding the other design elements."
 
-| section | its picture |
+The examination, and what it decided:
+
+| element | verdict | now |
+|---|---|---|
+| the earthrise and the stars | keep: the one piece of futurism | the sun rises once; the stars turn slowly and do not twinkle or follow the scroll |
+| dot pictures (a hand, a ballot, scales, a door) | remove: generated stock symbols, and they moved for show | a plate of facts under each thing the contract holds |
+| the pyramid that turned into a ring | still | two structures side by side: "not this", "this" |
+| the ledger that replayed old entries | remove the replay: it made the record look busier than it is | the three newest entries, still; a block moves only when the log gains one |
+| pulsing dots, a breathing "next" slot | remove | a state is a word and a still colour |
+| buttons that drew a frame, rows that slid, arrows that nudged | remove | a hover changes a colour |
+| the caption in the header ("36,493 entries…") | unaligned, and one figure | the tape |
+| the globe of systems at work | keep, slower | one turn in 4 minutes, a few pieces of work, no flash |
+| the film of the robot | keep: it is a recording of a real run | plays while seen |
+
+Rules that follow:
+
+- **Nothing moves for show.** No keyframe animation. One transition moves a thing: the ledger's new block.
+  `site.test.mjs` holds this.
+- **Under a claim there is a fact.** A plate (`.pane--plate`, `.plate`) is a few rows: a figure read from the public
+  record ("now, from the record") or a rule of the kernel or the law, with its source in the plate's header.
+- **No generated picture.** The pictures are the Earth (NASA's maps), two diagrams, one film and the record itself.
+
+## the tape (`live.js` `renderTape`)
+
+Under the header of every page, on the page's grid: the record's state in a word, the ledger's length and last entry,
+the version, the kernel's hash, proposals, voices, responses, cases, judgments, the pool, open credit and how many
+checkpoints are anchored. One line, each a label over a value. It does not scroll by itself; on a narrow screen a
+person scrolls it sideways.
+
+## the pictures
+
+| section | under it |
 |---|---|
-| the first | the Earth, real (`earth.js`) |
-| one voice, governed by voice, the judicial system, leave | a dot picture that moves |
-| no throne | a diagram: a pyramid becomes a ring of equals around an empty middle (`figures.js`) |
-| governed by human voice | also a row of cards: the open and decided proposals, or the path a proposal takes |
-| robots by permission | a film: a recording of the SO-101 cube simulation on CommandAGI, with a link to the live one |
-| everything on the record | a live pane of blocks, all alike: the log's newest entries, three in view, each pushed down by the next |
-| the last | a diagram: people, agents and machines as one graph on a turning globe, work passing along its lines |
-| start today | five lines, each one act a person can do now |
+| the first screen | the Earth (`earth.js`) |
+| one person, one voice | plate: persons with a voice now; what adds nothing to a voice (k2) |
+| no throne | diagram: a pyramid and a ring (`figures.js` `apex`) |
+| governed by human voice | plate: proposals now and the law's windows; then the proposals in a row |
+| robots by permission | a film: a recording of the SO-101 cube simulation, with a link to the live one |
+| everything on the record | the ledger's three newest entries as blocks, each hash recomputed in the page |
+| an autonomous judicial system | plate: cases now; a case in order with the law's clocks and limits |
+| free to leave | plate: what leaving ends and what survives (k12) |
+| the last | diagram: people, agents and machines as one graph on a globe (`figures.js` `world`) |
 
 The film is `robots/so101-cube/` (recorded from `commandagi.com/embed.html` in headless Chrome on a GPU; the full
-recording is in the org Drive's `media/so101-cube/`). Its caption says it is a recording of a simulation. The live
-simulation cannot be framed here yet: `commandagi.com` allows only its own pages to frame an embed. An embed share
-(CommandAGI's `docs/site-hosting.md` § embedding your own design) is the way to put it in the page.
-
-## the dot pictures (`dots.js`, `art/`, `redesign/art.mjs`)
-
-A raised hand, a ballot, scales, an open door. A picture must show what its heading names.
-
-- The source of each is a generated still (fal, seedream v5 pro), black and white on black. The still stays out of the
-  site's folder (the org Drive's `media/dot-pictures/`). `redesign/art.mjs cut` reduces it to a 168 px grey map in `art/`.
-- `dots.js` draws one point for each bright pixel. Until a picture is seen its points lie scattered like stars. When
-  it scrolls into view they gather into the picture, in under a second.
-- A dot picture is not static (owner, 2026-11-13). Each moves in its own way (`data-motion`): the hand waves, the
-  ballot goes down, the scales tip, light comes through the door. The points move away from a pointer.
-- The page never shows a generated still as a photograph, and its colophon says where the dot pictures come from.
+recording is in the org Drive's `media/so101-cube/`). Its caption says it is a recording of a simulation.
 
 ## the diagrams (`figures.js`)
 
-An idea that is a structure gets a diagram, not a literal picture (owner, 2026-11-13: "use a diagram for No throne to
-take instead of a literal throne"). A diagram is lines and nodes on a 2D canvas. It says in its `aria-label` what it
-shows, and the colophon says the diagrams are drawings, not data.
+An idea that is a structure gets a diagram, not a literal picture. A diagram is lines and nodes on a 2D canvas. It
+says in its `aria-label` what it shows, and the colophon says the diagrams are drawings, not data.
 
-- **apex**: thirteen seats in a pyramid, one above the rest. Once, when it is first seen, it becomes a ring of
-  thirteen equal seats. The gold circle of the top seat stays in the middle, empty: "no office".
-- **world**: 150 nodes on a turning globe, people gold, agents blue, machines green, each joined to its neighbours.
-  A piece of work starts at a person and passes from system to system.
+- **apex** (still): at the left a pyramid of thirteen seats, one above the rest, marked "not this"; at the right a
+  ring of thirteen equal seats around an empty middle marked "no office", marked "this".
+- **world**: 150 nodes on a slowly turning globe, people gold, agents blue, machines green, each joined to its
+  neighbours. A piece of work starts at a person and passes from system to system.
 
 ## the ledger's blocks (`page.js` § chain)
 
-The pane first replays the log's last 12 real entries, one each 3.2 s; each new block pushes the stack down. At the
-head it waits, and an entry the log gains comes in the same way. With nothing new for a while it replays again. The
-place above the stack always says which the reader sees ("replaying the last 12 entries" or "will appear here"). The
-page recomputes each hash. No block is made up.
+The log's three newest entries, the newest on top, each with its number, its time, what it is, its hash and the hash
+it follows. The page recomputes each hash. When the log gains an entry while the page is open, its block comes in at
+the top. No block is made up, and no old entry is replayed.
 
 ## the contract page (owner, 2026-11-13)
 

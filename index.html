@@ -25,7 +25,7 @@
 <script type="module" src="page.js"></script>
 <script type="module" src="scene.js"></script>
 <script type="module" src="earth.js"></script>
-<script type="module" src="dots.js"></script>
+<script type="module" src="film.js"></script>
 <script type="module" src="figures.js"></script>
 </head>
 <body class="home">
@@ -41,6 +41,7 @@
     <a class="btn small primary runhead__act" href="join.html" data-ref="k2">Take your voice</a>
   </div>
 </header>
+<div class="tape" data-live="tape" aria-label="The contract’s figures now" aria-busy="true"></div>
 
 <main id="main" class="sheet">
   <section class="cosmos" aria-labelledby="top-title">
@@ -52,7 +53,6 @@
         <a class="btn primary" href="join.html" data-ref="k2">Take your voice</a>
         <a class="btn" href="contract.html" data-ref="k1–12">Read the contract</a>
       </div>
-      <p class="cosmos__live" data-live="pulse" aria-busy="true"></p>
     </div>
   </section>
 
@@ -62,7 +62,12 @@
   </section>
 
   <section class="feature wrap-x" aria-labelledby="f-voice">
-    <div class="feature__art"><canvas class="dots" data-src="art/voice.png" data-motion="wave" aria-hidden="true"></canvas></div>
+    <div class="feature__art">
+      <div class="pane pane--plate">
+        <p class="pane__head">voice · kernel article 2<a href="https://api.commandagi.com/public/contract/stats">GET /public/contract/stats</a></p>
+        <div data-live="plate-voice" aria-busy="true"><p class="note">Reading the record…</p></div>
+      </div>
+    </div>
     <div class="feature__words">
       <h2 id="f-voice">One person, one voice.</h2>
       <p>A model can be copied a million times. A person cannot. Each person holds exactly one voice, and no amount of money, rank or intelligence buys a second.</p>
@@ -71,7 +76,12 @@
   </section>
 
   <section class="feature wrap-x" aria-labelledby="f-throne">
-    <div class="feature__art"><canvas class="figure" data-figure="apex" role="img" aria-label="Diagram: a pyramid of thirteen seats with one seat above the rest becomes a ring of thirteen equal seats. The middle of the ring is empty and is marked “no office”."></canvas></div>
+    <div class="feature__art">
+      <div class="pane pane--plate">
+        <p class="pane__head">structure · kernel article 3</p>
+        <canvas class="figure" data-figure="apex" role="img" aria-label="Diagram: two structures side by side. Left, marked “not this”: a pyramid of thirteen seats with one seat above the rest. Right, marked “this”: a ring of thirteen equal seats around an empty middle marked “no office”."></canvas>
+      </div>
+    </div>
     <div class="feature__words">
       <h2 id="f-throne">No throne to take.</h2>
       <p>Power over AI is gathering in a few hands. Here there is nothing to gather: no president, no board, no master key. Not for a company, not for a government, not for a machine.</p>
@@ -80,7 +90,12 @@
   </section>
 
   <section class="feature wrap-x" aria-labelledby="f-change">
-    <div class="feature__art"><canvas class="dots" data-src="art/ballot.png" data-motion="drop" aria-hidden="true"></canvas></div>
+    <div class="feature__art">
+      <div class="pane pane--plate">
+        <p class="pane__head">change · kernel article 4<a href="https://api.commandagi.com/public/contract/stats">GET /public/contract/stats</a></p>
+        <div data-live="plate-change" aria-busy="true"><p class="note">Reading the record…</p></div>
+      </div>
+    </div>
     <div class="feature__words">
       <h2 id="f-change">Governed by human voice.</h2>
       <p>The rules change one way: a proposal made in public, open to every person, with every answer read in full. Nobody’s silence is counted as a yes.</p>
@@ -115,8 +130,7 @@
   <section class="feature wrap-x" aria-labelledby="f-record">
     <div class="feature__art">
       <div class="pane pane--chain" aria-label="The public ledger: its newest entries">
-        <p class="pane__head"><span class="livedot" aria-hidden="true"></span>the public ledger<a href="https://api.commandagi.com/public/contract/log/head">GET /public/contract/log</a></p>
-        <div data-live="chain-next"><p class="block block--next"><b>The next entry</b><span>will appear here</span></p></div>
+        <p class="pane__head">the public ledger · newest first<a href="https://api.commandagi.com/public/contract/log/head">GET /public/contract/log</a></p>
         <div class="chain" data-live="chain" aria-busy="true"><p class="note">Reading the ledger…</p></div>
         <div data-live="chain-check" aria-live="polite"></div>
       </div>
@@ -130,7 +144,12 @@
   </section>
 
   <section class="feature wrap-x" aria-labelledby="f-justice">
-    <div class="feature__art"><canvas class="dots" data-src="art/scales.png" data-motion="sway" aria-hidden="true"></canvas></div>
+    <div class="feature__art">
+      <div class="pane pane--plate">
+        <p class="pane__head">a case · kernel articles 6 to 9<a href="https://api.commandagi.com/public/contract/stats">GET /public/contract/stats</a></p>
+        <div data-live="plate-case" aria-busy="true"><p class="note">Reading the record…</p></div>
+      </div>
+    </div>
     <div class="feature__words">
       <h2 id="f-justice">An autonomous judicial system.</h2>
       <p>If anyone wrongs you, bring a case. No judge is appointed and no jury is picked. AI models from independent operators decide each element on the evidence, and people choose those models by vote. You get notice, time to answer, written reasons and an appeal to models that took no part. Penalties are capped, and the victim is made whole.</p>
@@ -139,7 +158,16 @@
   </section>
 
   <section class="feature wrap-x" aria-labelledby="f-exit">
-    <div class="feature__art"><canvas class="dots" data-src="art/door.png" data-motion="beam" aria-hidden="true"></canvas></div>
+    <div class="feature__art">
+      <div class="pane pane--plate">
+        <p class="pane__head">exit · kernel article 12</p>
+        <table class="plate"><tbody>
+          <tr><th scope="row">Who may leave</th><td>anyone</td></tr>
+          <tr><th scope="row">Leaving ends</th><td>future obligations to the contract</td></tr>
+          <tr><th scope="row">What survives</th><td>duties already accrued, agreements already made</td></tr>
+        </tbody></table>
+      </div>
+    </div>
     <div class="feature__words">
       <h2 id="f-exit">Free to leave.</h2>
       <p>Being here is a choice. Leave when you want. Only the promises you already made still hold.</p>
@@ -183,7 +211,7 @@
       <a href="https://commandagi.com/">CommandAGI</a>
       <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>
     </nav>
-    <p class="colophon">VibeGov is the home of the Coordination Contract, the institution CommandAGI runs on. Every quotation is the kernel’s own text, and every figure is read from the contract’s public record at api.commandagi.com. The dot pictures are drawn in your browser from generated stills. The Earth and the Moon are drawn from NASA’s maps. The robot is a recording of a simulation. The two diagrams are drawings of an idea, not data.</p>
+    <p class="colophon">VibeGov is the home of the Coordination Contract, the institution CommandAGI runs on. Every quotation is the kernel’s own text, and every figure is read from the contract’s public record at api.commandagi.com. The Earth and the Moon are drawn from NASA’s maps. The robot is a recording of a simulation. The two diagrams are drawings of an idea, not data.</p>
     <p>© 2026 VibeGov · a company of CommandAGI</p>
   </div>
 </footer>

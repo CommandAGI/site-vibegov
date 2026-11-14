@@ -531,6 +531,75 @@ ${jointTrace(run)}
 <p class="note">Driven by <code>${esc(run.by ?? 'an agent')}</code>; each goal is recorded before the simulator gets it.${run.noGrant ? ' A simulated run needs no grant, and its record says so. A physical run needs a standing grant on the machine.' : ''}${seal ? ` Its ${count(run.seals.length)} seals are signed (${esc(seal.alg)}), and the last is bound to ${esc(seal.block?.chain ?? 'a chain')} slot ${count(seal.block?.slot)}.` : ''}</p>`;
 }
 
+// The tape under every page's header: the contract's figures now, one line, each a label over a value.
+export function renderTape(s, now) {
+  const h = health(s, now);
+  const cell = (label, value) => `<div><dt>${esc(label)}</dt><dd>${value}</dd></div>`;
+  const a = s.anchor;
+  return `<dl class="tape__in">${[
+    cell('Record', `<span class="tape__state tape__state--${h.state}">${h.state === 'live' ? 'live' : h.state === 'empty' ? 'empty' : 'quiet'}</span>`),
+    cell('Ledger', `${count(s.log.length)} entries`),
+    cell('Last entry', s.log.headAt ? since(s.log.headAt, now) : 'none'),
+    cell('Version', count(s.contract.version)),
+    cell('Kernel', `<code title="${esc(s.contract.kernelHash)}">${esc(String(s.contract.kernelHash).slice(0, 8))}</code>`),
+    cell('Proposals', count(sum(s.rfcs.byStatus))),
+    cell('Open now', count(s.rfcs.open.length)),
+    cell('Voices', count(sum(s.people.withVoice))),
+    cell('Responses', count(s.voices.confirmed)),
+    cell('Cases', count(sum(s.cases.byStage))),
+    cell('Judgments', count(s.cases.judgments)),
+    cell('Pool', money(s.pool.balanceCents)),
+    cell('Credit open', money(s.credit.openCapitalCents)),
+    cell('Anchored', `${count(a.anchoredOfLast?.anchored)} of ${count(a.anchoredOfLast?.of)}`),
+  ].join('')}</dl>`;
+}
+
+// The front door's plates: a few rows of fact under each thing the contract holds. A figure is read from the public
+// record; a rule is the kernel's or the law's, and its row says which.
+const plate = rows => `<table class="plate"><tbody>${rows.map(([label, value, note]) => `<tr><th scope="row">${esc(label)}${note ? `<small>${esc(note)}</small>` : ''}</th><td>${value}</td></tr>`).join('')}</tbody></table>`;
+const kinds = o => Object.entries(o ?? {}).filter(([, n]) => n).map(([k, n]) => `${count(n)} ${esc(k)}`).join(' · ');
+
+/** One person, one voice (k2): who holds a voice now, and what adds nothing to one. */
+export function renderVoicePlate(s) {
+  const persons = sum(s.people.withVoice);
+  return plate([
+    ['Persons with a voice', `${count(persons)}${persons ? ` <span>${kinds(s.people.withVoice)}</span>` : ''}`, 'now, from the record'],
+    ['Voices for each person', '1'],
+    ...['Wealth', 'Stake', 'Activity', 'Intelligence', 'Position'].map(w => [`${w} adds`, '0']),
+  ]);
+}
+
+/** Governed by human voice (k4): the proposals now, and the law's own windows. */
+export function renderChangePlate(s) {
+  const p = s.parameters;
+  return plate([
+    ['Proposals open', count(s.rfcs.open.length), 'now, from the record'],
+    ['Proposals in all', count(sum(s.rfcs.byStatus))],
+    ['Responses counted', count(s.voices.confirmed)],
+    ['A change to the law stays open', esc(duration(p.lawRfcWindowMs)), 'the law'],
+    ...(p.engineRfcWindowMs ? [['A change to the engine stays open', esc(duration(p.engineRfcWindowMs))]] : []),
+    ['Time to contest how you were read', esc(duration(p.extractionContestMs))],
+    ['Deposit to open one, refundable', money(p.rfcDepositCents)],
+  ]);
+}
+
+/** An autonomous judicial system (k6 to k9): a case in order, with the law's clocks and limits. */
+export function renderCasePlate(s) {
+  const p = s.parameters;
+  return plate([
+    ['Cases open', count(sum(s.cases.byStage)), 'now, from the record'],
+    ['Judgments given', count(s.cases.judgments)],
+    ['1. Filing', `cost deposit ${money(p.caseDepositCents)}, never a bar`, 'the law'],
+    ['2. Service', 'the clock starts here'],
+    ['3. Answer', esc(duration(p.caseResponseMs))],
+    ['4. Evidence', esc(duration(p.caseEvidenceMs))],
+    ['5. Decision', 'each element, with reasons'],
+    ['6. Appeal', `${esc(duration(p.appealMs))}, to seats that took no part`],
+    ['7. Execution', p.penaltyMultiplePermille ? `penalty at most ${esc(String(p.penaltyMultiplePermille / 1000))}× the proved harm` : 'for the harm established'],
+    ['Pool cover for an unpaid victim', `up to ${money(p.poolClaimCapCents)}`],
+  ]);
+}
+
 // The ledger as blocks (the front door): one entry of the log is one block, all alike.
 const BLOCK = { seals: 'Seals from machines and hosts', beacon: 'A chain beacon' };
 
@@ -538,9 +607,6 @@ const BLOCK = { seals: 'Seals from machines and hosts', beacon: 'A chain beacon'
 export function renderBlock(e, now) {
   return `<li class="block" data-seq="${esc(e.seq)}"><p class="block__top"><b>Entry ${count(e.seq)}</b>${since(e.at, now)}</p><p class="block__what">${BLOCK[e.kind] ?? activityWords(e).words}</p><p class="block__hash"><code title="${esc(e.hash)}">${esc(e.hash.slice(0, 14))}</code><span>follows</span><code title="${esc(e.prev)}">${esc(e.prev.slice(0, 14))}</code></p></li>`;
 }
-
-/** The place the next entry will take, above the newest block. */
-export const renderNextBlock = (seq, words) => `<p class="block block--next"><b>Entry ${count(seq)}</b><span>${esc(words)}</span></p>`;
 
 /** The check of the blocks a reader has in front of them. */
 export function renderChainCheck(n, problems) {

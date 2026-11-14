@@ -38,13 +38,11 @@ https://vibegov.commandagi.app serving the same site. The design and the reasons
   names). The page plots the stream and labels the run a recording and a simulation.
 - `scene.js`: the stars behind every page, in one WebGL canvas. `earth.js`: the Earth as a camera in orbit sees it
   (WebGL2, traced per pixel from the maps in `sky/`: NASA's Blue Marble and Black Marble, the Clementine moon map; all
-  public domain). `dots.js`: the front door's dot pictures, drawn from the grey maps in `art/`, and the film's play
-  and pause. `robots/so101-cube/`: the film, a recording of a simulation on CommandAGI.
+  public domain). `figures.js`: the front door's two diagrams. `film.js`: the film's play and pause. `robots/so101-cube/`: the film, a recording of a simulation on CommandAGI.
 - `style.css`, `fonts/` (Literata and Public Sans, variable, OFL, self-hosted), `mark.svg`, `apple-touch-icon.png`
   (drawn by `redesign/marks.py`), `og.png` (a browser's picture of `redesign/og.html`), `fixtures/` (real entries of
   the public record that the test recomputes).
-- `redesign/`: the design (`DESIGN.md`), `marks.py`, `art.mjs` (the dot pictures' sources from fal, and their maps),
-  `og.html`, and the audit before the 2026-10-26 redesign (`CONTENT.md`).
+- `redesign/`: the design (`DESIGN.md`), `marks.py`, `og.html`, the signed-in pages' rules (`APP.md`), and the audit before the 2026-10-26 redesign (`CONTENT.md`).
 
 ## acting
 
@@ -71,8 +69,7 @@ then commit here, push this repository's `main`, and move the gitlink in Command
 - Each page connects to itself and the public API only: `connect-src 'self' https://api.commandagi.com`. It reads
   `/public/contract/*` with no credential. The join page's form is sent only on purpose (`form-action
   https://commandagi.com`).
-- The pictures are the mark, the sky, the Earth (drawn from NASA's maps), the dot pictures (points drawn from maps of
-  generated stills; the still itself is never shown), one film (a recording of a simulated robot arm, labelled as
+- The pictures are the mark, the sky, the Earth (drawn from NASA's maps), two diagrams, one film (a recording of a simulated robot arm, labelled as
   one), and frames of machines on the record page: a live frame from the
   API (`img-src https://api.commandagi.com`) while its owner shows it, and the recorded run's frames, each labelled a
   recording. Every figure is read from the record; a zero says so in words.

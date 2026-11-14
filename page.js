@@ -28,10 +28,12 @@ async function figures() {
     put('decided', L.renderDecided(s, now));
     put('ledger', L.renderLedger(s, now));
     put('params', L.renderParameters(s));
-    const h = L.health(s, now);
-    put('pulse', `<span class="health health--${h.state}"><span class="dot" aria-hidden="true"></span>${L.count(s.log.length)} entries on the public record · the last ${s.log.headAt ? L.esc(L.relative(s.log.headAt, now)) : 'never'}</span>`);
+    put('tape', L.renderTape(s, now));
+    put('plate-voice', L.renderVoicePlate(s));
+    put('plate-change', L.renderChangePlate(s));
+    put('plate-case', L.renderCasePlate(s));
   } catch (e) {
-    unreachable(['vitals', 'anchor', 'figures', 'rfc-strip', 'decided', 'ledger', 'params', 'pulse'], e, '/public/contract/stats');
+    unreachable(['vitals', 'anchor', 'figures', 'rfc-strip', 'decided', 'ledger', 'params', 'tape', 'plate-voice', 'plate-change', 'plate-case'], e, '/public/contract/stats');
   }
 }
 
@@ -73,34 +75,24 @@ async function recording() {
   }
 }
 
-// The front door's ledger: the log's last entries as a stack of blocks, the newest on top. The page first replays
-// the last 12 real entries, one each few seconds, and each new block pushes the stack down. At the head it waits;
-// an entry the log gains while the page is open comes in the same way. With nothing new for a while, the replay
-// starts again, and the place above the stack says which of the two the reader sees.
-const REPLAY = 12, SHOW = 3, EVERY = 3200, REST = 5;
+// The front door's ledger: the log's three newest entries as blocks, the newest on top. They stand still. When the
+// log gains an entry while the page is open, its block comes in at the top and pushes the others down: the one
+// movement, and it happens only when the record changes. The page recomputes each hash it shows.
+const SHOW = 3;
 const calm = matchMedia('(prefers-reduced-motion: reduce)');
-let head = 0, tail = [], queue = [], idle = 0, seen = false;
-const next = () => put('chain-next', L.renderNextBlock(head + 1, queue.length ? `replaying the last ${tail.length} entries` : 'will appear here'));
-function push(entry, slide = true) {
+let head = 0, checked = 0;
+function push(entry, slide) {
   const list = el('chain')?.querySelector('ol');
   if (!list) return;
   list.insertAdjacentHTML('afterbegin', L.renderBlock(entry, Date.now()));
-  while (list.children.length > SHOW + 2) list.lastElementChild.remove();
-  if (!slide) return;
+  while (list.children.length > SHOW + 1) list.lastElementChild.remove();
+  if (!slide || calm.matches) return;
   // Start one block up with no transition, then let the stack come down.
   list.classList.remove('is-moving');
   list.style.transform = 'translateY(calc(-1 * var(--block)))';
   list.getBoundingClientRect();
   list.classList.add('is-moving');
   list.style.transform = '';
-}
-function advance() {
-  if (!seen || document.hidden || !head || calm.matches) return;
-  if (queue.length) { push(queue.shift()); idle = 0; next(); return; }
-  if ((idle += 1) < REST) return;
-  queue = tail.slice();
-  idle = 0;
-  next();
 }
 async function chain() {
   if (!el('chain')) return;
@@ -109,26 +101,17 @@ async function chain() {
     if (!top) return put('chain', '<p class="empty">The log has no entry yet.</p>');
     if (top.seq === head) return;
     // Read from the last entry the page has, so the check covers the link to the new ones.
-    const { entries } = await get(`/public/contract/log?from=${head || Math.max(1, top.seq - REPLAY + 1)}&limit=50`);
+    const { entries } = await get(`/public/contract/log?from=${head || Math.max(1, top.seq - SHOW + 1)}&limit=50`);
     const problems = await logProblems(entries);
     const fresh = entries.filter(e => e.seq > head);
-    if (!head) {
-      put('chain', '<ol class="blocks"></ol>');
-      const first = calm.matches ? fresh.slice(-SHOW) : fresh.slice(0, SHOW);
-      first.forEach(e => push(e, false));
-      queue = calm.matches ? [] : fresh.slice(SHOW);
-    } else queue.push(...fresh);
-    tail = [...tail, ...fresh].slice(-REPLAY);
+    if (!head) put('chain', '<ol class="blocks"></ol>');
+    fresh.forEach(e => push(e, !!head));
+    checked = Math.min(SHOW, checked + fresh.length);
     head = top.seq;
-    put('chain-check', L.renderChainCheck(tail.length, problems));
-    next();
+    put('chain-check', L.renderChainCheck(checked, problems));
   } catch (e) {
     if (!head) unreachable(['chain'], e, '/public/contract/log/head');
   }
-}
-if (el('chain')) {
-  new IntersectionObserver(entries => { seen = entries.some(e => e.isIntersecting); }, { threshold: 0.2 }).observe(el('chain'));
-  setInterval(advance, EVERY);
 }
 
 // Every time on the page words itself again each second: "4 seconds ago", and countdowns to each deadline.
@@ -179,7 +162,7 @@ const refresh = async () => {
   await figures();
   await Promise.all([activity(), calendar(), machines(), chain()]);
 };
-if (el('figures') || el('pulse')) {
+if (el('figures') || el('tape')) {
   refresh();
   let timer = setInterval(refresh, 30_000);
   let ticker = setInterval(tick, 1000);
