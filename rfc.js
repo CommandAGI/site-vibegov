@@ -83,7 +83,7 @@ export function renderFacts(v, now) {
 <dt>Responses</dt><dd>${esc(answers)}</dd>
 <dt>Contest window</dt><dd>${esc(count(days(r.contestMs)))} days after a reading is shown</dd>
 <dt>Who may respond</dt><dd>${esc((r.people ?? []).join(', ') || 'no kind of person')}</dd>
-<dt>Began under</dt><dd class="fact-mono">${esc(t('pinned', { version: r.contractVersion, engine: String(r.engineHash ?? '').slice(0, 12), state: String(r.baseStateHash ?? '').slice(0, 12) }))}</dd>
+<dt>Began under</dt><dd class="fact-mono">${esc(`contract version ${r.contractVersion} · engine ${String(r.engineHash ?? '').slice(0, 12)} · state ${String(r.baseStateHash ?? '').slice(0, 12)}`)}</dd>
 <dt>Proposal</dt><dd class="fact-mono">${esc(r.id)}</dd>
 </dl>`;
 }
