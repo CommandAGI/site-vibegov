@@ -267,3 +267,8 @@ if (typeof document !== 'undefined' && document.querySelector('[data-desk]')) {
     }
   }
 }
+
+// The anonymous voice's identity on this device: make it, register it, save it to a file, load it back (anon.js).
+const anonymity = typeof document !== 'undefined' && document.querySelector('[data-slot="anonymity"]');
+if (anonymity) import('./anon.js').then(m => m.renderAnonymityPanel(anonymity)).catch(() => { anonymity.innerHTML = '<p class="refusal">The anonymous voice could not be loaded on this device.</p>'; });
+

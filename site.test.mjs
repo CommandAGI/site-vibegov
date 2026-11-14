@@ -33,7 +33,7 @@ test('the site manifest names VibeGov and no build', () => {
 });
 
 test('the pages, in English, each with its canonical address, the same contents line and the account control', () => {
-  const html = readdirSync(ROOT, { recursive: true }).filter(f => String(f).endsWith('.html') && !String(f).startsWith('redesign'));
+  const html = readdirSync(ROOT, { recursive: true }).filter(f => String(f).endsWith('.html') && !/^(redesign|test|\.wrangler)\//.test(String(f)));
   assert.deepEqual(html.sort(), [...PAGES, ...APP].sort(), 'the public pages and the signed-in pages');
   for (const page of [...PAGES, ...APP]) {
     const text = read(page);
