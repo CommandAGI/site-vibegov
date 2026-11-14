@@ -1,0 +1,45 @@
+/* The proposal pages (rfcs.html, rfc.html). Small additions to style.css § the signed-in pages; no motion. */
+.desk__act { display: grid; gap: 0.5rem; justify-items: start; max-width: 22rem; }
+.desk__act .note { margin: 0; }
+.desk h2.group { font: 500 0.78rem var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--sun); margin: 0 0 1rem; }
+.desk .rows .marks { display: flex; flex-wrap: wrap; gap: 0.35rem; justify-content: flex-end; }
+.desk .rows small time { white-space: nowrap; }
+.prose { white-space: pre-wrap; max-width: 44rem; overflow-wrap: anywhere; }
+.opts { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); counter-reset: opt; }
+.opts > li { padding: 0.9rem 0.25rem; border-bottom: 1px solid var(--rule); }
+.opts .opt__title { margin: 0; font-weight: 600; }
+.opts .opt__title code { color: var(--muted); font-weight: 400; margin-left: 0.5rem; }
+.opts .opt__sum { margin: 0.25rem 0 0; color: var(--muted); }
+.opts ul { margin: 0.5rem 0 0; padding-left: 1.2rem; display: grid; gap: 0.25rem; }
+.opts details { margin-top: 0.5rem; }
+.opts summary, .det summary { cursor: pointer; }
+.opts pre { margin: 0.5rem 0 0; padding: 0.75rem; border: 1px solid var(--rule); max-height: 20rem; overflow: auto; font: 0.78rem/1.5 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.panel { display: grid; gap: 1rem; }
+.panel > p { margin: 0; }
+.box { margin: 0; padding: 0.9rem 1rem; border: 1px solid var(--rule); display: grid; gap: 0.5rem; }
+.box > p { margin: 0; }
+.box--sun { border-color: color-mix(in oklab, var(--sun) 55%, transparent); }
+.digest { font: 0.8rem/1.45 var(--mono); overflow-wrap: anywhere; }
+.parts { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; border-top: 1px solid var(--rule); }
+.parts > li { display: flex; flex-wrap: wrap; gap: 0.25rem 0.75rem; align-items: baseline; padding: 0.4rem 0; border-bottom: 1px solid var(--rule); font-size: 0.92rem; }
+.parts .digest { color: var(--muted); }
+.mine { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+.mine > li { display: grid; gap: 0.4rem; padding: 0.8rem 0; border-bottom: 1px solid var(--rule); font-size: 0.92rem; }
+.mine .head { display: flex; flex-wrap: wrap; gap: 0.35rem 0.75rem; align-items: baseline; }
+.mine .text { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--ink); margin: 0; }
+.read { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+.read > li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.25rem 1rem; padding: 0.6rem 0; border-bottom: 1px solid var(--rule); }
+.read .score { font-variant-numeric: tabular-nums; color: var(--muted); }
+.btn.ghost { background: none; }
+button.btn.link { min-height: 0; padding: 0.1rem 0.4rem; font-size: 0.82rem; }
+.sum td.num, .sum th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.det { border: 1px solid var(--rule); padding: 0.75rem 1rem; }
+.det + .det { margin-top: 0.75rem; }
+.det ol { margin: 0.75rem 0 0; padding-left: 1.2rem; display: grid; gap: 0.75rem; }
+.det ul { margin: 0.25rem 0; padding-left: 1.1rem; font-size: 0.88rem; }
+.det .mono { font: 0.78rem/1.5 var(--mono); color: var(--muted); overflow-wrap: anywhere; margin: 0.35rem 0 0; }
+.fact-mono { font-family: var(--mono); font-size: 0.82rem; }
+.sentence { margin: 0 0 0.75rem; }
+@media (max-width: 40rem) {
+  .desk .rows .marks { justify-content: flex-start; }
+}
