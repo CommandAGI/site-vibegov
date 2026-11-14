@@ -7,9 +7,10 @@ https://vibegov.commandagi.app serving the same site. The design and the reasons
 
 - `index.html`: the front door, **A World in Command**: AI should answer to the people who live with it. The first
   screen is the earthrise: the Earth's horizon, the sun coming up, the moon. Then the reason, and what the contract
-  holds, one short section each with the kernel's own words (one person one voice, no throne, changed only by voice, AI
-  works and people decide, everything on the record, harm has a remedy, free to leave). Between them: a film of a
-  simulated robot arm at work (robots by permission) and a live pane of the ledger. Then five things to do today. The
+  holds, one short section each with the kernel's own words (one person one voice, no throne, governed by human
+  voice, everything on the record, an autonomous judicial system, free to leave). Between them: a diagram (no throne),
+  the proposals in a row, a film of a simulated robot arm at work (robots by permission) and the ledger's newest
+  entries as blocks. The last picture is a diagram of people, agents and machines at work as one graph. Then five things to do today. The
   act is "Take your voice".
 - `record.html`: the public record and everything alive now: the ledger's height and last entry ticking, the activity
   feed in plain words (`/public/contract/activity`), what comes next (`/public/contract/calendar`, with its `.ics`

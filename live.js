@@ -77,20 +77,33 @@ export function renderFigures(s) {
   ].join('')}</dl>`;
 }
 
-/** The open RFCs, soonest deadline first, each with the way to respond. */
-export function renderOpenRfcs(s, now) {
-  if (!s.rfcs.open.length) {
-    const deposit = s.parameters.rfcDepositCents;
-    return `<p class="empty">No RFC is open now. Anyone may open one${deposit ? ` with a refundable deposit of ${money(deposit)}` : ''}. <a href="${esc(editorHref())}">Open an RFC</a></p>`;
-  }
-  return `<ol class="rfcs">${s.rfcs.open
-    .map(r => `<li class="rfc">
-<p class="rfc__meta"><span class="tag">${esc(r.target)}</span><span class="tag">${esc(r.procedure === 'binding_score' ? 'binding score' : 'deliberative')}</span><span>${count(r.options)} option${r.options === 1 ? '' : 's'} and the status quo</span></p>
-<h3><a href="${esc(rfcHref(r.id))}">${esc(r.title)}</a></h3>
-<p class="rfc__clock">Closes ${time(r.closesAt, now)} · opened ${time(r.openedAt, now)} ${until(r.closesAt, now)}</p>
-<p class="rfc__act"><a class="btn small primary" href="${esc(editorHref('rfc', r.id))}">Respond</a> <code>${esc(r.id)}</code></p>
-</li>`)
-    .join('')}</ol>`;
+/**
+ * The proposals as a row of cards: the open ones, soonest deadline first, each with the way to respond, then the
+ * decided ones, then the way to open one. With none open or decided, the row is the path a proposal takes, with the
+ * law's own windows.
+ */
+export function renderRfcStrip(s, now) {
+  const deposit = s.parameters.rfcDepositCents;
+  const open = s.rfcs.open.map(r => `<li class="card card--open">
+<p class="card__meta"><span class="tag">${esc(r.target)}</span><span class="tag">${esc(r.procedure === 'binding_score' ? 'binding score' : 'deliberative')}</span>${until(r.closesAt, now)}</p>
+<h4><a href="${esc(rfcHref(r.id))}">${esc(r.title)}</a></h4>
+<p class="card__words">Closes ${time(r.closesAt, now)} · ${count(r.options)} option${r.options === 1 ? '' : 's'} and the status quo</p>
+<p class="card__act"><a class="btn small primary" href="${esc(editorHref('rfc', r.id))}">Respond</a></p>
+</li>`);
+  const decided = s.rfcs.decided.map(r => `<li class="card">
+<p class="card__meta"><span class="verdict verdict--${r.status === 'adopted' ? 'adopted' : 'kept'}">${r.status === 'adopted' ? 'Adopted' : 'Status quo kept'}</span></p>
+<h4><a href="${esc(rfcHref(r.id))}">${esc(r.title)}</a></h4>
+<p class="card__words">${r.decidedAt ? `Decided ${time(r.decidedAt, now)}` : 'Decided'}</p>
+</li>`);
+  const step = (n, title, words) => `<li class="card card--step"><p class="card__meta"><span>step ${n}</span></p><h4>${title}</h4><p class="card__words">${words}</p></li>`;
+  const path = open.length || decided.length ? [] : [
+    step(1, 'Proposed in public', `Any person with a voice writes the change as options${deposit ? `, with a refundable deposit of ${money(deposit)}` : ''}.`),
+    step(2, 'Open to every voice', `A change to the law stays open for ${esc(duration(s.parameters.lawRfcWindowMs))}. Every person may answer once.`),
+    step(3, 'Read in full', `Every answer is read. You see how yours was read, and you have ${esc(duration(s.parameters.extractionContestMs))} to contest it.`),
+    step(4, 'Decided on the record', 'The choice and its reasons are published. Silence counts for nothing.'),
+  ];
+  const start = `<li class="card card--new"><p class="card__meta"><span>${open.length ? 'yours' : 'none open today'}</span></p><h4>${open.length ? 'Propose a change' : 'Open the first proposal'}</h4><p class="card__act"><a class="btn small" href="${esc(editorHref())}" data-ref="k4">Open a proposal</a></p></li>`;
+  return `<ol class="strip">${[...open, ...decided, ...path, start].join('')}</ol>`;
 }
 
 export function renderDecided(s, now) {
@@ -518,7 +531,20 @@ ${jointTrace(run)}
 <p class="note">Driven by <code>${esc(run.by ?? 'an agent')}</code>; each goal is recorded before the simulator gets it.${run.noGrant ? ' A simulated run needs no grant, and its record says so. A physical run needs a standing grant on the machine.' : ''}${seal ? ` Its ${count(run.seals.length)} seals are signed (${esc(seal.alg)}), and the last is bound to ${esc(seal.block?.chain ?? 'a chain')} slot ${count(seal.block?.slot)}.` : ''}</p>`;
 }
 
-// The front door's one figure: how long the public ledger is, and when it last grew.
-export function renderHeadline(s, now) {
-  return `<p class="count"><b>${count(s.log.length)}</b><span>entries on the public ledger${s.log.headAt ? `, the last ${since(s.log.headAt, now)}` : ''}</span></p>`;
+// The ledger as blocks (the front door): one entry of the log is one block, all alike.
+const BLOCK = { seals: 'Seals from machines and hosts', beacon: 'A chain beacon' };
+
+/** One entry: its number, when, what it is in plain words, and its hash after the hash it follows. */
+export function renderBlock(e, now) {
+  return `<li class="block" data-seq="${esc(e.seq)}"><p class="block__top"><b>Entry ${count(e.seq)}</b>${since(e.at, now)}</p><p class="block__what">${BLOCK[e.kind] ?? activityWords(e).words}</p><p class="block__hash"><code title="${esc(e.hash)}">${esc(e.hash.slice(0, 14))}</code><span>follows</span><code title="${esc(e.prev)}">${esc(e.prev.slice(0, 14))}</code></p></li>`;
+}
+
+/** The place the next entry will take, above the newest block. */
+export const renderNextBlock = (seq, words) => `<p class="block block--next"><b>Entry ${count(seq)}</b><span>${esc(words)}</span></p>`;
+
+/** The check of the blocks a reader has in front of them. */
+export function renderChainCheck(n, problems) {
+  return problems.length
+    ? `<p class="check check--bad"><span class="dot" aria-hidden="true"></span>${esc(problems.slice(0, 3).join('; '))}</p>`
+    : `<p class="check check--ok"><span class="dot" aria-hidden="true"></span>Your browser recomputed the last ${count(n)} hashes. Each one follows the one before.</p>`;
 }

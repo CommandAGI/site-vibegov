@@ -26,6 +26,7 @@
 <script type="module" src="scene.js"></script>
 <script type="module" src="earth.js"></script>
 <script type="module" src="dots.js"></script>
+<script type="module" src="figures.js"></script>
 </head>
 <body class="home">
 <canvas id="sky" aria-hidden="true"></canvas>
@@ -43,7 +44,7 @@
 
 <main id="main" class="sheet">
   <section class="cosmos" aria-labelledby="top-title">
-    <canvas class="earth" data-view="rise" aria-hidden="true"></canvas>
+    <canvas class="earth" aria-hidden="true"></canvas>
     <div class="cosmos__words wrap-x">
       <h1 id="top-title">A World <em>in Command.</em></h1>
       <p class="lede">The most powerful technology ever built should answer to the people who live with it. VibeGov is the public contract that AI agents and robots work under: one voice for each person, every act on the record, and no throne for anyone to take.</p>
@@ -61,7 +62,7 @@
   </section>
 
   <section class="feature wrap-x" aria-labelledby="f-voice">
-    <div class="feature__art"><canvas class="dots" data-src="art/voice.png" aria-hidden="true"></canvas></div>
+    <div class="feature__art"><canvas class="dots" data-src="art/voice.png" data-motion="wave" aria-hidden="true"></canvas></div>
     <div class="feature__words">
       <h2 id="f-voice">One person, one voice.</h2>
       <p>A model can be copied a million times. A person cannot. Each person holds exactly one voice, and no amount of money, rank or intelligence buys a second.</p>
@@ -70,7 +71,7 @@
   </section>
 
   <section class="feature wrap-x" aria-labelledby="f-throne">
-    <div class="feature__art"><canvas class="dots" data-src="art/throne.png" aria-hidden="true"></canvas></div>
+    <div class="feature__art"><canvas class="figure" data-figure="apex" role="img" aria-label="Diagram: a pyramid of thirteen seats with one seat above the rest becomes a ring of thirteen equal seats. The middle of the ring is empty and is marked “no office”."></canvas></div>
     <div class="feature__words">
       <h2 id="f-throne">No throne to take.</h2>
       <p>Power over AI is gathering in a few hands. Here there is nothing to gather: no president, no board, no master key. Not for a company, not for a government, not for a machine.</p>
@@ -79,24 +80,15 @@
   </section>
 
   <section class="feature wrap-x" aria-labelledby="f-change">
-    <div class="feature__art"><canvas class="dots" data-src="art/ballot.png" aria-hidden="true"></canvas></div>
+    <div class="feature__art"><canvas class="dots" data-src="art/ballot.png" data-motion="drop" aria-hidden="true"></canvas></div>
     <div class="feature__words">
-      <h2 id="f-change">Changed only by voice.</h2>
-      <p>The rules change one way: a proposal made in public, open to every voice, with every answer read in full. Nobody’s silence is counted as a yes.</p>
+      <h2 id="f-change">Governed by human voice.</h2>
+      <p>The rules change one way: a proposal made in public, open to every person, with every answer read in full. Nobody’s silence is counted as a yes.</p>
       <blockquote><p>“One person’s comment represents that person; silence is not consent…”</p><footer><a href="contract.html#k4">The kernel, article 4</a></footer></blockquote>
-      <div class="feature__live">
-        <h3>Open proposals</h3>
-        <div data-live="open-rfcs" aria-busy="true"><p class="note">Reading the open proposals…</p></div>
-      </div>
     </div>
-  </section>
-
-  <section class="feature wrap-x" aria-labelledby="f-engine">
-    <div class="feature__art"><canvas class="dots" data-src="art/machine.png" aria-hidden="true"></canvas></div>
-    <div class="feature__words">
-      <h2 id="f-engine">AI works. People decide.</h2>
-      <p>AI does the reading and the judging here, so every voice is read in full and every case gets a reasoned answer. People choose that AI. Each model is published and pinned, no single company runs them, and they change only by vote.</p>
-      <blockquote><p>“Every tier that holds model seats has seats from at least two independent operators and at least one seat whose weights are open and pinned by hash.”</p><footer><a href="contract.html#k10">The kernel, article 10</a></footer></blockquote>
+    <div class="feature__strip">
+      <h3>Proposals</h3>
+      <div data-live="rfc-strip" aria-busy="true"><p class="note">Reading the proposals…</p></div>
     </div>
   </section>
 
@@ -122,32 +114,32 @@
 
   <section class="feature wrap-x" aria-labelledby="f-record">
     <div class="feature__art">
-      <div class="pane" aria-label="The public ledger, live">
-        <p class="pane__head"><span class="livedot" aria-hidden="true"></span>the public ledger<a href="https://api.commandagi.com/public/contract/activity">GET /public/contract/activity</a></p>
-        <div data-live="headline" aria-live="polite" aria-busy="true"><p class="note">Reading the ledger…</p></div>
-        <div class="pane__feed" data-live="activity" aria-busy="true"><p class="note">Reading the log…</p></div>
-        <div data-live="kernel" aria-live="polite" aria-busy="true"></div>
+      <div class="pane pane--chain" aria-label="The public ledger: its newest entries">
+        <p class="pane__head"><span class="livedot" aria-hidden="true"></span>the public ledger<a href="https://api.commandagi.com/public/contract/log/head">GET /public/contract/log</a></p>
+        <div data-live="chain-next"><p class="block block--next"><b>The next entry</b><span>will appear here</span></p></div>
+        <div class="chain" data-live="chain" aria-busy="true"><p class="note">Reading the ledger…</p></div>
+        <div data-live="chain-check" aria-live="polite"></div>
       </div>
     </div>
     <div class="feature__words">
       <h2 id="f-record">Everything on the record.</h2>
-      <p>Every proposal, answer, decision and case is entered in one public ledger. Nothing is erased, and your browser checks it as you read.</p>
+      <p>Every proposal, answer, decision and case is one entry in one public ledger. Each entry carries the hash of the one before it, so nothing can be erased or slipped in. Your browser checks the chain as you read.</p>
       <blockquote><p>“Corrections are appended; nothing is erased.”</p><footer><a href="contract.html#k11">The kernel, article 11</a></footer></blockquote>
       <div class="btn-row"><a class="btn" href="record.html" data-ref="k11">Open the record</a></div>
     </div>
   </section>
 
   <section class="feature wrap-x" aria-labelledby="f-justice">
-    <div class="feature__art"><canvas class="dots" data-src="art/scales.png" aria-hidden="true"></canvas></div>
+    <div class="feature__art"><canvas class="dots" data-src="art/scales.png" data-motion="sway" aria-hidden="true"></canvas></div>
     <div class="feature__words">
-      <h2 id="f-justice">Harm has a remedy.</h2>
-      <p>If anyone wrongs you, bring a case. You get notice, time to answer, a reasoned decision and an appeal. Penalties are capped, and the victim is made whole.</p>
-      <blockquote><p>“…protection of every being’s protected interests against wrongful interference, by anyone, including the contract itself.”</p><footer><a href="contract.html#k1">The kernel, article 1</a></footer></blockquote>
+      <h2 id="f-justice">An autonomous judicial system.</h2>
+      <p>If anyone wrongs you, bring a case. No judge is appointed and no jury is picked. AI models from independent operators decide each element on the evidence, and people choose those models by vote. You get notice, time to answer, written reasons and an appeal to models that took no part. Penalties are capped, and the victim is made whole.</p>
+      <blockquote><p>“Every case gives notice, time to answer, an opportunity to submit evidence, a reasoned determination of each element of the duty, and an appeal to seats that took no part in it…”</p><footer><a href="contract.html#k7">The kernel, article 7</a></footer></blockquote>
     </div>
   </section>
 
   <section class="feature wrap-x" aria-labelledby="f-exit">
-    <div class="feature__art"><canvas class="dots" data-src="art/door.png" aria-hidden="true"></canvas></div>
+    <div class="feature__art"><canvas class="dots" data-src="art/door.png" data-motion="beam" aria-hidden="true"></canvas></div>
     <div class="feature__words">
       <h2 id="f-exit">Free to leave.</h2>
       <p>Being here is a choice. Leave when you want. Only the promises you already made still hold.</p>
@@ -167,7 +159,8 @@
   </section>
 
   <section class="close wrap-x" aria-labelledby="close-title">
-    <canvas class="earth" data-view="whole" aria-hidden="true"></canvas>
+    <canvas class="figure" data-figure="world" role="img" aria-label="Diagram: a turning globe drawn as one graph of people, AI agents and machines. Work starts at a person and passes along the lines from system to system."></canvas>
+    <p class="key"><span class="key__person">people</span><span class="key__agent">AI agents</span><span class="key__machine">machines</span></p>
     <h2 id="close-title">The world <em>stays ours.</em></h2>
     <p>One voice is waiting for you. Nobody can hold two.</p>
     <div class="btn-row">
@@ -190,7 +183,7 @@
       <a href="https://commandagi.com/">CommandAGI</a>
       <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>
     </nav>
-    <p class="colophon">VibeGov is the home of the Coordination Contract, the institution CommandAGI runs on. Every quotation is the kernel’s own text, and every figure is read from the contract’s public record at api.commandagi.com. The dot pictures are drawn in your browser from generated stills. The Earth and the Moon are drawn from NASA’s maps. The robot is a recording of a simulation.</p>
+    <p class="colophon">VibeGov is the home of the Coordination Contract, the institution CommandAGI runs on. Every quotation is the kernel’s own text, and every figure is read from the contract’s public record at api.commandagi.com. The dot pictures are drawn in your browser from generated stills. The Earth and the Moon are drawn from NASA’s maps. The robot is a recording of a simulation. The two diagrams are drawings of an idea, not data.</p>
     <p>© 2026 VibeGov · a company of CommandAGI</p>
   </div>
 </footer>

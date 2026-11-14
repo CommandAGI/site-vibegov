@@ -22,17 +22,16 @@ async function figures() {
     const s = (stats = await get('/public/contract/stats'));
     const now = Date.now();
     put('vitals', L.renderVitals(s, now));
-    put('headline', L.renderHeadline(s, now));
     put('anchor', L.renderAnchor(s, now));
     put('figures', L.renderFigures(s));
-    put('open-rfcs', L.renderOpenRfcs(s, now));
+    put('rfc-strip', L.renderRfcStrip(s, now));
     put('decided', L.renderDecided(s, now));
     put('ledger', L.renderLedger(s, now));
     put('params', L.renderParameters(s));
     const h = L.health(s, now);
     put('pulse', `<span class="health health--${h.state}"><span class="dot" aria-hidden="true"></span>${L.count(s.log.length)} entries on the public record · the last ${s.log.headAt ? L.esc(L.relative(s.log.headAt, now)) : 'never'}</span>`);
   } catch (e) {
-    unreachable(['vitals', 'headline', 'anchor', 'figures', 'open-rfcs', 'decided', 'ledger', 'params', 'pulse'], e, '/public/contract/stats');
+    unreachable(['vitals', 'anchor', 'figures', 'rfc-strip', 'decided', 'ledger', 'params', 'pulse'], e, '/public/contract/stats');
   }
 }
 
@@ -72,6 +71,64 @@ async function recording() {
   } catch (e) {
     put('recording', `<p class="empty">The recording could not be read (${L.esc(e.message)}).</p>`);
   }
+}
+
+// The front door's ledger: the log's last entries as a stack of blocks, the newest on top. The page first replays
+// the last 12 real entries, one each few seconds, and each new block pushes the stack down. At the head it waits;
+// an entry the log gains while the page is open comes in the same way. With nothing new for a while, the replay
+// starts again, and the place above the stack says which of the two the reader sees.
+const REPLAY = 12, SHOW = 3, EVERY = 3200, REST = 5;
+const calm = matchMedia('(prefers-reduced-motion: reduce)');
+let head = 0, tail = [], queue = [], idle = 0, seen = false;
+const next = () => put('chain-next', L.renderNextBlock(head + 1, queue.length ? `replaying the last ${tail.length} entries` : 'will appear here'));
+function push(entry, slide = true) {
+  const list = el('chain')?.querySelector('ol');
+  if (!list) return;
+  list.insertAdjacentHTML('afterbegin', L.renderBlock(entry, Date.now()));
+  while (list.children.length > SHOW + 2) list.lastElementChild.remove();
+  if (!slide) return;
+  // Start one block up with no transition, then let the stack come down.
+  list.classList.remove('is-moving');
+  list.style.transform = 'translateY(calc(-1 * var(--block)))';
+  list.getBoundingClientRect();
+  list.classList.add('is-moving');
+  list.style.transform = '';
+}
+function advance() {
+  if (!seen || document.hidden || !head || calm.matches) return;
+  if (queue.length) { push(queue.shift()); idle = 0; next(); return; }
+  if ((idle += 1) < REST) return;
+  queue = tail.slice();
+  idle = 0;
+  next();
+}
+async function chain() {
+  if (!el('chain')) return;
+  try {
+    const top = (await get('/public/contract/log/head')).head;
+    if (!top) return put('chain', '<p class="empty">The log has no entry yet.</p>');
+    if (top.seq === head) return;
+    // Read from the last entry the page has, so the check covers the link to the new ones.
+    const { entries } = await get(`/public/contract/log?from=${head || Math.max(1, top.seq - REPLAY + 1)}&limit=50`);
+    const problems = await logProblems(entries);
+    const fresh = entries.filter(e => e.seq > head);
+    if (!head) {
+      put('chain', '<ol class="blocks"></ol>');
+      const first = calm.matches ? fresh.slice(-SHOW) : fresh.slice(0, SHOW);
+      first.forEach(e => push(e, false));
+      queue = calm.matches ? [] : fresh.slice(SHOW);
+    } else queue.push(...fresh);
+    tail = [...tail, ...fresh].slice(-REPLAY);
+    head = top.seq;
+    put('chain-check', L.renderChainCheck(tail.length, problems));
+    next();
+  } catch (e) {
+    if (!head) unreachable(['chain'], e, '/public/contract/log/head');
+  }
+}
+if (el('chain')) {
+  new IntersectionObserver(entries => { seen = entries.some(e => e.isIntersecting); }, { threshold: 0.2 }).observe(el('chain'));
+  setInterval(advance, EVERY);
 }
 
 // Every time on the page words itself again each second: "4 seconds ago", and countdowns to each deadline.
@@ -120,9 +177,9 @@ async function record() {
 // they get; a hidden page reads nothing.
 const refresh = async () => {
   await figures();
-  await Promise.all([activity(), calendar(), machines()]);
+  await Promise.all([activity(), calendar(), machines(), chain()]);
 };
-if (el('figures') || el('pulse') || el('headline')) {
+if (el('figures') || el('pulse')) {
   refresh();
   let timer = setInterval(refresh, 30_000);
   let ticker = setInterval(tick, 1000);

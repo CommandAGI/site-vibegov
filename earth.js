@@ -1,14 +1,15 @@
-// The Earth, as a camera in orbit sees it (redesign/DESIGN.md § the Earth). Each `<canvas class="earth"
-// data-view="rise|whole">` is one WebGL2 picture, traced per pixel: the ground from NASA's Blue Marble, the night
-// side's lamps from NASA's Black Marble, clouds from noise, the air as a thin shell that turns orange where the sun
-// is low, the sun, and the moon lit by that sun. `rise` is the first screen: the horizon across the bottom and the
-// sun coming up over it. `whole` is the whole planet. No library. With no WebGL2 the canvas stays empty and the page
-// keeps its sky. With reduced motion one frame is drawn.
+// The Earth, as a camera in orbit sees it (redesign/DESIGN.md § the Earth). `<canvas class="earth">` is one WebGL2
+// picture, traced per pixel: the ground from NASA's Blue Marble, the night side's lamps from NASA's Black Marble,
+// clouds from noise, the air as a thin shell that turns orange where the sun is low, the sun, and the moon lit by that
+// sun. The horizon lies across the bottom of the first screen and the sun comes up over it. The canvas is taller than
+// that screen: the picture is framed on the canvas's parent (the first screen), and the ground goes on below it, into
+// the night, under the words that follow. No library. With no WebGL2 the canvas stays empty and the page keeps its
+// sky. With reduced motion one frame is drawn.
 const VS = `#version 300 es
 in vec2 aQ; void main() { gl_Position = vec4(aQ, 0.0, 1.0); }`;
 const FS = `#version 300 es
 precision highp float;
-uniform vec2 uRes; uniform float uTime, uTan, uMoonR, uFlare; uniform vec3 uCam, uSun, uMoon, uMoonSun; uniform mat3 uBasis, uEarth; uniform vec2 uSunUV;
+uniform vec2 uMid; uniform float uHalf, uTime, uTan, uMoonR, uFlare; uniform vec3 uCam, uSun, uMoon, uMoonSun; uniform mat3 uBasis, uEarth; uniform vec2 uSunUV;
 uniform sampler2D uDay, uNight, uMoonTex;
 out vec4 o;
 float hash(vec3 p) { p = fract(p * 0.3183099 + 0.1); p *= 17.0; return fract(p.x * p.y * p.z * (p.x + p.y + p.z)); }
@@ -34,7 +35,7 @@ float sphere(vec3 ro, vec3 rd, vec3 c, float r) {
   return -b - sqrt(d);
 }
 void main() {
-  vec2 uv = (gl_FragCoord.xy * 2.0 - uRes) / uRes.y;
+  vec2 uv = (gl_FragCoord.xy - uMid) / uHalf;
   vec3 rd = normalize(uBasis * vec3(uv * uTan, 1.0));
   vec3 col = vec3(0.0); float alpha = 0.0;
   float t = sphere(uCam, rd, vec3(0.0), 1.0);
@@ -104,15 +105,10 @@ const mul = (a, b) => {
 const DEG = Math.PI / 180;
 const still = matchMedia('(prefers-reduced-motion: reduce)');
 
-// The camera, the sun, the moon and the turn of the Earth for one view at one time.
-export function view(name, time, aspect) {
+// The camera, the sun, the moon and the turn of the Earth at one time, for a first screen of this aspect.
+export function view(time, aspect) {
   const tan = Math.tan(25 * DEG);
   const half = Math.atan(aspect * tan);                      // half the width of the picture, as an angle
-  if (name === 'whole') {
-    const forward = [0, 0, 1], right = [1, 0, 0], up = [0, 1, 0];
-    return { cam: [0, 0, -4.6], basis: [...right, ...up, ...forward], tan: Math.tan(14 * DEG), sun: norm([-0.55, 0.38, -0.74]), moon: [0, 0, 900], moonSun: [0, 1, 0], moonR: 1, sunUV: [9, 9], flare: 0,
-      earth: mul(rotY(-1.9 + time * ((2 * Math.PI) / 300)), rotZ(-0.36)) };
-  }
   // In orbit, 0.15 of the Earth's radius up, looking ahead and down so the horizon lies across the lower third.
   const D = 1.15, dip = Math.acos(1 / D);
   const pitch = dip - Math.atan(0.46 * tan);
@@ -188,7 +184,7 @@ function start(canvas) {
   ]);
   gl.uniform1i(u('uDay'), 0); gl.uniform1i(u('uNight'), 1); gl.uniform1i(u('uMoonTex'), 2);
 
-  const name = canvas.dataset.view;
+  const screen = canvas.parentElement;
   let t0 = 0, frame = 0, seen = false;
   function draw(now) {
     frame = 0;
@@ -196,8 +192,11 @@ function start(canvas) {
     const w = Math.round(canvas.clientWidth * dpr), h = Math.round(canvas.clientHeight * dpr);
     if (!w || !h) return;
     if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; gl.viewport(0, 0, w, h); }
-    const v = view(name, still.matches ? 40 : (now - t0) / 1000, w / h);
-    gl.uniform2f(u('uRes'), w, h);
+    // The picture is framed on the first screen; the canvas goes on below it.
+    const top = Math.min(h, Math.round(screen.clientHeight * dpr));
+    const v = view(still.matches ? 40 : (now - t0) / 1000, w / top);
+    gl.uniform2f(u('uMid'), w / 2, h - top / 2);
+    gl.uniform1f(u('uHalf'), top / 2);
     gl.uniform1f(u('uTime'), (now - t0) / 1000);
     gl.uniform1f(u('uTan'), v.tan);
     gl.uniform3fv(u('uCam'), v.cam); gl.uniform3fv(u('uSun'), v.sun); gl.uniform3fv(u('uMoon'), v.moon); gl.uniform3fv(u('uMoonSun'), v.moonSun);

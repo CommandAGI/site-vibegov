@@ -19,9 +19,9 @@ The 2026-11-02 design (a light page that led with live figures) is gone. Its liv
 ## the words
 
 - **The front door's order.** The claim (A World in Command). Why (we want all that AI can do, and we want the world
-  to stay ours). Then what the contract holds, one section each: one person one voice (k2), no throne (k3), changed
-  only by voice (k4), AI works and people decide (k10), robots by permission (a film of a robot at work), everything
-  on the record (k11, live), harm has a remedy (k1), free to leave (k12). Then five things to do today, and the act:
+  to stay ours). Then what the contract holds, one section each: one person one voice (k2), no throne (k3), governed
+  by human voice (k4, with the proposals in a row under it), robots by permission (a film of a robot at work),
+  everything on the record (k11, live), an autonomous judicial system (k7), free to leave (k12). Then five things to do today, and the act:
   take your voice.
 - **A heading is 2 to 4 words that a person would say.** One or two sentences under it. No kicker above a heading, no
   question as a heading, italics only in the page's first heading and its last.
@@ -47,7 +47,9 @@ be in the view of the hero."
 - The sun and the moon are in this picture only. They scroll away with it. Nothing crosses the later sections.
 - The moon is close to the sun in this sky, so it would be almost new. It is lit from the sun's side as a crescent.
   That is the one thing in the picture that is not where the light says.
-- The last section shows the whole Earth with the same code (`data-view="whole"`).
+- The Earth does not stop where the first screen stops (owner, 2026-11-13). The canvas is 1.75 times as tall as
+  that screen and the picture is framed on the screen, so the ground goes on below the horizon, into the night and
+  its lamps, under the words that follow, and fades out there.
 - A narrow screen takes maps of half the size. With no WebGL2 the canvas stays empty. Reduced motion: one frame.
 
 ## the sky (`scene.js`)
@@ -63,10 +65,13 @@ robot simulation."
 
 | section | its picture |
 |---|---|
-| the first and last | the Earth, real (`earth.js`) |
-| one voice, no throne, changed by voice, AI works, remedy, leave | a dot picture |
+| the first | the Earth, real (`earth.js`) |
+| one voice, governed by voice, the judicial system, leave | a dot picture that moves |
+| no throne | a diagram: a pyramid becomes a ring of equals around an empty middle (`figures.js`) |
+| governed by human voice | also a row of cards: the open and decided proposals, or the path a proposal takes |
 | robots by permission | a film: a recording of the SO-101 cube simulation on CommandAGI, with a link to the live one |
-| everything on the record | a live pane: the ledger's length, the latest acts, the kernel's hash checked in the page |
+| everything on the record | a live pane of blocks, all alike: the log's newest entries, three in view, each pushed down by the next |
+| the last | a diagram: people, agents and machines as one graph on a turning globe, work passing along its lines |
 | start today | five lines, each one act a person can do now |
 
 The film is `robots/so101-cube/` (recorded from `commandagi.com/embed.html` in headless Chrome on a GPU; the full
@@ -76,14 +81,33 @@ simulation cannot be framed here yet: `commandagi.com` allows only its own pages
 
 ## the dot pictures (`dots.js`, `art/`, `redesign/art.mjs`)
 
-A raised hand, an empty throne, a ballot, a robot arm resting in a hand, scales, an open door. A picture must show
-what its heading names.
+A raised hand, a ballot, scales, an open door. A picture must show what its heading names.
 
 - The source of each is a generated still (fal, seedream v5 pro), black and white on black. The still stays out of the
   site's folder (the org Drive's `media/dot-pictures/`). `redesign/art.mjs cut` reduces it to a 168 px grey map in `art/`.
 - `dots.js` draws one point for each bright pixel. Until a picture is seen its points lie scattered like stars. When
-  it scrolls into view they gather into the picture.
+  it scrolls into view they gather into the picture, in under a second.
+- A dot picture is not static (owner, 2026-11-13). Each moves in its own way (`data-motion`): the hand waves, the
+  ballot goes down, the scales tip, light comes through the door. The points move away from a pointer.
 - The page never shows a generated still as a photograph, and its colophon says where the dot pictures come from.
+
+## the diagrams (`figures.js`)
+
+An idea that is a structure gets a diagram, not a literal picture (owner, 2026-11-13: "use a diagram for No throne to
+take instead of a literal throne"). A diagram is lines and nodes on a 2D canvas. It says in its `aria-label` what it
+shows, and the colophon says the diagrams are drawings, not data.
+
+- **apex**: thirteen seats in a pyramid, one above the rest. Once, when it is first seen, it becomes a ring of
+  thirteen equal seats. The gold circle of the top seat stays in the middle, empty: "no office".
+- **world**: 150 nodes on a turning globe, people gold, agents blue, machines green, each joined to its neighbours.
+  A piece of work starts at a person and passes from system to system.
+
+## the ledger's blocks (`page.js` § chain)
+
+The pane first replays the log's last 12 real entries, one each 3.2 s; each new block pushes the stack down. At the
+head it waits, and an entry the log gains comes in the same way. With nothing new for a while it replays again. The
+place above the stack always says which the reader sees ("replaying the last 12 entries" or "will appear here"). The
+page recomputes each hash. No block is made up.
 
 ## controls: a line of the contract (owner, 2026-11-13)
 

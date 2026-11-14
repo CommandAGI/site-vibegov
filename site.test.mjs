@@ -10,7 +10,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as L from './live.js';
-import { kernelHash, logProblems } from './verify.js';
+import { contractHash, kernelHash, logProblems } from './verify.js';
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const ORIGIN = 'https://vibegov.pro';
@@ -79,12 +79,18 @@ test('the pictures: the mark, the Earth from NASA\'s maps, dot pictures from the
   assert.equal(JSON.parse(read('robots/labrat/run.json')).reality, 'simulation');
   const home = read('index.html');
   // A dot picture is a canvas that dots.js fills from a small grey map; the page never shows a generated still itself.
-  const maps = [...home.matchAll(/<canvas class="dots" data-src="art\/([a-z]+)\.png" aria-hidden="true"><\/canvas>/g)].map(m => m[1]);
-  assert.deepEqual(maps, ['voice', 'throne', 'ballot', 'machine', 'scales', 'door'], 'the dot pictures, each hidden from a screen reader');
+  // Each one moves in its own way (dots.js MOTION).
+  const dots = [...home.matchAll(/<canvas class="dots" data-src="art\/([a-z]+)\.png" data-motion="([a-z]+)" aria-hidden="true"><\/canvas>/g)];
+  const maps = dots.map(m => m[1]);
+  assert.deepEqual(dots.map(m => `${m[1]} ${m[2]}`), ['voice wave', 'ballot drop', 'scales sway', 'door beam'], 'the dot pictures, each hidden from a screen reader');
+  for (const [, , motion] of dots) assert.match(read('dots.js'), new RegExp(`\\n  ${motion}\\(d, t\\) \\{`), `dots.js moves a picture by "${motion}"`);
+  // A diagram is a canvas that figures.js draws, and it says in words what it shows.
+  assert.deepEqual([...home.matchAll(/<canvas class="figure" data-figure="([a-z]+)" role="img" aria-label="Diagram: [^"]{60,}"><\/canvas>/g)].map(m => m[1]), ['apex', 'world']);
+  assert.match(read('figures.js'), /const FIGURES = \{ apex, world \};/);
   assert.deepEqual(readdirSync(join(ROOT, 'art')).sort(), maps.map(m => `${m}.png`).sort(), 'art/ holds the maps, nothing else');
   for (const f of readdirSync(join(ROOT, 'art'))) assert.ok(readFileSync(join(ROOT, 'art', f)).length < 16_000, `art/${f} is a small map, not a photograph`);
-  // The Earth: two canvases that earth.js draws from the maps in sky/.
-  assert.deepEqual([...home.matchAll(/<canvas class="earth" data-view="([a-z]+)" aria-hidden="true"><\/canvas>/g)].map(m => m[1]), ['rise', 'whole']);
+  // The Earth: one canvas on the first screen, which earth.js draws from the maps in sky/.
+  assert.equal([...home.matchAll(/<canvas class="earth" aria-hidden="true"><\/canvas>/g)].length, 1);
   assert.deepEqual(readdirSync(join(ROOT, 'sky')).sort(), ['earth-day-2k.jpg', 'earth-day.jpg', 'earth-night-2k.jpg', 'earth-night.jpg', 'moon.jpg']);
   for (const [, src] of read('earth.js').matchAll(/'(sky\/[a-z0-9-]+\.jpg)'/g)) assert.ok(existsSync(join(ROOT, src)), `earth.js reads ${src}`);
   // The one film: a recording of a simulation, and its caption says so.
@@ -92,7 +98,7 @@ test('the pictures: the mark, the Earth from NASA\'s maps, dot pictures from the
   assert.equal(films.length, 1);
   assert.match(films[0][0], /<video data-loop muted loop playsinline preload="none" poster="robots\/so101-cube\/poster\.jpg"[^>]*aria-label="[^"]{20,}"/, 'muted, not loaded until it is seen, and named');
   assert.match(films[0][1], /^Recording, 13 November 2026: a simulated /, 'the film is labelled a recording of a simulation');
-  assert.match(home, /The dot pictures are drawn in your browser from generated stills\. The Earth and the Moon are drawn from NASA’s maps\. The robot is a recording of a simulation\./, 'the page says where its pictures come from');
+  assert.match(home, /The dot pictures are drawn in your browser from generated stills\. The Earth and the Moon are drawn from NASA’s maps\. The robot is a recording of a simulation\. The two diagrams are drawings of an idea, not data\./, 'the page says where its pictures come from');
   for (const page of PAGES) {
     const text = read(page);
     assert.match(text, /<canvas id="sky" aria-hidden="true"><\/canvas>/, `${page}: the sky`);
@@ -112,8 +118,8 @@ test('each live part of a page is one that page.js fills', () => {
   const filled = new Set([...read('page.js').matchAll(/(?:put|el|view)\('([a-z-]+)'/g)].map(m => m[1]));
   for (const page of PAGES)
     for (const [, name] of read(page).matchAll(/data-live="([a-z-]+)"/g)) assert.ok(filled.has(name), `${page}: data-live="${name}" is filled by page.js`);
-  assert.match(read('index.html'), /data-live="headline"/);
-  assert.match(read('index.html'), /data-live="open-rfcs"/);
+  assert.match(read('index.html'), /data-live="chain"/);
+  assert.match(read('index.html'), /data-live="rfc-strip"/);
   assert.match(read('record.html'), /data-live="figures"/);
   assert.match(read('record.html'), /data-live="log"/);
 });
@@ -171,8 +177,8 @@ test('an empty contract says so in words, and every count is zero, not missing',
     for (const words of ['No RFC is open. Anyone may open one.', 'None yet. The genesis law is in force.', 'No confirmed response yet.', 'Nobody holds a voice yet.', 'No case has been filed.', 'No open claim.', 'No mandate is open.'])
       assert.ok(figures.includes(words), `says: ${words}`);
     assert.match(figures, /<b>\$0\.00<\/b>/, 'the pool is $0.00');
-    const open = L.renderOpenRfcs(s, NOW);
-    assert.match(open, /No RFC is open now\. Anyone may open one with a refundable deposit of \$10\.00\./);
+    const open = L.renderRfcStrip(s, NOW);
+    assert.match(open, /with a refundable deposit of \$10\.00\.[\s\S]*none open today<\/span><\/p><h4>Open the first proposal/);
     assert.match(open, /href="https:\/\/commandagi\.com\/app\?open=%2Fapp%2Fcontract"/, 'the way to open one');
     assert.match(L.renderDecided(s, NOW), /No RFC has been decided yet/);
     const ledger = L.renderLedger(s, NOW);
@@ -188,7 +194,7 @@ test('an empty contract says so in words, and every count is zero, not missing',
   }
 });
 
-test('open RFCs are listed soonest first with their clocks and a Respond link; a title is text, never markup', async () => {
+test('proposals are a row of cards: open ones soonest first with a Respond link, then decided ones; with none, the path a proposal takes; a title is text, never markup', async () => {
   const stats = statsOf({
     rfcs: {
       byStatus: { open: 2, deciding: 1, adopted: 1, rejected: 0 },
@@ -206,7 +212,7 @@ test('open RFCs are listed soonest first with their clocks and a Respond link; a
   const api = await fakeApi({ '/public/contract/stats': stats });
   try {
     const s = await L.getJson(fetch, api.base, '/public/contract/stats');
-    const open = L.renderOpenRfcs(s, NOW);
+    const open = L.renderRfcStrip(s, NOW);
     assert.ok(!open.includes('<script>'), 'the title is escaped');
     assert.match(open, /A longer &lt;script&gt;alert\(1\)&lt;\/script&gt; appeal/);
     assert.ok(open.indexOf('rfc_a') < open.indexOf('rfc_b'), 'soonest deadline first');
@@ -220,7 +226,13 @@ test('open RFCs are listed soonest first with their clocks and a Respond link; a
     assert.match(figures, /<b>3<\/b><span>2 open · 1 with a judgment/);
     assert.match(figures, /<b>\$1,234\.56<\/b><span>1 open claims, \$50\.00 owed/);
     assert.match(L.renderDecided(s, NOW), /Adopted<\/span> <a href="record\.html#rfc=rfc_z">Lower the deposit/, 'a decision links to its tally on this site');
-    assert.match(open, /<h3><a href="record\.html#rfc=rfc_a">/, 'an open RFC links to its page here');
+    assert.match(open, /<h4><a href="record\.html#rfc=rfc_a">/, 'an open RFC links to its page here');
+    assert.ok(open.indexOf('rfc_b') < open.indexOf('Lower the deposit') && open.indexOf('Lower the deposit') < open.indexOf('Propose a change'), 'open, then decided, then the way to open one');
+    assert.doesNotMatch(open, /card--step/, 'no path cards beside real proposals');
+    const none = L.renderRfcStrip(statsOf({}), NOW);
+    assert.equal(none.match(/card--step/g).length, 4, 'with no proposal, the four steps of one');
+    assert.match(none, /stays open for 14 days/, 'with the law\'s own window');
+    assert.match(none, /none open today<\/span><\/p><h4>Open the first proposal/);
   } finally {
     await api.close();
   }
@@ -373,7 +385,7 @@ test('the vital signs tick: the ledger height and its last entry, the next close
   assert.match(v, /the next closes in <span class="countdown" data-until="\d+"[^>]*>3h 00m<\/span>/);
   assert.match(v, /<dt>Decided this week<\/dt><dd><b>1<\/b>/, 'only the decision of the last 7 days');
   assert.match(v, /<b>15<\/b><span>41 responses counted/);
-  assert.match(L.renderOpenRfcs(s, NOW), /data-until="\d+"[^>]*>3h 00m</, 'each open RFC counts down to its close');
+  assert.match(L.renderRfcStrip(s, NOW), /data-until="\d+"[^>]*>3h 00m</, 'each open RFC counts down to its close');
   assert.match(L.renderAnchor(statsOf({}), NOW), /check--wait[\s\S]*not anchored on chain: not configured: CONTRACT_ANCHOR_SECRET\. 0 of the last 200 checkpoints are anchored[\s\S]*Version 0 in force since [^<]+, the genesis/, 'an anchor that does not hold says why');
   const anchored = statsOf({ anchor: { key: 'K', detail: null, last: { seq: 36100, status: 'anchored', cluster: 'devnet', tx: '4sigTransaction', at: NOW - 30_000 }, anchoredOfLast: { anchored: 200, of: 200 } } });
   assert.match(L.renderAnchor(anchored, NOW), /check--ok[\s\S]*Log entry 36,100 is anchored on devnet <time[^>]*>30 seconds ago<\/time> <code title="4sigTransaction">/);
@@ -497,14 +509,14 @@ test('the front door: A World in Command, what the contract holds in the kernel\
   const text = read('index.html');
   assert.match(text, /<title>VibeGov: A World in Command<\/title>/);
   assert.match(text, /<h1 id="top-title">A World <em>in Command\.<\/em><\/h1>/);
-  const order = ['data-view="rise"', 'id="top-title"', 'data-live="pulse"', 'class="creed', 'id="f-voice"', 'id="f-throne"', 'id="f-change"', 'data-live="open-rfcs"', 'id="f-engine"', 'id="f-robots"', 'data-live="headline"', 'data-live="activity"', 'data-live="kernel"', 'id="f-record"', 'id="f-justice"', 'id="f-exit"', 'id="today-title"', 'data-view="whole"', 'id="close-title"'];
+  const order = ['class="earth"', 'id="top-title"', 'data-live="pulse"', 'class="creed', 'id="f-voice"', 'id="f-throne"', 'id="f-change"', 'data-live="rfc-strip"', 'id="f-robots"', 'data-live="chain-next"', 'data-live="chain"', 'data-live="chain-check"', 'id="f-record"', 'id="f-justice"', 'id="f-exit"', 'id="today-title"', 'data-figure="world"', 'id="close-title"'];
   const at = order.map(s => text.indexOf(s));
   assert.ok(at.every(i => i > 0), `each part is on the page: ${order.filter((_, i) => at[i] < 0)}`);
   assert.deepEqual([...at].sort((a, b) => a - b), at, 'in this order');
   // A quotation is the kernel's text, letter for letter (an ellipsis marks where it is cut), under the article it names.
   const kernel = Object.fromEntries(JSON.parse(read('fixtures/kernel.json')).kernel.articles.map(a => [a.id, a.text]));
   const quotes = [...text.matchAll(/<blockquote><p>“([^”]+)”<\/p><footer><a href="contract\.html#(k\d+)">The kernel, article (\d+)<\/a><\/footer><\/blockquote>/g)];
-  assert.deepEqual(quotes.map(q => q[2]), ['k2', 'k3', 'k4', 'k10', 'k11', 'k1', 'k12'], 'one quotation per thing the contract holds');
+  assert.deepEqual(quotes.map(q => q[2]), ['k2', 'k3', 'k4', 'k11', 'k7', 'k12'], 'one quotation per thing the contract holds');
   for (const [, words, id, n] of quotes) {
     assert.equal(id, `k${n}`, 'the link and its words name the same article');
     assert.ok(kernel[id].includes(words.replace(/^…|…$/g, '').replaceAll('’', "'")), `“${words}” is in ${id}`);
@@ -514,10 +526,24 @@ test('the front door: A World in Command, what the contract holds in the kernel\
   assert.equal([...text.matchAll(/<ol class="clauses">[\s\S]*?<\/ol>/g)][0][0].match(/<li>/g).length, 5, 'five things to do today');
 });
 
-test('the front door\'s one figure is the ledger\'s length and when it last grew', () => {
-  const html = L.renderHeadline(statsOf({ log: { length: 36493, headHash: 'ab'.repeat(32), headAt: NOW - 90_000, lastBeaconAt: null, lastDay: {} } }), NOW);
-  assert.match(html, /<b>36,493<\/b><span>entries on the public ledger, the last <time [^>]*data-at="\d+">/);
-  assert.match(L.renderHeadline(statsOf({ log: { length: 0, headHash: null, headAt: null, lastBeaconAt: null, lastDay: {} } }), NOW), /<b>0<\/b><span>entries on the public ledger<\/span>/, 'an empty ledger says zero and no time');
+test('the front door\'s ledger is blocks, all alike: number, time, plain words, its hash after the one it follows', async () => {
+  const entries = [];
+  let prev = '0'.repeat(64);
+  for (const [seq, kind, subject] of [[1, 'version', 'version:0'], [2, 'seals', 'seals:sb_1'], [3, 'rfc.opened', 'rfc_<b>']]) {
+    const e = { seq, prev, kind, subject, bodyDigest: 'd'.repeat(64), at: NOW - (4 - seq) * 60_000 };
+    e.hash = await contractHash('log', e);
+    entries.push(e);
+    prev = e.hash;
+  }
+  const blocks = entries.map(e => L.renderBlock({ ...e, rfcTitle: e.kind === 'rfc.opened' ? 'Lower <the> deposit' : null }, NOW));
+  blocks.forEach((b, i) => assert.match(b, new RegExp(`^<li class="block" data-seq="${i + 1}"><p class="block__top"><b>Entry ${i + 1}</b><time [^>]*data-at="\\d+">[^<]+</time></p><p class="block__what">[^<]+</p><p class="block__hash"><code title="${entries[i].hash}">${entries[i].hash.slice(0, 14)}</code><span>follows</span><code title="${entries[i].prev}">${entries[i].prev.slice(0, 14)}</code></p></li>$`), 'every block has the same parts'));
+  assert.match(blocks[0], /Contract version 0 took effect/);
+  assert.match(blocks[1], /Seals from machines and hosts/);
+  assert.match(blocks[2], /RFC “Lower &lt;the&gt; deposit” opened/, 'a title is text');
+  assert.match(L.renderChainCheck(3, await logProblems(entries)), /check--ok.*recomputed the last 3 hashes/);
+  entries[1].at += 1;
+  assert.match(L.renderChainCheck(3, await logProblems(entries)), /check--bad.*entry 2: its hash does not recompute/, 'a changed entry is named');
+  assert.equal(L.renderNextBlock(36494, 'will appear here'), '<p class="block block--next"><b>Entry 36,494</b><span>will appear here</span></p>');
 });
 
 test('the record page holds what is alive: now, the RFCs, the log, the machines, the figures, how the law changes', () => {

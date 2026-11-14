@@ -6,7 +6,7 @@
 //   FAL_KEY=… node redesign/art.mjs make [id…]     2 candidates per brief into <ART_RAW>/<id>-<n>.jpg
 //   node redesign/art.mjs cut <id> <n> [gamma] [polygon]   art/<id>.png from candidate n
 //
-// The pictures on the site: voice 1 1.15, throne 1 1.3, ballot 1 1.1, machine 2 1.25, record 2 1.0, scales 1 1.3,
+// The pictures on the site: voice 1 1.15, ballot 1 1.1, scales 1 1.3,
 // door 1 1.0 "0,0 1000,0 740,430 740,1560 0,1560" (the shaft of light above the door is painted out).
 //
 // In the CommandAGI checkout the key is the `fal` service account (docs/services.md); it is never printed.
@@ -22,10 +22,7 @@ const MODEL = 'bytedance/seedream/v5/pro/text-to-image';
 const STYLE = 'Black and white studio photograph. One subject, isolated on a pure black background, lit by one hard light from the upper left, high contrast, deep black shadows, crisp edges. The subject is centred with a wide empty black margin on every side. No text, no letters, no logo, no watermark, no face.';
 export const BRIEFS = {
   voice: 'A single human hand and forearm raised straight up with an open palm, as a person raises a hand to vote.',
-  throne: 'An empty ornate carved wooden throne with a tall back, seen from the front and slightly from below. Nobody sits on it.',
   ballot: 'A human hand lowering a folded sheet of paper into the slot on top of a plain box, a ballot box.',
-  machine: 'An industrial robot arm bending down to rest its gripper gently in the open palm of a human hand held out beneath it.',
-  record: 'A very large old ledger book lying open, seen from a three-quarter angle, its pages fanned and catching the light.',
   scales: 'Classical brass balance scales, two pans hanging level from a centre post on a base.',
   door: 'A door standing wide open in darkness, bright light pouring through the doorway and spreading across the floor.',
 };
