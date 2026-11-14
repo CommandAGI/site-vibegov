@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://api.commandagi.com; media-src 'self' blob: https://api.commandagi.com; connect-src 'self' https://api.commandagi.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="vibegov-api" content="https://api.commandagi.com">
+<title>Anonymous voice panel · VibeGov</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../rfcs.css">
+<script type="module" src="anon-panel.js"></script>
+</head>
+<body class="open">
+<!-- A test page: the anonymous-voice section mounted as desk.html mounts it, under the desk's own CSP (no WebAssembly:
+     the panel makes, registers, saves and loads an identity; it never proves). Served by test/serve.mjs only. -->
+<main id="main" class="sheet">
+  <div class="desk">
+    <header class="desk__head"><div><h1>Your desk</h1><p>The anonymous-voice section, as a desk page mounts it.</p></div></header>
+    <section aria-labelledby="h-anon"><h2 id="h-anon">Anonymous voice</h2><div data-slot="anonymity" aria-live="polite"><p class="note">Reading your anonymous identity…</p></div></section>
+  </div>
+</main>
+</body>
+</html>

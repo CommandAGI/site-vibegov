@@ -158,12 +158,49 @@ test('the panel: a person with no voice is told why and sent to the desk', () =>
   assert.match(P.renderPanel(panel({ meFailed: true })), /could not be read/);
 });
 
-test('the panel: an anonymous voice is told so and where the proof can be made; the form is not offered', () => {
+test('the panel: an anonymous voice on a device without its identity is asked for the file; the form is not offered', () => {
   const html = P.renderPanel(panel({ anonymous: true }));
   assert.match(html, /answer it anonymously, and only so/);
-  assert.match(html, /This site cannot make that proof yet/);
-  assert.match(html, /commandagi\.com\/app\?open=/);
+  assert.match(html, /This device does not hold that identity/);
+  assert.match(html, /data-act="anon-load"/);
+  assert.match(html, /on this device only/);
+  assert.match(html, /Clearing this site’s data/);
+  assert.ok(!html.includes('commandagi.com/app'), 'no act is sent to the workbench');
   assert.ok(!html.includes('<textarea'));
+  assert.match(P.renderPanel(panel({ anonymous: true, commitment: '12345678901234567890' })), /holds another identity \(commitment <code>1234567890123456…<\/code>\)/);
+  assert.match(P.renderPanel(panel({ anonymous: true, treeFailed: true })), /could not be read just now/);
+});
+
+const tree = { kind: 'person', leaves: ['1', '2', '3'], root: '9', size: 3 };
+test('the panel, anonymously: write, attach, when to send, prove; the proof is the confirmation', () => {
+  const html = P.renderPanel(panel({ anonMode: true, tree, text: 'I <b>agree</b>', delay: 'minutes', signedIn: false }));
+  assert.match(html, /Answering anonymously/);
+  assert.match(html, /among 3 registered persons/);
+  assert.match(html, /<textarea id="resp-text"[^>]*>I &lt;b&gt;agree&lt;\/b&gt;<\/textarea>/);
+  assert.match(html, /<option value="minutes" selected>after a random wait of up to 10 minutes<\/option>/);
+  assert.match(html, /its name is not sent/);
+  assert.match(html, /data-act="anon-send">Prove and send anonymously/);
+  assert.ok(html.indexOf('no separate confirmation') < html.indexOf('data-act="anon-send"') || html.indexOf('There is no separate confirmation') < html.indexOf('data-act="anon-send"'), 'what it binds is said before the button');
+  assert.match(html, /data-slot="step"/);
+  assert.ok(!html.includes('data-act="send"') && !html.includes('confirm-receipt'), 'no signed-in act, no confirm');
+  assert.match(P.renderPanel(panel({ anonMode: true, tree })), /data-act="anon-send" disabled/);
+  const sent = P.renderPanel(panel({ anonMode: true, tree, done: 'anonymousSent', anonReceipt: { id: 'anon-1', digest: H('a'), nullifier: '4242' } }));
+  assert.match(sent, /Sent anonymously\./);
+  assert.match(sent, /Received anonymously/);
+  assert.match(sent, /Your voice in this RFC: 4242/);
+  assert.match(sent, /digest a{64}/);
+});
+
+test('the panel, anonymously after the close: look up under a proof, then the reading and the contest', () => {
+  const closed = panel({ anonMode: true, tree, open: false, titles: { longer: 'A longer window', other: 'Other' } });
+  assert.match(P.renderPanel(closed), /data-act="anon-lookup">Look up my interpretation \(anonymously\)/);
+  assert.match(P.renderPanel({ ...closed, lookup: { voice: 'anon:person:1', responses: [], interpretation: null } }), /You did not respond to this RFC/);
+  const waiting = P.renderPanel({ ...closed, lookup: { voice: 'anon:person:1', responses: [{ id: 'anon-1', digest: H('5'), receivedAt: NOW, parts: [{ type: 'text', text: 'mine <i>' }] }], interpretation: null } });
+  assert.match(waiting, /has not been interpreted yet/);
+  assert.match(waiting, /mine &lt;i&gt;/);
+  const read = P.renderPanel({ ...closed, lookup: { voice: 'anon:person:1', responses: [], interpretation: extraction() } });
+  assert.match(read, /How your response was read/);
+  assert.match(read, /data-act="contest"/);
 });
 
 test('the panel: write, then the receipt with its digest, and the binding said before the confirm button', () => {
@@ -198,7 +235,8 @@ test('refusals: said in the catalog\'s words, a code with no words as its code',
   assert.match(html, /The RFC has closed\./);
   assert.match(html, /does not match this response/);
   assert.match(html, /Refused \(zzz_new\)/);
-  assert.match(html, /Answer it in the workbench/);
+  assert.match(html, /so you answer it anonymously\./);
+  assert.ok(!html.includes('workbench'), 'the anonymous act is on this site');
   assert.equal(P.renderRefusals([]), '');
 });
 
@@ -241,6 +279,11 @@ for (const page of ['rfcs', 'rfc']) {
   test(`${page}.html: the frame (CSP, one module, no inline script, the contents line)`, () => {
     const html = read(`${page}.html`);
     assert.match(html, /Content-Security-Policy" content="default-src 'self'; script-src 'self'/);
+    const csp = html.match(/http-equiv="Content-Security-Policy" content="([^"]+)"/)[1];
+    assert.ok(!csp.includes("'unsafe-eval'"), 'never unsafe-eval');
+    // Only the page that proves may compile WebAssembly and start the prover's blob workers.
+    assert.equal(csp.includes("'wasm-unsafe-eval'"), page === 'rfc');
+    assert.equal(/worker-src blob:;/.test(csp), page === 'rfc');
     assert.equal((html.match(/<script type="module" src="[^"]+"/g) ?? []).length, 3, 'scene, shell and the page module');
     assert.ok(html.includes(`<script type="module" src="${page}.js">`));
     assert.ok(!/<script(?![^>]*\bsrc=)/.test(html), 'no inline script');

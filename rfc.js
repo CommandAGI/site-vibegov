@@ -13,13 +13,12 @@
 //   GET  /contract/me, GET /contract/awaiting  the person's voice (or why none) and whether this proposal needs it anonymously
 // Acts (contract-api.js): POST /contract/media, POST /contract/rfcs/:id/responses → { receipt: { id, digest } },
 // POST /contract/rfcs/:id/responses/:rid/confirm { digest }, POST /contract/rfcs/:id/contest.
+// Anonymous acts (anon.js, no session): a person whose identity on this device is in the tree this proposal pinned
+// answers it only anonymously, proved in this browser: respond (with media), look up how it was read, contest.
 import { esc, count, money, date, countdown } from './live.js';
-
-// The one act this site cannot do yet: an anonymous response. Its proof is made from an identity that the
-// workbench's own origin holds, so the page links there for that act only (redesign/APP.md § anonymous voice).
-const editorHref = (kind, id) => `https://commandagi.com/app?open=${encodeURIComponent(`/app/contract?${kind}=${id}`)}`;
 import { words, describeLawChange, parameterValue, scoreKey, days } from './contract-words.js';
 import { at, refusalText } from './rfcs.js';
+import * as Anon from './anon.js';
 
 const minus = n => (n > 0 ? `+${n}` : n < 0 ? `−${-n}` : '0');
 const short = (h, n = 12) => (h ? esc(String(h).slice(0, n)) : '—');
@@ -184,11 +183,9 @@ export function renderDetermination(d) {
 // ─── the refusals ──────────────────────────────────────────────────────────
 
 /** What the contract refused, in the catalog's words, with the route's own detail and the code beside it. */
-export function renderRefusals(refusals, id) {
+export function renderRefusals(refusals) {
   if (!refusals?.length) return '';
-  return `<div class="refusal" role="alert"><ul>${refusals
-    .map(r => `<li>${esc(refusalText(r))}${r.detail ? ` <small>${esc(r.detail)}</small>` : ''} <code>${esc(r.code)}</code>${r.code === 'respond_anonymously' && id ? ` <a href="${esc(editorHref('rfc', id))}">Answer it in the workbench</a>.` : ''}</li>`)
-    .join('')}</ul></div>`;
+  return `<div class="refusal" role="alert"><ul>${refusals.map(r => `<li>${esc(refusalText(r))}${r.detail ? ` <small>${esc(r.detail)}</small>` : ''} <code>${esc(r.code)}</code></li>`).join('')}</ul></div>`;
 }
 
 // ─── the person's part ─────────────────────────────────────────────────────
@@ -229,25 +226,75 @@ ${
 }${done === 'contestSent' ? `<p class="done" role="status">${esc(t('contestSent'))}</p>` : ''}`;
 }
 
-/** The attached files, the attach button and its refusals (MediaAttach). */
-export function renderMedia(media, uploading, refusals) {
+/** The attached files, the attach button and its refusals (MediaAttach). Anonymously, each file is proved as it goes. */
+export function renderMedia(media, uploading, refusals, anonymous = false) {
   const t = words('media');
-  return `<div class="field"><span class="hint">${esc(t('note'))} Images and audio only; the law may admit fewer kinds.</span>${
+  const hint = anonymous ? ' Each file is proved on this device before it is sent; its name is not sent.' : '';
+  return `<div class="field"><span class="hint">${esc(t('note'))} Images and audio only; the law may admit fewer kinds.${hint}</span>${
     media.length
       ? `<ul class="parts">${media.map((p, i) => `<li><span>${esc(t(`modality.${p.modality}`))}</span><span>${esc(p.label ?? String(p.sha256).slice(0, 12))}</span><span class="digest">${short(p.sha256)}</span><button class="btn small link" type="button" data-act="remove" data-i="${i}">${esc(t('remove'))}</button></li>`).join('')}</ul>`
       : ''
   }<div class="form__act"><input id="resp-file" type="file" accept="image/*,audio/*" multiple hidden><button class="btn small" type="button" data-act="attach"${uploading ? ' disabled' : ''}>${esc(uploading ? t('uploading') : t('attach'))}</button></div>${renderRefusals(refusals)}</div>`;
 }
 
+const LOAD_FILE = `<input id="anon-file" type="file" accept=".identity,application/json" hidden>`;
+
+/** The anonymous mode's banner: the badge, the size of the set the proof hides in, and what it means (anonBanner). */
+const anonBanner = s => {
+  const a = words('anonymity');
+  return `<div class="box box--sun"><p><span class="state state--open">${esc(a('modeBadge'))}</span> <span class="note">${esc(a('setSize', { size: s.tree?.size ?? 0 }))}</span></p><p>${esc(a('modeNote'))}</p></div>`;
+};
+
+/** The line an anonymous act says while it runs (the page sets it step by step; it is empty between acts). */
+const stepLine = s => `<p class="note" role="status" data-slot="step">${esc(s.step ?? '')}</p>`;
+
 /**
- * The response panel, by who is looking (the editor's RespondPanel order): a visitor signs in; a person with no voice is
- * told why; a person whose voice answers only anonymously is sent to where that proof can be made; otherwise, while open,
+ * The panel when this device's identity is in the tree this proposal pinned (the editor's anonymous RespondPanel): while
+ * open, write, attach, choose when to send, prove and send; the receipt names the voice (the nullifier). After the close,
+ * look up how the response was read, under a proof, and contest it once.
+ */
+export function renderAnonymousPanel(s) {
+  const t = words('respond');
+  const a = words('anonymity');
+  if (s.open) {
+    const empty = !String(s.text).trim() && !s.media.length;
+    const delay = ['none', 'minutes', 'hour'].map(k => `<option value="${k}"${s.delay === k ? ' selected' : ''}>${esc(a(`delay.${k}`))}</option>`).join('');
+    return `<div class="panel">
+${anonBanner(s)}
+<p>${esc(a('respondNote'))}</p>
+<div class="field"><label for="resp-text">${esc(t('label'))}</label><textarea id="resp-text" rows="6" placeholder="${esc(t('placeholder'))}">${esc(s.text)}</textarea></div>
+${renderMedia(s.media, s.uploading, s.mediaRefusals, true)}
+<div class="field"><label for="anon-delay">${esc(a('delayLabel'))}</label><select id="anon-delay">${delay}</select><span class="hint">${esc(a('ruleLinkability'))}</span></div>
+<div class="form__act"><button class="btn primary" type="button" data-act="anon-send"${s.pending || s.uploading || empty ? ' disabled' : ''}>${esc(a('submit'))}</button><span class="note">The proof is made on this device first, in a few seconds. It counts at once: there is no separate confirmation. A later answer replaces it until the proposal closes.</span></div>
+${stepLine(s)}
+${s.done ? `<p class="done" role="status">${esc(a(`status.${s.done}`))}</p>` : ''}
+${
+  s.anonReceipt
+    ? `<div class="box box--sun"><p><b>${esc(a('receiptTitle'))}</b></p><p class="digest">${esc(t('receiptDigest', { digest: s.anonReceipt.digest }))}</p><p class="digest">${esc(a('nullifier', { nullifier: s.anonReceipt.nullifier }))}</p><p>${esc(a('receiptNote'))}</p></div>`
+    : ''
+}
+${renderRefusals(s.refusals)}</div>`;
+  }
+  const x = s.lookup?.interpretation ?? null;
+  const body = !s.lookup
+    ? `<p>Your response, if you sent one, is found by a proof made on this device. Nothing sent says which member of the set you are.</p><div class="form__act"><button class="btn" type="button" data-act="anon-lookup"${s.pending ? ' disabled' : ''}>${esc(a('lookup'))}</button></div>`
+    : !x
+      ? `<p>${esc(t(s.lookup.responses?.length ? 'notInterpretedYet' : 'noResponse'))}</p>${renderMine((s.lookup.responses ?? []).map(r => ({ ...r, at: r.receivedAt, confirmedAt: r.receivedAt })), false, s.pending)}`
+      : renderInterpretation(x, s.titles, s.now, s.pending, s.done);
+  return `<div class="panel">${anonBanner(s)}${body}${stepLine(s)}${renderRefusals(s.refusals)}</div>`;
+}
+
+/**
+ * The response panel, by who is looking (the editor's RespondPanel order): an identity on this device that is in the
+ * pinned tree answers anonymously, signed in or not; a visitor signs in; a person with no voice is told why; a voice that
+ * answers only anonymously, on a device without its identity, is asked for the identity file; otherwise, while open,
  * write, receipt, confirm; after the close, how it was read and the contest.
  */
 export function renderPanel(s) {
   const t = words('respond');
   const id = s.rfc.id;
   const open = s.open;
+  if (s.anonMode) return renderAnonymousPanel(s);
   if (!s.signedIn) {
     return open
       ? `<div class="panel"><p>Only a person with a voice may respond. Sign in with your CommandAGI account; if you have no voice yet, your desk shows how to get one.</p><div class="form__act"><a class="btn primary" href="${esc(signInHref(id))}">Sign in to respond</a></div></div>`
@@ -257,10 +304,14 @@ export function renderPanel(s) {
   if (!s.voice) {
     return `<div class="panel"><p><b>You cannot respond yet.</b> ${s.why ? esc(refusalText({ code: s.why })) : 'The contract does not know a voice for this account.'}</p><p class="note">A voice is what lets a person answer once, as one person. It is obtained at your desk.</p><div class="form__act"><a class="btn" href="desk.html">Go to your desk</a></div></div>`;
   }
-  const anon = s.anonymous
-    ? `<div class="box box--sun"><p><b>${esc(words('anonymity')('modeBadge'))}.</b> Your identity is in this proposal's anonymity set, so you answer it anonymously, and only so. Your response is proved on a device that holds your anonymous identity and sent without your session.</p><p>This site cannot make that proof yet. Do it in the CommandAGI workbench, where the identity is held: <a href="${esc(editorHref('rfc', id))}">answer this proposal in the workbench</a>.</p></div>`
-    : '';
-  if (s.anonymous && open) return `<div class="panel">${anon}</div>`;
+  if (s.anonymous && open) {
+    const other = s.commitment ? ` It holds another identity (commitment <code>${esc(s.commitment.slice(0, 16))}…</code>).` : '';
+    return `<div class="panel"><div class="box box--sun"><p><b>${esc(words('anonymity')('modeBadge'))}.</b> Your identity was registered when this proposal opened, so you answer it anonymously, and only so.</p>${
+      s.treeFailed
+        ? `<p class="refusal">This proposal’s anonymity set could not be read just now. Reload the page to try again.</p>`
+        : `<p>This device does not hold that identity.${other} Load the identity file you saved. It stays on this device.</p><div class="form__act"><button class="btn primary" type="button" data-act="anon-load"${s.pending ? ' disabled' : ''}>Load an identity file</button>${LOAD_FILE}</div>`
+    }<p class="note">${esc(Anon.DEVICE_ONLY)}</p></div>${renderRefusals(s.refusals)}</div>`;
+  }
   if (open) {
     const mediaPart = renderMedia(s.media, s.uploading, s.mediaRefusals);
     const empty = !String(s.text).trim() && !s.media.length;
@@ -276,17 +327,18 @@ ${
     : ''
 }
 ${renderMine(s.myResponses.filter(r => !s.receipt || r.id !== s.receipt.id), true, s.pending)}
-${renderRefusals(s.refusals, id)}</div>`;
+${renderRefusals(s.refusals)}</div>`;
   }
   // Closed.
   const mine = renderMine(s.myResponses, false, s.pending);
-  const anonHint = !s.extraction && s.hasAnonymity
-    ? `<p class="note">If your identity answered this proposal anonymously, look up how it was read in the workbench, where that identity is held: <a href="${esc(editorHref('rfc', id))}">open it in the workbench</a>.</p>`
-    : '';
+  const anonHint =
+    !s.extraction && s.hasAnonymity
+      ? `<p class="note">If you answered this proposal anonymously, load your identity file to look up how it was read. It stays on this device.</p><div class="form__act"><button class="btn small" type="button" data-act="anon-load"${s.pending ? ' disabled' : ''}>Load an identity file</button>${LOAD_FILE}</div>${renderRefusals(s.refusals)}`
+      : '';
   if (!s.extraction) {
     return `<div class="panel"><p>${esc(t(s.myResponses.some(r => r.confirmedAt) ? 'notInterpretedYet' : 'noResponse'))}</p>${mine}${anonHint}</div>`;
   }
-  return `<div class="panel">${anon}${renderInterpretation(s.extraction, s.titles, s.now, s.pending, s.done)}${renderRefusals(s.refusals, id)}</div>`;
+  return `<div class="panel">${renderInterpretation(s.extraction, s.titles, s.now, s.pending, s.done)}${renderRefusals(s.refusals)}</div>`;
 }
 
 /** The proposal as the page holds it, from the detail route and the public tally route. */
@@ -325,9 +377,14 @@ async function start() {
     root.removeAttribute('aria-busy');
     return;
   }
-  const S = { text: '', media: [], receipt: null, refusals: [], mediaRefusals: [], done: null, pending: false, uploading: false, voice: null, why: null, meFailed: false, anonymous: false };
+  const S = { text: '', media: [], receipt: null, refusals: [], mediaRefusals: [], done: null, pending: false, uploading: false, voice: null, why: null, meFailed: false, anonymous: false, tree: null, treeFailed: false, step: null, anonReceipt: null, lookup: null, delay: 'none' };
   let view = null;
   const dets = new Map();
+  // The anonymous voice (anon.js). `rec` holds the identity's secret: it is never put in S, so no render sees it. The
+  // prover loads only when an anonymous act starts.
+  let rec = Anon.loadIdentity();
+  let kind = 'human';
+  const anonMode = () => Anon.inTree(rec, S.tree);
 
   const paintPanel = () => {
     const slot = document.querySelector('[data-slot="panel"]');
@@ -339,6 +396,8 @@ async function start() {
       now,
       open: isOpen(view, now),
       signedIn: signedIn(),
+      commitment: rec?.commitment ?? null,
+      anonMode: anonMode(),
       myResponses: view.myResponses,
       extraction: view.myExtraction,
       titles: Object.fromEntries(view.rfc.options.filter(o => o.id !== 'status_quo').map(o => [o.id, o.title])),
@@ -390,11 +449,23 @@ ${concurrence || det ? `<section aria-labelledby="h-engine"><h2 id="h-engine">Th
     S.anonymous = !!aw?.rfcs?.find(r => r.id === id)?.anonymous;
   }
 
+  /** Which tree this proposal pinned holds this device's identity; read only when there is an identity to look for. */
+  async function loadTree() {
+    S.tree = null;
+    S.treeFailed = false;
+    if (!rec || !Anon.anonymousKinds(view.rfc).length) return;
+    const found = await Anon.findTree(rec, view.rfc, S.voice ? Anon.kindOf(S.voice) : null);
+    S.tree = found.tree;
+    S.treeFailed = !!found.failed;
+    if (found.kind) kind = found.kind;
+  }
+
   if (!(await load())) return;
   await loadVoice();
+  await loadTree();
   paint();
 
-  const refresh = async () => { if (await load()) { await loadVoice(); paint(); } };
+  const refresh = async () => { if (await load()) { await loadVoice(); await loadTree(); paint(); } };
   const act = async run => {
     S.refusals = [];
     S.done = null;
@@ -402,26 +473,51 @@ ${concurrence || det ? `<section aria-labelledby="h-engine"><h2 id="h-engine">Th
     paintPanel();
     const r = await run();
     S.pending = false;
+    S.step = null;
     return r;
   };
+  // Each step of a proof is said in the status line as it starts; the rest of the panel stays as it is.
+  const onStep = (_key, line) => {
+    S.step = line;
+    const el = root.querySelector('[data-slot="step"]');
+    if (el) el.textContent = line;
+  };
+  const anonOpts = () => ({ kind, onStep });
   root.addEventListener('input', e => {
     if (e.target.id !== 'resp-text') return;
     S.text = e.target.value;
-    const send = root.querySelector('[data-act="send"]');
-    if (send) send.disabled = S.pending || (!S.text.trim() && !S.media.length);
+    const send = root.querySelector('[data-act="send"], [data-act="anon-send"]');
+    if (send) send.disabled = S.pending || S.uploading || (!S.text.trim() && !S.media.length);
   });
   root.addEventListener('change', async e => {
+    if (e.target.id === 'anon-delay') {
+      S.delay = e.target.value;
+      return;
+    }
+    if (e.target.id === 'anon-file' && e.target.files?.[0]) {
+      const file = e.target.files[0];
+      const r = await act(() => Anon.loadIdentityFile(file));
+      if (!r.ok) {
+        S.refusals = r.refusals;
+        return paintPanel();
+      }
+      rec = r.rec;
+      await loadTree();
+      return paintPanel();
+    }
     if (e.target.id !== 'resp-file' || !e.target.files?.length) return;
     const files = Array.from(e.target.files);
+    const anonymous = anonMode();
     S.uploading = true;
     S.mediaRefusals = [];
     paintPanel();
     for (const f of files) {
-      const r = await A.uploadMedia(f);
+      const r = anonymous ? await Anon.uploadMediaAnonymously(rec, view.rfc, f, anonOpts()) : await A.uploadMedia(f);
       if (r.ok) S.media.push({ ...r.part, label: f.name });
       else S.mediaRefusals.push(...r.refusals);
     }
     S.uploading = false;
+    S.step = null;
     paintPanel();
   });
   root.addEventListener('click', async e => {
@@ -429,6 +525,27 @@ ${concurrence || det ? `<section aria-labelledby="h-engine"><h2 id="h-engine">Th
     if (!b || b.disabled) return;
     const a = b.dataset.act;
     if (a === 'attach') return root.querySelector('#resp-file')?.click();
+    if (a === 'anon-load') return root.querySelector('#anon-file')?.click();
+    if (a === 'anon-send') {
+      const parts = [...(S.text.trim() ? [{ type: 'text', text: S.text.trim() }] : []), ...S.media];
+      const r = await act(() => Anon.respondAnonymously(rec, view.rfc, parts, { ...anonOpts(), delay: Anon.delayMs(S.delay) }));
+      if (r.ok) Object.assign(S, { anonReceipt: r.receipt, done: 'anonymousSent', text: '', media: [] });
+      else S.refusals = r.refusals;
+      return paintPanel();
+    }
+    if (a === 'anon-lookup' || (a === 'contest' && anonMode())) {
+      const r = await act(async () => {
+        if (a === 'contest') {
+          const c = await Anon.contestAnonymously(rec, view.rfc, anonOpts());
+          if (!c.ok) return c;
+          S.done = 'contestSent';
+        }
+        return Anon.lookupAnonymously(rec, view.rfc, anonOpts());
+      });
+      if (r.ok) S.lookup = r.lookup;
+      else S.refusals = r.refusals;
+      return paintPanel();
+    }
     if (a === 'remove') {
       S.media.splice(Number(b.dataset.i), 1);
       return paintPanel();
