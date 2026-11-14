@@ -1,0 +1,44 @@
+/* The sign-in page and the desk (redesign/APP.md § how a signed-in page looks): what style.css § the signed-in pages
+   does not have yet. Linked only from signin.html and desk.html; fold into style.css when it is shared. */
+
+/* No motion on a signed-in page: the buttons' frames and arrows appear, they do not grow or slide. */
+.desk .btn, .desk .btn::after, .runhead .btn, .runhead .btn::after { transition: none; }
+.desk .btn[data-ref]:hover::after { transform: none; }
+
+/* a small heading inside a section, between lists */
+.desk h3.desk__sub { font: 600 0.78rem var(--sans); letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); margin: 1.4rem 0 0.5rem; }
+.desk section > h2 + .note, .desk [data-part] > .note:first-child { margin-top: 0; }
+.desk__body { margin: 0; max-width: none; }
+.desk__acts { margin: 0; }
+.desk__more { margin-top: 0.9rem; }
+.rows > li > .btn, .rows > li > button.btn { justify-self: end; }
+.desk__acts-cell { display: flex; flex-wrap: wrap; align-items: center; justify-content: end; gap: 0.5rem 0.75rem; }
+
+/* the balance: one figure, then the packs, each a button that names what it adds */
+.desk__figure { display: flex; align-items: baseline; gap: 0.75rem; margin: 0 0 0.6rem; }
+.desk__figure b { font: 600 2rem/1 var(--sans); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.desk__figure span { color: var(--muted); font-size: 0.92rem; }
+.desk__packs { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.desk__packs .btn { flex-direction: column; align-items: flex-start; gap: 0.05rem; min-height: 3.1rem; }
+.desk__packs .btn small { font-weight: 400; font-size: 0.76rem; color: var(--muted); }
+.desk code { font: 0.82rem var(--mono); overflow-wrap: anywhere; }
+
+/* the sign-in forms: a password with its Show button, the Turnstile box above the act */
+.pw { display: flex; gap: 0.5rem; }
+.pw input { flex: 1; min-width: 0; }
+.turnstile:empty { display: none; }
+.desk--narrow .tabs { margin-bottom: 1.25rem; }
+.desk--narrow #reset p { margin: 0 0 1rem; }
+
+@media (max-width: 56rem) {
+  .rows > li > .btn, .rows > li > button.btn, .desk__acts-cell { justify-self: start; }
+}
+
+/* facts in the desk's narrow column: a short label column, the value beside it */
+.cols > div:last-child .kv { grid-template-columns: minmax(5rem, 7.5rem) minmax(0, 1fr); }
+.desk__body { font-size: 0.98rem; line-height: 1.5; }
+.desk section .rows:last-child > li:last-child { border-bottom: 0; }
+#anonymous p { font-size: 0.95rem; }
+/* `.form` is a grid: a form or a message the page hides stays hidden */
+.desk [hidden] { display: none !important; }
+.desk [data-part] > .done, .desk [data-part] > .refusal, .desk [data-part] > .note + .note { margin-bottom: 0.9rem; }
