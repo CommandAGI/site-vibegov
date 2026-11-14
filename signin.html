@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://api.commandagi.com; media-src 'self' blob: https://api.commandagi.com; connect-src 'self' https://api.commandagi.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="vibegov-api" content="https://api.commandagi.com">
+<title>Sign in · VibeGov</title>
+<meta name="description" content="Sign in to VibeGov with your CommandAGI account, make an account, or reset your password.">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://vibegov.pro/signin.html">
+<meta name="theme-color" content="#04060b">
+<link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="desk.css">
+<link rel="icon" href="mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<script src="gov.js" defer></script>
+<script type="module" src="scene.js"></script>
+<script type="module" src="shell.js"></script>
+<script type="module" src="signin.js"></script>
+</head>
+<body class="open">
+<canvas id="sky" aria-hidden="true"></canvas>
+<a class="skip" href="#main">Skip to the content</a>
+<header class="runhead">
+  <div class="runhead__in">
+    <a class="wordmark" href="index.html" aria-label="VibeGov, home"><img src="mark.svg" alt="" width="26" height="26">VibeGov</a>
+    <button class="btn small contents-btn" type="button" popovertarget="contents" aria-controls="contents">Contents</button>
+    <nav id="contents" class="contents" popover aria-label="Site">
+      <ol><li><a href="index.html">Home</a></li><li><a href="record.html">The record</a></li><li><a href="contract.html">The contract</a></li><li><a href="rfcs.html">Proposals</a></li><li><a href="cases.html">Cases</a></li><li><a href="credit.html">Credit</a></li></ol>
+    </nav>
+    <span class="runhead__act" data-account></span>
+  </div>
+</header>
+
+<main id="main" class="sheet">
+  <div class="desk desk--narrow">
+    <header class="desk__head"><div><h1 id="signin-title">Sign in</h1><p>Your account here is a CommandAGI account. VibeGov keeps no account and no credential of its own: it acts only with your own token, and only for you.</p></div></header>
+
+    <ul class="tabs" role="tablist" aria-label="What to do">
+      <li role="presentation"><button type="button" role="tab" id="tab-signin" aria-controls="signin" aria-selected="true" data-mode="signin">Sign in</button></li>
+      <li role="presentation"><button type="button" role="tab" id="tab-signup" aria-controls="signup" aria-selected="false" data-mode="signup">New account</button></li>
+      <li role="presentation"><button type="button" role="tab" id="tab-reset" aria-controls="reset" aria-selected="false" data-mode="reset">Reset password</button></li>
+    </ul>
+
+    <p class="note" data-state>Getting the form ready…</p>
+
+    <form id="signin" class="form" role="tabpanel" aria-labelledby="tab-signin" novalidate autocomplete="on">
+      <div class="field"><label for="in-email">Email</label><input id="in-email" name="email" type="email" autocomplete="email" required></div>
+      <div class="field"><label for="in-password">Password</label><div class="pw"><input id="in-password" name="password" type="password" autocomplete="current-password" required><button type="button" class="btn small" data-pw aria-pressed="false" aria-controls="in-password">Show</button></div></div>
+      <p class="refusal" role="alert" data-error hidden></p>
+      <div class="form__act"><button class="btn primary" type="submit">Sign in</button><span class="note">With any CommandAGI account.</span></div>
+    </form>
+
+    <form id="signup" class="form" role="tabpanel" aria-labelledby="tab-signup" novalidate autocomplete="on" hidden>
+      <div class="field"><label for="up-name">Your name</label><input id="up-name" name="name" autocomplete="name" maxlength="80" required></div>
+      <div class="field"><label for="up-email">Email</label><input id="up-email" name="email" type="email" autocomplete="email" required></div>
+      <div class="field"><label for="up-password">Password</label><div class="pw"><input id="up-password" name="password" type="password" autocomplete="new-password" minlength="8" required aria-describedby="up-password-hint"><button type="button" class="btn small" data-pw aria-pressed="false" aria-controls="up-password">Show</button></div><p class="hint" id="up-password-hint">8 characters or more.</p></div>
+      <div id="turnstile" class="turnstile"></div>
+      <p class="refusal" role="alert" data-error hidden></p>
+      <p class="note">This makes a CommandAGI account. Making it accepts CommandAGI’s <a href="https://commandagi.com/terms" rel="noopener">terms</a> and <a href="https://commandagi.com/privacy" rel="noopener">privacy policy</a>. An account alone holds no voice: your desk shows how to get one.</p>
+      <div class="form__act"><button class="btn primary" type="submit">Make the account</button></div>
+    </form>
+
+    <form id="reset" class="form" role="tabpanel" aria-labelledby="tab-reset" novalidate autocomplete="on" hidden>
+      <p class="note">CommandAGI mails a link to this address if an account has it. The link opens this page, where you choose a new password. It works once, for one hour, and only the newest link works.</p>
+      <div class="field"><label for="reset-email">Email</label><input id="reset-email" name="email" type="email" autocomplete="email" required></div>
+      <p class="refusal" role="alert" data-error hidden></p>
+      <p class="done" role="status" data-done hidden></p>
+      <div class="form__act"><button class="btn primary" type="submit">Mail me a link</button></div>
+    </form>
+
+    <form id="newpw" class="form" role="tabpanel" aria-labelledby="signin-title" novalidate autocomplete="on" hidden>
+      <p class="note">Choose the new password for your CommandAGI account. It replaces the old one at once, on this site and on commandagi.com.</p>
+      <div class="field"><label for="new-password">New password</label><div class="pw"><input id="new-password" name="password" type="password" autocomplete="new-password" minlength="8" required aria-describedby="new-password-hint"><button type="button" class="btn small" data-pw aria-pressed="false" aria-controls="new-password">Show</button></div><p class="hint" id="new-password-hint">8 characters or more.</p></div>
+      <p class="refusal" role="alert" data-error hidden></p>
+      <div class="form__act"><button class="btn primary" type="submit">Set the password</button></div>
+    </form>
+    <noscript><p class="refusal">Signing in needs JavaScript.</p></noscript>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <img class="seal-mark" src="mark.svg" alt="" width="40" height="40">
+    <nav aria-label="Footer">
+      <a href="record.html">The record</a>
+      <a href="contract.html">The contract</a>
+      <a href="join.html">Take part</a>
+      <a href="papers/coordination-contract.pdf">The paper (PDF)</a>
+      <a href="https://commandagi.com/">CommandAGI</a>
+      <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>
+    </nav>
+    <p class="colophon">Every figure on this site is read from the contract's public record at api.commandagi.com.</p>
+    <p>© 2026 VibeGov · a company of CommandAGI</p>
+  </div>
+</footer>
+</body>
+</html>
