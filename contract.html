@@ -201,38 +201,38 @@ distinctness; a model's assertion alone does not do so. A continuing sequence of
 <figure class="flow"><svg viewBox="0 0 488 546" width="488" height="546" role="img" aria-label="Diagram: opening leads to responses; responses leads to interpretation; interpretation leads to tally; tally leads to deliberation; deliberation leads to concurrence; concurrence leads to adoption; interpretation leads to contest; concurrence leads to not adopted."><defs><marker id="flow-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 0L8 4L0 8z"/></marker></defs><path class="flow__line" d="M113 60V85" marker-end="url(#flow-arrow)"/><path class="flow__line" d="M113 140V165" marker-end="url(#flow-arrow)"/><path class="flow__line" d="M113 220V245" marker-end="url(#flow-arrow)"/><path class="flow__line" d="M113 300V325" marker-end="url(#flow-arrow)"/><path class="flow__line" d="M113 380V405" marker-end="url(#flow-arrow)"/><path class="flow__line" d="M113 460V485" marker-end="url(#flow-arrow)"/><path class="flow__line" d="M220 193H267" marker-end="url(#flow-arrow)"/><path class="flow__line" d="M220 433H267" marker-end="url(#flow-arrow)"/><g class="flow__step"><rect x="6" y="6" width="214" height="54"/><text x="20" y="29">opening</text><text class="flow__note" x="20" y="47">options and a deposit</text></g><g class="flow__step"><rect x="6" y="86" width="214" height="54"/><text x="20" y="109">responses</text><text class="flow__note" x="20" y="127">each confirmed by digest</text></g><g class="flow__step"><rect x="6" y="166" width="214" height="54"/><text x="20" y="189">interpretation</text><text class="flow__note" x="20" y="207">a score per option</text></g><g class="flow__step"><rect x="6" y="246" width="214" height="54"/><text x="20" y="269">tally</text><text class="flow__note" x="20" y="287">public</text></g><g class="flow__step"><rect x="6" y="326" width="214" height="54"/><text x="20" y="349">deliberation</text><text class="flow__note" x="20" y="367">the engine chooses</text></g><g class="flow__step"><rect x="6" y="406" width="214" height="54"/><text x="20" y="429">concurrence</text><text class="flow__note" x="20" y="447">concur or withhold</text></g><g class="flow__step"><rect x="6" y="486" width="214" height="54"/><text x="20" y="509">adoption</text><text class="flow__note" x="20" y="527">one batch</text></g><g class="flow__step flow__step--side"><rect x="268" y="166" width="214" height="54"/><text x="282" y="189">contest</text><text class="flow__note" x="282" y="207">re-run at the top tier</text></g><g class="flow__step flow__step--side"><rect x="268" y="406" width="214" height="54"/><text x="282" y="429">not adopted</text><text class="flow__note" x="282" y="447">no decided concur</text></g></svg></figure>
 <ol>
 <li><strong>Opening.</strong> Anyone opens an RFC that changes law or the engine. It has distinct options and a refundable deposit
- (<code>rfcDepositCents</code>). The contract refuses options that produce the same resulting law, including reordered
- independent changes. The RFC pins what it began under: the contract version, the engine that will interpret and
- concur, the kinds of people who may respond, and the state that its options were drafted against.</li>
+(<code>rfcDepositCents</code>). The contract refuses options that produce the same resulting law, including reordered
+independent changes. The RFC pins what it began under: the contract version, the engine that will interpret and
+concur, the kinds of people who may respond, and the state that its options were drafted against.</li>
 <li><strong>Responses and receipts.</strong> A response (text, images or audio that the law admits) gets a receipt: its id and
- digest. The response counts only when the respondent confirms that digest. A later confirmed response replaces an
- earlier one until close. A person in the RFC's pinned anonymity set responds anonymously instead (§ anonymous
- voice); the proof over the digest is the confirmation.</li>
+digest. The response counts only when the respondent confirms that digest. A later confirmed response replaces an
+earlier one until close. A person in the RFC's pinned anonymity set responds anonymously instead (§ anonymous
+voice); the proof over the digest is the confirmation.</li>
 <li><strong>Interpretation.</strong> After close, the contract renders media and interprets each response per option. It reads the
- option's actual changes, not only its summary. The result is a score from −2 to +2 (0 for neutral, not addressed,
- unresolved or unprocessable). The contract shows each interpretation to its respondent (a notice). The respondent
- can contest it for <code>extractionContestMs</code> <strong>from when it became available</strong>. A contest re-runs the interpretation at
- the top tier on groups that took no part.</li>
+option's actual changes, not only its summary. The result is a score from −2 to +2 (0 for neutral, not addressed,
+unresolved or unprocessable). The contract shows each interpretation to its respondent (a notice). The respondent
+can contest it for <code>extractionContestMs</code> <strong>from when it became available</strong>. A contest re-runs the interpretation at
+the top tier on groups that took no part.</li>
 <li><strong>Tally.</strong> The scores are descriptive (binding only for <code>binding_score</code>). An option's score is the sum of every
- voice's score for it, independent of the other options. So adding, duplicating or reordering options moves no other
- option's score. A change is favored when its score is positive and uniquely highest. The tally is public after
- interpretation, with its histogram and a record digest.</li>
+voice's score for it, independent of the other options. So adding, duplicating or reordering options moves no other
+option's score. A change is favored when its score is positive and uniquely highest. The tally is public after
+interpretation, with its histogram and a record digest.</li>
 <li><strong>Deliberation and concurrence.</strong> Under <code>deliberative</code>, <code>rfc.deliberate</code> chooses an option or the status quo. It
- uses the substantive merits, the strongest objections, the number of respondents, unprocessed comments and the limits
- of representativeness. Self-selected comments are not a population sample, one comment represents its author, and
- silence is not consent. A change may be justified despite its score or with no comments. The contract publishes the
- determination and its seat reasons; the decision records its id and the participation limitations. Under
- <code>binding_score</code>, only the favored option is eligible. In either procedure, the pinned engine reads the whole tally
- and a seeded sample of responses with their interpretations (<code>rfcConcurrenceSample</code>; anyone who recomputes it gets
- the same sample). The engine answers <code>concur</code> or <code>withhold</code>. The contract classifies a withholding's ground
- separately, for the record. Only a decided <code>concur</code> counts.</li>
+uses the substantive merits, the strongest objections, the number of respondents, unprocessed comments and the limits
+of representativeness. Self-selected comments are not a population sample, one comment represents its author, and
+silence is not consent. A change may be justified despite its score or with no comments. The contract publishes the
+determination and its seat reasons; the decision records its id and the participation limitations. Under
+<code>binding_score</code>, only the favored option is eligible. In either procedure, the pinned engine reads the whole tally
+and a seeded sample of responses with their interpretations (<code>rfcConcurrenceSample</code>; anyone who recomputes it gets
+the same sample). The engine answers <code>concur</code> or <code>withhold</code>. The contract classifies a withholding's ground
+separately, for the record. Only a decided <code>concur</code> counts.</li>
 <li><strong>Engine RFCs.</strong> The contract asks the proposed engine only after the outgoing one concurs. It asks through a
- candidate executor that renders no media and reads no private record. If the outgoing engine cannot seat a panel for
- a further window as long as the RFC's own, the proposed engine's concurrence suffices.</li>
+candidate executor that renders no media and reads no private record. If the outgoing engine cannot seat a panel for
+a further window as long as the RFC's own, the proposed engine's concurrence suffices.</li>
 <li><strong>Adoption.</strong> The decision, the deposit and the new contract version commit in one batch. The batch claims the RFC's
- revision and the contract version that was read. If the RFC's base state changed meanwhile, the RFC is not adopted
- (<code>adopt.superseded</code>): its voice was given on a contract that no longer exists. An on-chain adoption binds the
- decision's hash (<code>decisionHash</code>).</li>
+revision and the contract version that was read. If the RFC's base state changed meanwhile, the RFC is not adopted
+(<code>adopt.superseded</code>): its voice was given on a contract that no longer exists. An on-chain adoption binds the
+decision's hash (<code>decisionHash</code>).</li>
 </ol>
 </div>
 </details></li>
@@ -305,46 +305,50 @@ the record (&quot;not before you, counts against no one&quot;). It refuses a mod
 <figure class="flow"><svg viewBox="0 0 488 546" width="488" height="546" role="img" aria-label="Diagram: filing leads to screening; screening leads to service; service leads to answer and evidence; answer and evidence leads to instance 1; instance 1 leads to appeal; appeal leads to execution; screening leads to duplicate; instance 1 leads to unprocessable; appeal leads to unprocessable."><defs><marker id="flow-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 0L8 4L0 8z"/></marker></defs><path class="flow__line" d="M113 60V85" marker-end="url(#flow-arrow)"/><path class="flow__line" d="M113 140V165" marker-end="url(#flow-arrow)"/><path class="flow__line" d="M113 220V245" marker-end="url(#flow-arrow)"/><path class="flow__line" d="M113 300V325" marker-end="url(#flow-arrow)"/><path class="flow__line" d="M113 380V405" marker-end="url(#flow-arrow)"/><path class="flow__line" d="M113 460V485" marker-end="url(#flow-arrow)"/><path class="flow__line" d="M220 113H267" marker-end="url(#flow-arrow)"/><path class="flow__line" d="M220 353H267" marker-end="url(#flow-arrow)"/><path class="flow__line" d="M220 433H244V353H267" marker-end="url(#flow-arrow)"/><g class="flow__step"><rect x="6" y="6" width="214" height="54"/><text x="20" y="38">filing</text></g><g class="flow__step"><rect x="6" y="86" width="214" height="54"/><text x="20" y="118">screening</text></g><g class="flow__step"><rect x="6" y="166" width="214" height="54"/><text x="20" y="198">service</text></g><g class="flow__step"><rect x="6" y="246" width="214" height="54"/><text x="20" y="278">answer and evidence</text></g><g class="flow__step"><rect x="6" y="326" width="214" height="54"/><text x="20" y="349">instance 1</text><text class="flow__note" x="20" y="367">fixed panels decide</text></g><g class="flow__step"><rect x="6" y="406" width="214" height="54"/><text x="20" y="429">appeal</text><text class="flow__note" x="20" y="447">instance 2, if a party appeals</text></g><g class="flow__step"><rect x="6" y="486" width="214" height="54"/><text x="20" y="509">execution</text><text class="flow__note" x="20" y="527">one batch</text></g><g class="flow__step flow__step--side"><rect x="268" y="86" width="214" height="54"/><text x="282" y="109">duplicate</text><text class="flow__note" x="282" y="127">closes unserved</text></g><g class="flow__step flow__step--side"><rect x="268" y="326" width="214" height="54"/><text x="282" y="349">unprocessable</text><text class="flow__note" x="282" y="367">no merits outcome</text></g></svg></figure>
 <ol>
 <li><p><strong>Filing.</strong> Anyone files, for themselves or for a being who cannot. A filing names the respondent, the act, the duty
- and one or more <strong>harm items</strong> (interest, description, amount). Each remedy names the harm items it answers. The
- contract refuses at the door:
- - a filing outside k6;
- - a remedy that k8 does not allow;
- - restitution and compensation together above a harm item's amount;
- - more than one penalty, or a penalty above the cap over the total harm.</p>
+and one or more <strong>harm items</strong> (interest, description, amount). Each remedy names the harm items it answers. The
+contract refuses at the door:</p>
+<ul>
+<li>a filing outside k6;</li>
+<li>a remedy that k8 does not allow;</li>
+<li>restitution and compensation together above a harm item's amount;</li>
+<li>more than one penalty, or a penalty above the cap over the total harm.</li>
+</ul>
 <p>The contract takes the claimant's cost deposit (<code>caseDepositCents</code>) with the filing, as far as their balance goes.
- The deposit is never a bar to filing. Each claimant has at most <code>openCasesPerClaimant</code> open cases.</p></li>
+The deposit is never a bar to filing. Each claimant has at most <code>openCasesPerClaimant</code> open cases.</p></li>
 <li><p><strong>Screening.</strong> The engine checks that the matter is not one already brought between the same parties (same key, or
- decided <code>same_matter</code>). A duplicate closes unserved, and its claimant pays its costs. A final matter may be reopened
- once, with new evidence, within <code>reopenWindowMs</code>.</p></li>
+decided <code>same_matter</code>). A duplicate closes unserved, and its claimant pays its costs. A final matter may be reopened
+once, with new evidence, within <code>reopenWindowMs</code>.</p></li>
 <li><p><strong>Service.</strong> The contract delivers a notice to the respondent's contract inbox. The response clock starts then, not
- at filing.</p></li>
+at filing.</p></li>
 <li><p><strong>Answer and evidence.</strong> The respondent answers and may give its own figure for each harm item (final offer). The
- contract renders media as it arrives.</p></li>
-<li><p><strong>Deciding (instance 1).</strong> Fixed panels decide, in this order:
- - justiciability;
- - <strong>each element of the duty</strong> separately. This is the claimant's burden: unresolved is not established. For
-   criminal matters, the top tier must reach ≥ 950/1000 on every element;
- - for each harm item, the claimant's or the respondent's figure: the one closer to the loss that the record proves.
-   Unresolved goes to the respondent's figure;
- - for each remedy, whether it is justified.</p>
+contract renders media as it arrives.</p></li>
+<li><p><strong>Deciding (instance 1).</strong> Fixed panels decide, in this order:</p>
+<ul>
+<li>justiciability;</li>
+<li><strong>each element of the duty</strong> separately. This is the claimant's burden: unresolved is not established. For
+criminal matters, the top tier must reach ≥ 950/1000 on every element;</li>
+<li>for each harm item, the claimant's or the respondent's figure: the one closer to the loss that the record proves.
+Unresolved goes to the respondent's figure;</li>
+<li>for each remedy, whether it is justified.</li>
+</ul>
 <p>Money remedies are bounded per harm item, and the penalty by one cap over the total award. The contract retries a
- question that the engine cannot answer. After <code>unprocessableAfterMs</code>, the case closes <strong>unprocessable</strong>: no merits
- outcome, and the deposits are returned.</p></li>
+question that the engine cannot answer. After <code>unprocessableAfterMs</code>, the case closes <strong>unprocessable</strong>: no merits
+outcome, and the deposits are returned.</p></li>
 <li><p><strong>Appeal (instance 2).</strong> Either party may appeal, once, within the window. The case becomes <em>appealed</em> at once, so
- no later sweep can finalize it. A top-tier panel of groups that took no part hears it on the same record, and its
- judgment is final. A timely appeal waits for a fresh panel within <code>unprocessableAfterMs</code>. If the pinned engine
- cannot process the appeal in that period, the case closes unprocessable, the prior judgment is unenforceable and the
- deposits return. The matter can be filed again. A new engine RFC does not change an existing case's pinned engine.</p></li>
+no later sweep can finalize it. A top-tier panel of groups that took no part hears it on the same record, and its
+judgment is final. A timely appeal waits for a fresh panel within <code>unprocessableAfterMs</code>. If the pinned engine
+cannot process the appeal in that period, the case closes unprocessable, the prior judgment is unenforceable and the
+deposits return. The matter can be filed again. A new engine RFC does not change an existing case's pinned engine.</p></li>
 <li><p><strong>Interim freeze.</strong> At most the money claimed, for at most 14 days. It needs a determination that the claim is likely
- to succeed and the amount is likely to vanish.</p></li>
+to succeed and the amount is likely to vanish.</p></li>
 <li><p><strong>Execution (one batch).</strong> The order of sources is: the frozen amount, then credits, then bonds. Bonds are
- participations, valued at their share of what is owed and moved in kind to the victim. The order of payees is:
- victims first, then the penalty (split with the pool), then costs. Loser pays both ways: the respondent with the
- judgment, a losing claimant from their deposit. Unprocessable costs are the commons'. A victim shortfall becomes an
- open pool claim.</p></li>
+participations, valued at their share of what is owed and moved in kind to the victim. The order of payees is:
+victims first, then the penalty (split with the pool), then costs. Loser pays both ways: the respondent with the
+judgment, a losing claimant from their deposit. Unprocessable costs are the commons'. A victim shortfall becomes an
+open pool claim.</p></li>
 <li><p><strong>Records.</strong> Parties read the record, the determinations and the renderings. Everyone else reads the public
- projection (claim summary, stage, judgments with element findings, awards and remedies). Case determinations are
- never public (<code>/public/contract/determinations/:id</code> serves RFC determinations only).</p></li>
+projection (claim summary, stage, judgments with element findings, awards and remedies). Case determinations are
+never public (<code>/public/contract/determinations/:id</code> serves RFC determinations only).</p></li>
 </ol>
 <p><strong>Exclusion (k8).</strong> A final liable judgment may exclude its respondent from the contract's services for a bounded
 time. Every market door that opens a new commitment asks first, and refuses with <code>excluded_by_judgment</code> and the time
