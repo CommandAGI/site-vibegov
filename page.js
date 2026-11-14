@@ -28,12 +28,11 @@ async function figures() {
     put('decided', L.renderDecided(s, now));
     put('ledger', L.renderLedger(s, now));
     put('params', L.renderParameters(s));
-    put('tape', L.renderTape(s, now));
     put('plate-voice', L.renderVoicePlate(s));
     put('plate-change', L.renderChangePlate(s));
     put('plate-case', L.renderCasePlate(s));
   } catch (e) {
-    unreachable(['vitals', 'anchor', 'figures', 'rfc-strip', 'decided', 'ledger', 'params', 'tape', 'plate-voice', 'plate-change', 'plate-case'], e, '/public/contract/stats');
+    unreachable(['vitals', 'anchor', 'figures', 'rfc-strip', 'decided', 'ledger', 'params', 'plate-voice', 'plate-change', 'plate-case'], e, '/public/contract/stats');
   }
 }
 
@@ -162,7 +161,7 @@ const refresh = async () => {
   await figures();
   await Promise.all([activity(), calendar(), machines(), chain()]);
 };
-if (el('figures') || el('tape')) {
+if (el('figures') || el('plate-voice') || el('vitals')) {
   refresh();
   let timer = setInterval(refresh, 30_000);
   let ticker = setInterval(tick, 1000);

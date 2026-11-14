@@ -117,7 +117,8 @@ test('the pictures: the mark, the Earth from NASA\'s maps, plates of facts, two 
 test('each live part of a page is one that page.js fills', () => {
   const filled = new Set([...read('page.js').matchAll(/(?:put|el|view)\('([a-z-]+)'/g)].map(m => m[1]));
   for (const page of PAGES)
-    for (const [, name] of read(page).matchAll(/data-live="([a-z-]+)"/g)) assert.ok(filled.has(name), `${page}: data-live="${name}" is filled by page.js`);
+    for (const [, name] of read(page).matchAll(/data-live="([a-z-]+)"/g)) assert.ok(filled.has(name) || name === 'tape', `${page}: data-live="${name}" is filled by page.js (the tape by shell.js)`);
+  assert.match(read('shell.js'), /querySelector\('\[data-live="tape"\]'\)[\s\S]*renderTape\(/, 'shell.js fills the tape on every page');
   assert.match(read('index.html'), /data-live="chain"/);
   assert.match(read('index.html'), /data-live="rfc-strip"/);
   assert.match(read('record.html'), /data-live="figures"/);
@@ -527,7 +528,7 @@ test('the record page holds what is alive: now, the RFCs, the log, the machines,
 });
 
 test('the tape under every header: the contract\'s figures in one line, each a label over a value', () => {
-  for (const page of PAGES) assert.match(read(page), /<\/header>\n<div class="tape" data-live="tape" aria-label="[^"]+" aria-busy="true"><\/div>/, `${page}: the tape follows the header`);
+  for (const page of [...PAGES, ...APP]) assert.match(read(page), /<\/header>\n<div class="tape" data-live="tape" aria-label="[^"]+" aria-busy="true"><\/div>/, `${page}: the tape follows the header`);
   const html = L.renderTape(statsOf({ people: { withVoice: { human: 12, agent: 3 }, anonymousCommitments: {} }, voices: { confirmed: 41, rfcsAnswered: 3 }, pool: { balanceCents: 123_456, openClaims: 0, owedCents: 0 } }), NOW);
   const cells = Object.fromEntries([...html.matchAll(/<div><dt>([^<]+)<\/dt><dd>([\s\S]*?)<\/dd><\/div>/g)].map(m => [m[1], m[2].replace(/<[^>]+>/g, '')]));
   assert.deepEqual(Object.keys(cells), ['Record', 'Ledger', 'Last entry', 'Version', 'Kernel', 'Proposals', 'Open now', 'Voices', 'Responses', 'Cases', 'Judgments', 'Pool', 'Credit open', 'Anchored']);
