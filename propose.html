@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://api.commandagi.com; media-src 'self' blob: https://api.commandagi.com; connect-src 'self' https://api.commandagi.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="vibegov-api" content="https://api.commandagi.com">
+<title>Propose a change · VibeGov</title>
+<meta name="description" content="Open an RFC of the Coordination Contract: a public question with options that change the law or the engine, answered by every person the law recognizes.">
+<link rel="canonical" href="https://vibegov.pro/propose.html">
+<meta name="theme-color" content="#04060b">
+<link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="propose.css">
+<link rel="icon" href="mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<script src="gov.js" defer></script>
+<script type="module" src="scene.js"></script>
+<script type="module" src="shell.js"></script>
+<script type="module" src="propose.js"></script>
+</head>
+<body class="open">
+<canvas id="sky" aria-hidden="true"></canvas>
+<a class="skip" href="#main">Skip to the content</a>
+<header class="runhead">
+  <div class="runhead__in">
+    <a class="wordmark" href="index.html" aria-label="VibeGov, home"><img src="mark.svg" alt="" width="26" height="26">VibeGov</a>
+    <button class="btn small contents-btn" type="button" popovertarget="contents" aria-controls="contents">Contents</button>
+    <nav id="contents" class="contents" popover aria-label="Site">
+      <ol><li><a href="index.html">Home</a></li><li><a href="record.html">The record</a></li><li><a href="contract.html">The contract</a></li><li><a href="rfcs.html">Proposals</a></li><li><a href="cases.html">Cases</a></li><li><a href="credit.html">Credit</a></li></ol>
+    </nav>
+    <span class="runhead__act" data-account></span>
+  </div>
+</header>
+
+<main id="main" class="sheet">
+  <div class="desk propose">
+    <header class="desk__head">
+      <div>
+        <h1>Propose a change</h1>
+        <p>Open an RFC: a public question with options that change the law or the engine. Every person the law recognizes may answer it.</p>
+      </div>
+      <a class="btn small" href="rfcs.html">Read the proposals</a>
+    </header>
+    <noscript><p class="refusal">This form needs JavaScript. Without it, open an RFC in CommandAGI’s contract editor.</p></noscript>
+    <p class="note kept" id="kept" hidden>Your draft from this session is back. <button class="btn small" type="button" id="discard">Discard it and start again</button></p>
+    <p class="note" id="law-state" role="status"></p>
+
+    <section aria-labelledby="who-title">
+      <h2 id="who-title">Who may open</h2>
+      <div id="who"></div>
+    </section>
+
+    <form id="rfc-form" novalidate>
+      <div class="propose__cols">
+        <div class="propose__main">
+          <section aria-labelledby="question-title">
+            <h2 id="question-title">The question</h2>
+            <div class="form" id="question"><p class="note">Reading the form…</p></div>
+          </section>
+          <section aria-labelledby="options-head">
+            <h2 id="options-head">The options</h2>
+            <div class="form" id="options"></div>
+          </section>
+        </div>
+        <aside class="propose__side" aria-labelledby="ballot-title">
+          <section>
+            <h2 id="ballot-title">As it will read</h2>
+            <p class="hint">What each person asked sees, in this order. It follows your edits.</p>
+            <div id="ballot" aria-live="polite"></div>
+          </section>
+        </aside>
+      </div>
+
+      <section aria-labelledby="costs-title" class="propose__open">
+        <h2 id="costs-title">Before you open</h2>
+        <div id="costs"><p class="note">Reading the law in force…</p></div>
+        <div id="refusals"></div>
+        <div class="form__act">
+          <button class="btn primary" type="submit" id="open" disabled>Open the RFC</button>
+          <p class="hint" id="missing" role="status"></p>
+        </div>
+      </section>
+    </form>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <img class="seal-mark" src="mark.svg" alt="" width="40" height="40">
+    <nav aria-label="Footer">
+      <a href="record.html">The record</a>
+      <a href="contract.html">The contract</a>
+      <a href="join.html">Take part</a>
+      <a href="papers/coordination-contract.pdf">The paper (PDF)</a>
+      <a href="https://commandagi.com/">CommandAGI</a>
+      <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>
+    </nav>
+    <p class="colophon">Every figure on this site is read from the contract's public record at api.commandagi.com.</p>
+    <p>© 2026 VibeGov · a company of CommandAGI</p>
+  </div>
+</footer>
+</body>
+</html>
