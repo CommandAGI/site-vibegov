@@ -74,7 +74,7 @@ if (typeof document !== 'undefined' && document.getElementById('signin')) {
   // (setting `signup.turnstile.require.oauth`), so a sign-up waits for the widget's token. Elsewhere (a local copy) no
   // token is sent, and a platform with no widget takes the sign-up without one. The script loads only when the
   // sign-up form is first shown, so a person who only signs in tells Cloudflare nothing.
-  const TURNSTILE_HOSTS = new Set(['vibegov.pro', 'www.vibegov.pro', 'vibegov.tech', 'www.vibegov.tech', 'vibegov.me', 'vibegov.commandagi.app', 'vibegov--dev.commandagi.app']);
+  const TURNSTILE_HOSTS = new Set(['vibegov.pro', 'vibegov.commandagi.app', 'vibegov--dev.commandagi.app']);
   const TOKEN_WAIT_MS = 15000, TICK_WAIT_MS = 180000;
   let widget = null, token = null, waiters = [], broken = false, mustTick = false, failed = false, started = false;
   const gotToken = t => { token = t; const w = waiters; waiters = []; w.forEach(f => f(t)); };

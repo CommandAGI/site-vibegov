@@ -5,6 +5,11 @@
 import { API, session, signedIn } from './session.js';
 import { getJson, relative, renderTape } from './live.js';
 
+// One origin holds a person's session. The other names of the site (www., .tech, .me) send a reader to vibegov.pro,
+// at the same page, so a person signs in once and the sign-up check knows the host.
+const ALIASES = ['www.vibegov.pro', 'vibegov.tech', 'www.vibegov.tech', 'vibegov.me', 'www.vibegov.me'];
+if (ALIASES.includes(location.hostname)) location.replace(`https://vibegov.pro${location.pathname}${location.search}${location.hash}`);
+
 function draw() {
   for (const slot of document.querySelectorAll('[data-account]')) {
     const here = location.pathname.split('/').pop();
