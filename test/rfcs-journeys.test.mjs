@@ -1,8 +1,8 @@
-// rfcs.html for a visitor (redesign/APP.md § the pages): the act is "Sign in to …", which comes back to the form.
-// Found by test/journeys.py (journey 1). Run: node --test test/rfcs-visitor.test.mjs
+// What test/journeys.py found on the proposal pages against a local platform. Run: node --test test/rfcs-journeys.test.mjs
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as L from '../rfcs.js';
+import * as P from '../rfc.js';
 
 test('a visitor is asked to sign in to open a proposal, and comes back to the form', () => {
   const html = L.renderOpenAct({ rfcDepositCents: 1000 }, { signedIn: false });
@@ -16,4 +16,11 @@ test('opening a proposal needs an account and the deposit, not a voice (the rout
   const html = L.renderOpenAct({ rfcDepositCents: 1000 });
   assert.doesNotMatch(html, /voice/);
   assert.match(html, /needs a CommandAGI account and a deposit of \$10\.00/);
+});
+
+// Journey 6: a law RFC whose deliberation kept the status quo is decided, and its outgoing engine was never asked.
+test('a decided proposal never says it waits for the outgoing engine', () => {
+  const v = { rfc: { target: 'law' }, status: 'rejected', concurrence: { deliberation: 'd1' } };
+  assert.doesNotMatch(P.renderConcurrence(v), /Waiting for the outgoing engine/);
+  assert.match(P.renderConcurrence({ ...v, status: 'deciding' }), /Waiting for the outgoing engine/);
 });

@@ -141,9 +141,11 @@ export function renderConcurrence(v) {
   const p = v.concurrence;
   if (!p) return '';
   const t = words('rfc');
+  // A decided proposal waits for nothing: when its outgoing engine was not asked (the status quo was kept), say nothing of it.
+  const decided = v.status === 'adopted' || v.status === 'rejected';
   const lines = [
-    p.outgoing ? t('outgoingAnswered') : p.outgoingUnavailableSince ? t('outgoingUnavailable', { since: date(p.outgoingUnavailableSince) }) : t('outgoingWaiting'),
-    ...(v.rfc.target === 'engine' ? [p.incoming ? t('incomingAnswered') : p.incomingUnavailableSince ? t('incomingUnavailable', { since: date(p.incomingUnavailableSince) }) : t('incomingWaiting')] : []),
+    ...(p.outgoing ? [t('outgoingAnswered')] : p.outgoingUnavailableSince ? [t('outgoingUnavailable', { since: date(p.outgoingUnavailableSince) })] : decided ? [] : [t('outgoingWaiting')]),
+    ...(v.rfc.target === 'engine' ? (p.incoming ? [t('incomingAnswered')] : p.incomingUnavailableSince ? [t('incomingUnavailable', { since: date(p.incomingUnavailableSince) })] : decided ? [] : [t('incomingWaiting')]) : []),
     ...(p.fallback ? [t('fallback')] : []),
   ];
   return `<p class="note">${esc(t('concurrenceNote'))}</p><ul class="read">${lines.map(l => `<li>${esc(l)}</li>`).join('')}</ul>`;
