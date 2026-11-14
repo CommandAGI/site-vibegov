@@ -109,6 +109,19 @@ head it waits, and an entry the log gains comes in the same way. With nothing ne
 place above the stack always says which the reader sees ("replaying the last 12 entries" or "will appear here"). The
 page recomputes each hash. No block is made up.
 
+## the contract page (owner, 2026-11-13)
+
+"Just an opening paragraph, ToC, and closing paragraph + buttons. Click on a ToC entry to toggle expand it." And: "the
+contract itself could use diagrams instead of ugly markdown."
+
+- The page is three things: one opening paragraph, the contents, one closing paragraph with the kernel check and the
+  buttons. No panel behind it: the text stands on the sky, as on the front door.
+- An entry of the contents is a line like a clause (reference, title, one sentence, a plus) and a `<details>`. It
+  holds its part of the contract, closed. An address inside a part (`#k7`) opens it (`contract.js`).
+- A process is a diagram that the contract's source declares (a fenced `flow` block in CommandAGI's
+  `docs/coordination-contract.md`). The generator draws it as SVG, top to bottom, so it fits a phone: the spine in
+  solid boxes, branches in dashed gold ones. The site only colours it (`.flow`).
+
 ## controls: a line of the contract (owner, 2026-11-13)
 
 "The style shouldn't use round pill buttons as much if it can find something more CC-coded, more original."

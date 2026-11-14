@@ -232,11 +232,6 @@ td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: now
 .sheet-title .in-margin { grid-row: 1 / span 3; color: var(--muted); font: 300 clamp(2rem, 4vw, 3.2rem)/1 var(--serif); }
 .source { margin-bottom: clamp(1.5rem, 4vw, 3rem); }
 .source .facts { padding-bottom: 1.25rem; border-bottom: 1px solid var(--rule); }
-.toc ol { list-style: none; margin: 0; padding: 0; columns: 2 16rem; column-gap: 2.5rem; }
-.toc li { break-inside: avoid; border-top: 1px solid var(--rule); }
-.toc a { display: flex; gap: 0.75rem; align-items: baseline; padding: 0.55rem 0; text-decoration: none; color: var(--ink); }
-.toc a span { font: 600 0.74rem var(--sans); color: var(--muted); min-width: 2.2rem; font-variant-numeric: tabular-nums; }
-.toc a:hover { color: var(--act); }
 .clause { border-top: 1px solid var(--rule); padding-block: clamp(2rem, 5vw, 3.5rem); font-family: var(--serif); }
 .clause .in-margin { padding-top: 0.55rem; }
 h2.part { font: 650 clamp(1.6rem, 3vw, 2.4rem)/1.1 var(--sans); letter-spacing: -0.02em; margin: 0 0 1.25rem; }
@@ -377,8 +372,8 @@ textarea { width: 100%; min-height: 6rem; font: 400 1.05rem/1.55 var(--sans); co
 #sky.is-on { opacity: 1; }
 h1, h2 { font-family: var(--serif); font-weight: 520; letter-spacing: -0.022em; }
 h1 em, h2 em { font-style: italic; font-weight: 420; color: var(--sun); }
-body:not(.home) .sheet { background: rgb(4 6 11 / 0.80); border-inline: 1px solid var(--rule); min-height: 80vh; }
-@supports (backdrop-filter: blur(1px)) { body:not(.home) .sheet { background: rgb(4 6 11 / 0.66); backdrop-filter: blur(10px); } }
+body:not(.home, .open) .sheet { background: rgb(4 6 11 / 0.80); border-inline: 1px solid var(--rule); min-height: 80vh; }
+@supports (backdrop-filter: blur(1px)) { body:not(.home, .open) .sheet { background: rgb(4 6 11 / 0.66); backdrop-filter: blur(10px); } }
 .runhead { background: rgb(4 6 11 / 0.55); }
 .site-foot { background: rgb(4 6 11 / 0.72); }
 .hero h1 em, .sheet-title h1 em { font-style: italic; color: var(--sun); }
@@ -387,7 +382,7 @@ body:not(.home) .sheet { background: rgb(4 6 11 / 0.80); border-inline: 1px soli
 .count span { color: var(--muted); }
 
 /* ---------- the front door ---------- */
-.home .sheet { max-width: none; padding: 0; }
+.home .sheet, .open .sheet { max-width: none; padding: 0; }
 .wrap-x { max-width: 76rem; margin: 0 auto; padding-inline: var(--gutter); }
 .cosmos { position: relative; min-height: calc(100svh - 3.5rem); padding-block: clamp(2.5rem, 11vh, 7rem) 36vh; }
 .cosmos__words { position: relative; z-index: 1; }
@@ -498,6 +493,62 @@ body:not(.home) .sheet { background: rgb(4 6 11 / 0.80); border-inline: 1px soli
   .feature { grid-template-columns: minmax(0, 1fr); gap: 0.5rem; }
   .feature__art, .feature:nth-of-type(even) .feature__art { order: 0; width: min(78vw, 22rem); }
   .feature:nth-of-type(even) .feature__words { justify-self: start; }
+}
+
+/* ---------- the contract page: an opening, the contents (each entry opens its part), a closing ---------- */
+.charter { padding-block: clamp(3rem, 12vh, 7rem) clamp(2rem, 6vh, 3.5rem); }
+.charter h1 { font-size: clamp(2.7rem, 6.6vw, 6rem); line-height: 0.95; letter-spacing: -0.04em; font-weight: 480; }
+.charter h1 em { display: block; }
+.charter .lede { margin: clamp(1.25rem, 3vh, 2rem) 0 0; max-width: 42rem; color: var(--ink); text-shadow: 0 1px 14px var(--paper); }
+.charter--end { padding-block: clamp(2.5rem, 8vh, 5rem) clamp(3rem, 10vh, 6rem); }
+.charter--end .check { display: block; margin: 1.25rem 0 0; font-size: 0.92rem; font-weight: 450; color: var(--muted); max-width: 42rem; }
+.charter--end .check .dot { display: inline-block; margin-right: 0.55rem; }
+.charter--end .check code { display: block; margin-top: 0.25rem; }
+.toc { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+.toc > li { border-bottom: 1px solid var(--rule); }
+.part > summary { display: grid; grid-template-columns: 4.5rem minmax(9rem, 16rem) minmax(0, 1fr) 1.5rem; gap: 0.2rem 1.5rem; align-items: baseline; padding: 1.15rem 0.25rem; cursor: pointer; list-style: none; text-shadow: 0 1px 14px var(--paper); transition: background 0.2s ease, padding 0.2s ease; }
+.part > summary::-webkit-details-marker { display: none; }
+.part > summary::after { content: "+"; font: 400 1.3rem/1 var(--mono); color: var(--muted); justify-self: end; transition: transform 0.25s ease, color 0.2s ease; }
+.part > summary:hover { background: rgb(255 198 90 / 0.07); padding-left: 0.75rem; }
+.part > summary:hover::after { color: var(--sun); }
+.part[open] > summary::after { transform: rotate(45deg); color: var(--sun); }
+.part > summary span { font: 500 0.78rem var(--mono); color: var(--sun); letter-spacing: 0.04em; }
+.part > summary h2 { font: 520 clamp(1.3rem, 2.2vw, 1.75rem)/1.15 var(--serif); letter-spacing: -0.015em; }
+.part > summary i { font-style: normal; color: var(--muted); }
+.part__body { padding: 0.5rem 0.25rem 2.5rem 6.25rem; max-width: 56rem; font-size: 1rem; line-height: 1.65; color: color-mix(in oklab, var(--ink) 86%, var(--muted)); }
+.part__body > p, .part__body > ul, .part__body > ol { margin: 0 0 1rem; max-width: 44rem; }
+.part__body ul, .part__body ol { padding-left: 1.2rem; }
+.part__body li { margin: 0 0 0.5rem; }
+.part__body li::marker { color: var(--sun); font: 500 0.82em var(--mono); }
+.part__body strong { color: var(--ink); font-weight: 650; }
+.part__body h3 { font: 650 1.1rem var(--sans); margin: 1.75rem 0 0.6rem; color: var(--ink); }
+.part__body code { background: var(--shade); padding: 0.05em 0.3em; border-radius: 2px; }
+.part__body .article { grid-template-columns: 3.5rem minmax(0, 1fr); column-gap: 1.25rem; padding: 1rem 0; max-width: 46rem; }
+.part__body .article:first-of-type { border-top: 0; }
+.part__body .article .num { grid-row: 1 / span 3; padding: 0.2rem 0 0; text-align: left; font-size: 0; }
+.part__body .article .num b { font: 500 0.82rem var(--mono); letter-spacing: 0.04em; color: var(--sun); margin: 0; }
+.part__body .article .num b::before { content: "k"; }
+.part__body .article > p, .part__body .article .sub { grid-column: 2; }
+.source { margin: 1.5rem 0 0; padding: 0 0.25rem; font-size: 0.9rem; }
+.source dd { color: var(--muted); }
+@media (prefers-reduced-motion: no-preference) { .part[open] > .part__body { animation: unfold 0.35s ease; } }
+@keyframes unfold { from { opacity: 0; transform: translateY(-6px); } }
+
+/* a flow the contract declares, drawn by its page's generator (CommandAGI scripts/seed/vibegov-contract.mjs) */
+.flow { margin: 1.25rem 0 1.75rem; overflow-x: auto; }
+.flow svg { display: block; max-width: 100%; height: auto; }
+.flow rect { fill: rgb(8 12 22 / 0.78); stroke: rgb(242 238 228 / 0.5); stroke-width: 1; }
+.flow__step--side rect { stroke: rgb(255 198 90 / 0.7); stroke-dasharray: 4 4; fill: rgb(8 12 22 / 0.5); }
+.flow text { fill: var(--ink); font: 600 13.5px var(--sans); }
+.flow .flow__note { fill: var(--muted); font: 400 10.5px var(--mono); }
+.flow__line { fill: none; stroke: rgb(242 238 228 / 0.55); stroke-width: 1; }
+.flow marker path { fill: rgb(242 238 228 / 0.8); }
+
+@media (max-width: 56rem) {
+  .part > summary { grid-template-columns: 3.2rem minmax(0, 1fr) 1.2rem; }
+  .part > summary i { grid-column: 2; }
+  .part > summary::after { grid-row: 1; grid-column: 3; }
+  .part__body { padding-left: 0.25rem; }
 }
 
 /* ---------- narrow screens ---------- */

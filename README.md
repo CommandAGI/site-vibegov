@@ -21,7 +21,7 @@ https://vibegov.commandagi.app serving the same site. The design and the reasons
   before its responses are read, its options and how many responses count, and no score (the contract publishes the
   tally only after interpretation, § RFCs 4); after, each option's score, its histogram from −2 to +2 and the
   decision with the determinations it rests on. The overview's RFCs link here.
-- `contract.html`: the contract's text. Between its `<!-- contract:begin … -->` and `<!-- contract:end -->` markers,
+- `contract.html`: the contract's text: an opening paragraph, the contents (each entry opens its part; a process is a diagram the source declares), and a closing paragraph with the kernel check and the buttons. Between its `<!-- contract:begin … -->` and `<!-- contract:end -->` markers,
   the clauses are **rendered from `docs/coordination-contract.md`** in the CommandAGI repository by
   `node scripts/seed/vibegov-contract.mjs`. Do not edit that region here. The repository's
   `scripts/checks/check-generated-files.mjs` refuses a page that differs from the doc.

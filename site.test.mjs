@@ -124,14 +124,28 @@ test('each live part of a page is one that page.js fills', () => {
   assert.match(read('record.html'), /data-live="log"/);
 });
 
-test('the contract page carries the rendered text between its markers', () => {
+test('the contract page is an opening, the contents and a closing; each entry of the contents holds its part, closed', () => {
   const text = read('contract.html');
   const region = text.match(/<!-- contract:begin [^>]*-->([\s\S]*?)<!-- contract:end -->/)?.[1] ?? '';
   assert.ok(region.length > 10000, 'the region holds the rendered clauses');
+  const parts = [...region.matchAll(/<li><details class="part" id="([a-z]+)">\n<summary><span>§ (\d+)<\/span><h2 id="\1-title">[^<]+<\/h2><i>[^<]{20,}<\/i><\/summary>/g)];
+  assert.deepEqual(parts.map(m => m[1]), ['parts', 'kernel', 'people', 'rfcs', 'engine', 'evidence', 'justice', 'pool', 'credit']);
+  assert.deepEqual(parts.map(m => Number(m[2])), [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+  assert.doesNotMatch(region, /<details[^>]* open/, 'every part is closed until a reader opens it');
+  assert.equal(region.match(/<details/g).length, 9, 'nothing of the contract is outside a part');
   const articles = [...region.matchAll(/<article class="article" id="k(\d+)">/g)].map(m => Number(m[1]));
   assert.deepEqual(articles, Array.from({ length: 12 }, (_, i) => i + 1), 'the kernel\'s twelve articles, in order');
   assert.match(region, /<dt>Kernel<\/dt><dd><code title="[0-9a-f]{64}">/, 'the kernel\'s hash, which page.js holds the ledger to');
-  for (const [, id] of region.matchAll(/<a href="#([^"]+)">/g)) assert.match(region, new RegExp(`<section class="clause" id="${id}"`), `the contents link #${id}`);
+  // A process is a diagram the contract declares, never a picture in characters.
+  assert.doesNotMatch(region, /<pre/, 'no preformatted block');
+  assert.equal(region.match(/<figure class="flow"><svg [^>]*role="img" aria-label="Diagram: [^"]+"/g).length, 4, 'the flows of RFCs, the engine, justice and credit, each said in words');
+  // An address inside a part opens it (the front door links to #k2 … #k12).
+  assert.match(text, /<script type="module" src="contract\.js"><\/script>/);
+  assert.match(read('contract.js'), /closest\('details\.part'\)[\s\S]*part\.open = true/);
+  const [before, after] = text.split(/<!-- contract:begin [\s\S]*<!-- contract:end -->/);
+  assert.equal(before.match(/<p class="lede">/g).length, 1, 'one opening paragraph');
+  assert.equal(after.match(/<p class="lede">/g).length, 1, 'one closing paragraph');
+  assert.match(after, /data-live="kernel"[\s\S]*<a class="btn primary" href="join\.html" data-ref="k2">Take your voice<\/a>/, 'the check, then the act');
   for (const f of ['coordination-contract.pdf', 'coordination-contract-short.pdf']) {
     assert.match(text, new RegExp(`href="papers/${f.replace('.', '\\.')}"`));
     assert.equal(readFileSync(join(ROOT, 'papers', f)).subarray(0, 5).toString(), '%PDF-', `papers/${f} is a PDF`);
