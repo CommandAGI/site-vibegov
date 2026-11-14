@@ -164,9 +164,16 @@ contract itself could use diagrams instead of ugly markdown."
 
 ## type
 
-- **Literata** (variable): headings, the kernel's words, the contract's clauses. First heading: weight 480, tracking
-  −0.04em.
-- **Public Sans** (variable): body text, the interface and every number.
+Owner, 2026-11-13: "the font should be something more appropriate for this topic." The headings were in Literata, a
+face made for reading novels. This is a legal and financial system built on machines, so the type is an engineer's
+and an institution's:
+
+- **IBM Plex Serif** (400, 500, 600; italic 400, 500): headings, the kernel's words, a proposal's or a case's title.
+  First heading: weight 400, tracking −0.04em.
+- **Public Sans** (variable; the United States Web Design System's face): body text, the interface and every number.
+- **IBM Plex Mono** (400, 500): references (`k2`, `§ 4`), hashes, the tape's labels, a plate's header.
+
+All three are under the SIL Open Font License and are served from this site (`fonts/`).
 
 ## colour
 

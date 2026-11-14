@@ -25,7 +25,7 @@ function apex() {
     for (let i = 0; i < count; i += 1) seats.push({ x: count > 1 ? (i / (count - 1) - 0.5) * [0, 0.26, 0.6, 0.94][r] : 0, y: r / 3, rank: [1.9, 1.3, 1, 0.8][r], parent: r ? seats.length - i - rows[r - 1] + Math.floor((i * rows[r - 1]) / count) : -1 });
   });
   const paint = (g, w, h) => {
-    const u = Math.min(w / 3, h / 2), cy = h * 0.47, font = px => `500 ${Math.round(u * px)}px ui-monospace, "SFMono-Regular", "DejaVu Sans Mono", monospace`;
+    const u = Math.min(w / 3, h / 2), cy = h * 0.47, font = px => `500 ${Math.round(u * px)}px "IBM Plex Mono", ui-monospace, "SFMono-Regular", "DejaVu Sans Mono", monospace`;
     const dot = (x, y, r, fill) => { g.fillStyle = fill; g.beginPath(); g.arc(x, y, r, 0, 6.2832); g.fill(); };
     g.textAlign = 'center';
     g.textBaseline = 'middle';

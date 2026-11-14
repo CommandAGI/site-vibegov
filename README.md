@@ -39,7 +39,7 @@ https://vibegov.commandagi.app serving the same site. The design and the reasons
 - `scene.js`: the stars behind every page, in one WebGL canvas. `earth.js`: the Earth as a camera in orbit sees it
   (WebGL2, traced per pixel from the maps in `sky/`: NASA's Blue Marble and Black Marble, the Clementine moon map; all
   public domain). `figures.js`: the front door's two diagrams. `film.js`: the film's play and pause. `robots/so101-cube/`: the film, a recording of a simulation on CommandAGI.
-- `style.css`, `fonts/` (Literata and Public Sans, variable, OFL, self-hosted), `mark.svg`, `apple-touch-icon.png`
+- `style.css`, `fonts/` (IBM Plex Serif, IBM Plex Mono and Public Sans, OFL, self-hosted), `mark.svg`, `apple-touch-icon.png`
   (drawn by `redesign/marks.py`), `og.png` (a browser's picture of `redesign/og.html`), `fixtures/` (real entries of
   the public record that the test recomputes).
 - `redesign/`: the design (`DESIGN.md`), `marks.py`, `og.html`, the signed-in pages' rules (`APP.md`), and the audit before the 2026-10-26 redesign (`CONTENT.md`).
