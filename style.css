@@ -272,6 +272,7 @@ textarea { width: 100%; min-height: 6rem; font: 400 1.05rem/1.55 var(--sans); co
 .contents + .runhead__act { margin-left: 0.5rem; }
 .check--wait .dot { background: var(--wait); }
 
+.closed { margin: 0; padding: 0.7rem var(--gutter); border-bottom: 1px solid color-mix(in oklab, var(--wait) 45%, transparent); background: rgb(240 180 90 / 0.08); color: var(--wait); font-size: 0.92rem; text-align: center; }
 /* the tape: the contract's figures in one line under the header of every page, on the page's own grid */
 .tape { border-bottom: 1px solid var(--rule); background: rgb(4 6 11 / 0.6); min-height: 3.1rem; }
 .tape__in, .tape > .empty { max-width: var(--max); margin: 0 auto; padding: 0.5rem var(--gutter); }

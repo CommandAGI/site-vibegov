@@ -290,7 +290,8 @@ ${terms([
 ])}
 <div class="form__act">${button(ca('appeal'), ui.pending, ' primary')}</div></form>`);
 
-  return `<div class="acts-list">${blocks.join('')}</div>${ui.done ? `<p class="done" role="status">${esc(ca(ui.done))}</p>` : ''}${refusalsHtml(ui.refusals)}`;
+  // What was done, or refused, stands above the acts, where the person who just pressed a button sees it.
+  return `${ui.done ? `<p class="done" role="status">${esc(ca(ui.done))}</p>` : ''}${refusalsHtml(ui.refusals)}<div class="acts-list">${blocks.join('')}</div>`;
 }
 
 /** A party's whole page. */

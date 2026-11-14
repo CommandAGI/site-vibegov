@@ -485,7 +485,7 @@ export function renderTape(s, now) {
   const a = s.anchor;
   return `<dl class="tape__in">${[
     cell('Record', `<span class="tape__state tape__state--${h.state}">${h.state === 'live' ? 'live' : h.state === 'empty' ? 'empty' : 'quiet'}</span>`),
-    cell('Ledger', `${count(s.log.length)} entries`),
+    cell('Ledger', `${count(s.log.length)} ${s.log.length === 1 ? 'entry' : 'entries'}`),
     cell('Last entry', s.log.headAt ? since(s.log.headAt, now) : 'none'),
     cell('Version', count(s.contract.version)),
     cell('Kernel', `<code title="${esc(s.contract.kernelHash)}">${esc(String(s.contract.kernelHash).slice(0, 8))}</code>`),

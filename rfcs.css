@@ -43,3 +43,7 @@ button.btn.link { min-height: 0; padding: 0.1rem 0.4rem; font-size: 0.82rem; }
 @media (max-width: 40rem) {
   .desk .rows .marks { justify-content: flex-start; }
 }
+
+/* the facts stand in the narrow column: a label above its value, so a value keeps its line */
+[aria-labelledby="h-facts"] .kv { grid-template-columns: minmax(0, 1fr); gap: 0.1rem; }
+[aria-labelledby="h-facts"] .kv dd { margin-bottom: 0.7rem; }

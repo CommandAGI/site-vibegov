@@ -40,4 +40,14 @@ if (tape) {
   setInterval(() => tape.querySelectorAll('[data-at]').forEach(t => { t.textContent = relative(Number(t.dataset.at), Date.now()); }), 1000);
   document.addEventListener('visibilitychange', figures);
 }
+
+// The contract's signed-in doors are closed for this account (contract-api.js): say so once, under the tape.
+document.addEventListener('contract-closed', () => {
+  if (document.querySelector('.closed')) return;
+  const bar = document.createElement('p');
+  bar.className = 'closed';
+  bar.setAttribute('role', 'status');
+  bar.textContent = 'The contract is not open to this account yet. You can read the public record on every page. Responding, proposing, filing a case and credit open when CommandAGI turns the contract on for your account.';
+  (tape ?? document.querySelector('.runhead'))?.after(bar);
+});
 export { session };

@@ -5,10 +5,19 @@
 // `words('refusals')` (contract-words.js). To update: redesign/APP.md § the API.
 import { api, ApiError } from './session.js';
 
+// The platform can hold the contract's signed-in doors closed for an account (`404 feature_off`). A page then
+// cannot read or act, and "try again" would be untrue: the document hears `contract-closed` once, and shell.js says so.
+let closed = false;
+function heed(e) {
+  if (closed || !(e instanceof ApiError) || e.code !== 'feature_off') return;
+  closed = true;
+  document.dispatchEvent(new CustomEvent('contract-closed'));
+}
 async function get(path) {
   try {
     return await api(path);
-  } catch {
+  } catch (e) {
+    heed(e);
     return null;
   }
 }
@@ -16,6 +25,7 @@ async function post(path, body, pick) {
   try {
     return { ok: true, ...pick((await api(path, { method: 'POST', body })) ?? {}) };
   } catch (e) {
+    heed(e);
     if (!(e instanceof ApiError) || e.status === 0) return { ok: false, refusals: [{ code: 'network' }] };
     const refused = Array.isArray(e.body?.refused) ? e.body.refused : null;
     const error = typeof e.body?.error === 'string' ? e.body.error : e.status === 401 ? 'unauthorized' : `http_${e.status}`;
