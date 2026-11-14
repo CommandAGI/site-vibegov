@@ -76,11 +76,12 @@ export function renderWindows(parameters) {
   return p.startsWith('<dl') ? `<section aria-labelledby="g-law"><h2 class="group" id="g-law">What the law sets now</h2><p class="sentence">Every proposal runs inside these windows and deposits. A proposal can change them.</p>${p}</section>` : '';
 }
 
-/** What opening a proposal costs, said before the act. */
-export function renderOpenAct(parameters) {
+/** What opening a proposal costs, said before the act. A visitor's act is "Sign in to …", which comes back to the form. */
+export function renderOpenAct(parameters, { signedIn = true } = {}) {
   const dep = parameters?.rfcDepositCents;
   const cost = typeof dep === 'number' ? `Opening a proposal needs an account with a voice and a deposit of ${money(dep)}.` : 'Opening a proposal needs an account with a voice and a deposit.';
-  return `<a class="btn primary" href="propose.html">Open a proposal</a><p class="note">${esc(cost)} The deposit comes back when someone other than you supports a change.</p>`;
+  const act = signedIn ? '<a class="btn primary" href="propose.html">Open a proposal</a>' : '<a class="btn primary" href="signin.html?next=propose.html">Sign in to open a proposal</a>';
+  return `${act}<p class="note">${esc(cost)} The deposit comes back when someone other than you supports a change.</p>`;
 }
 
 /** What a signed-in person is told about their voice on this list, in the contract's words. */
@@ -106,7 +107,7 @@ if (typeof document !== 'undefined' && document.body?.dataset.page === 'rfcs') {
   const [rows, stats] = await Promise.all([read('/public/contract/rfcs'), read('/public/contract/stats')]);
   const list = slot('list');
   const now = Date.now();
-  slot('act').innerHTML = renderOpenAct(stats?.parameters);
+  slot('act').innerHTML = renderOpenAct(stats?.parameters, { signedIn: signedIn() });
   if (!rows) {
     list.innerHTML = `<p class="refusal">The proposals could not be read. The contract's API could not be reached; check your connection and try again. They are public at <a href="https://api.commandagi.com/public/contract/rfcs">https://api.commandagi.com/public/contract/rfcs</a>.</p>`;
   } else {
