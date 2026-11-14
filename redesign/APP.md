@@ -99,6 +99,7 @@ Copy this frame. Change the title, the description, the canonical address, `aria
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script src="gov.js" defer></script>
 <script type="module" src="scene.js"></script>
+<script type="module" src="page.js"></script>
 <script type="module" src="shell.js"></script>
 <script type="module" src="PAGE.js"></script>
 </head>
@@ -115,6 +116,7 @@ Copy this frame. Change the title, the description, the canonical address, `aria
     <span class="runhead__act" data-account></span>
   </div>
 </header>
+<div class="tape" data-live="tape" aria-label="The contract’s figures now" aria-busy="true"></div>
 
 <main id="main" class="sheet">
   <div class="desk">
