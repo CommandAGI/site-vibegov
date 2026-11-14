@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://api.commandagi.com; media-src 'self' blob: https://api.commandagi.com; connect-src 'self' https://api.commandagi.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="vibegov-api" content="https://api.commandagi.com">
+<title>Your desk · VibeGov</title>
+<meta name="description" content="Your desk at the Coordination Contract: what needs your voice, your voice and how to get one, your notices, your balance and your account.">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://vibegov.pro/desk.html">
+<meta name="theme-color" content="#04060b">
+<link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="desk.css">
+<link rel="icon" href="mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<script src="gov.js" defer></script>
+<script type="module" src="scene.js"></script>
+<script type="module" src="shell.js"></script>
+<script type="module" src="desk.js"></script>
+</head>
+<body class="open">
+<canvas id="sky" aria-hidden="true"></canvas>
+<a class="skip" href="#main">Skip to the content</a>
+<header class="runhead">
+  <div class="runhead__in">
+    <a class="wordmark" href="index.html" aria-label="VibeGov, home"><img src="mark.svg" alt="" width="26" height="26">VibeGov</a>
+    <button class="btn small contents-btn" type="button" popovertarget="contents" aria-controls="contents">Contents</button>
+    <nav id="contents" class="contents" popover aria-label="Site">
+      <ol><li><a href="index.html">Home</a></li><li><a href="record.html">The record</a></li><li><a href="contract.html">The contract</a></li><li><a href="rfcs.html">Proposals</a></li><li><a href="cases.html">Cases</a></li><li><a href="credit.html">Credit</a></li></ol>
+    </nav>
+    <span class="runhead__act" data-account></span>
+  </div>
+</header>
+
+<main id="main" class="sheet">
+  <div class="desk" data-desk>
+    <header class="desk__head">
+      <div><h1>Your desk</h1><p>What the contract waits on from you, your voice, your notices and the balance your deposits come from.</p></div>
+      <div class="btn-row desk__acts"><a class="btn small" href="propose.html">Open a proposal</a><a class="btn small" href="file.html">File a case</a></div>
+    </header>
+    <noscript><p class="refusal">Your desk needs JavaScript: it reads your record from the API with your own token.</p></noscript>
+
+    <div class="cols">
+      <div>
+        <section aria-labelledby="needs-title">
+          <h2 id="needs-title">Needs you</h2>
+          <div data-part="needs" aria-live="polite"><p class="note">Reading what needs you…</p></div>
+        </section>
+        <section aria-labelledby="notices-title">
+          <h2 id="notices-title">Notices</h2>
+          <div data-part="notices" aria-live="polite"><p class="note">Reading your notices…</p></div>
+        </section>
+      </div>
+      <div>
+        <section aria-labelledby="voice-title">
+          <h2 id="voice-title">Your voice</h2>
+          <div data-part="voice" aria-live="polite"><p class="note">Reading your voice…</p></div>
+        </section>
+        <section aria-labelledby="balance-title">
+          <h2 id="balance-title">Balance</h2>
+          <div data-part="balance" aria-live="polite"><p class="note">Reading your balance…</p></div>
+        </section>
+        <section aria-labelledby="account-title">
+          <h2 id="account-title">Account</h2>
+          <div data-part="account"><p class="note">Reading your account…</p></div>
+        </section>
+        <section id="anonymous" aria-labelledby="anonymous-title">
+          <h2 id="anonymous-title">Anonymous voice</h2>
+          <p>A person with a voice may answer proposals so that no one, the platform included, can tell which response is theirs, and still count once. The answer carries a zero-knowledge proof that is made in your browser, with proving files of several megabytes. This site cannot make that proof yet. CommandAGI’s contract editor can: <a href="https://commandagi.com/app?open=%2Fapp%2Fcontract" rel="noopener">open it at commandagi.com</a>.</p>
+        </section>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <img class="seal-mark" src="mark.svg" alt="" width="40" height="40">
+    <nav aria-label="Footer">
+      <a href="record.html">The record</a>
+      <a href="contract.html">The contract</a>
+      <a href="join.html">Take part</a>
+      <a href="papers/coordination-contract.pdf">The paper (PDF)</a>
+      <a href="https://commandagi.com/">CommandAGI</a>
+      <a href="mailto:hello@vibegov.pro">hello@vibegov.pro</a>
+    </nav>
+    <p class="colophon">Every figure on this site is read from the contract's public record at api.commandagi.com.</p>
+    <p>© 2026 VibeGov · a company of CommandAGI</p>
+  </div>
+</footer>
+</body>
+</html>
