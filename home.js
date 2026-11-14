@@ -1,6 +1,6 @@
 // The person's desk (redesign/APP.md § the pages): what needs them (the editor's NeedsPanel.tsx), their voice and the
 // way to get one (Overview.tsx `VoicePanel`), their notices (`NoticesPanel`), the balance their deposits come from, and
-// their account. The render functions are pure (data in, escaped HTML out) so test/desk.test.mjs runs them on the
+// their account. The render functions are pure (data in, escaped HTML out) so test/home.test.mjs runs them on the
 // shapes the routes answer; the end of this file reads the API with the person's own token and places them.
 import { esc, money, count, date, relative } from './live.js';
 import { words, hasWords } from './contract-words.js';
@@ -108,7 +108,7 @@ export function renderVoice(me, { returned = false, starting = false, failed = n
   if (canVerify) {
     if (returned && me.verification === 'requires_input') html += `<p class="refusal">Stripe could not finish the check. You may try it again.</p>`;
     if (returned && me.verification === 'canceled') html += `<p class="note">The check was canceled. Nothing was kept.</p>`;
-    html += `<p class="note">${esc(overview('verifyNote'))} You leave this site for Stripe’s page, then come back to this desk.</p>`
+    html += `<p class="note">${esc(overview('verifyNote'))} You leave this site for Stripe’s page, then come back to this page.</p>`
       + `<div class="form__act"><button type="button" class="btn primary" data-verify${starting ? ' disabled' : ''}>${esc(starting ? overview('verifyStarting') : me.verification === 'requires_input' ? overview('verifyRetry') : overview('verifyAction'))}</button></div>`;
     if (failed) html += `<p class="refusal">${esc(overview('verifyFailed', { error: hasWords('refusals', failed) ? refusals(failed) : failed }))}</p>`;
   }
@@ -242,13 +242,13 @@ if (typeof document !== 'undefined' && document.querySelector('[data-desk]')) {
         await drawVoice();
       } else if (t.hasAttribute('data-verify')) {
         part('voice').innerHTML = renderVoice(me, { returned, starting: true });
-        const out = await C.startIdentityVerification('/desk.html');
+        const out = await C.startIdentityVerification('/home.html');
         if (out.url) location.href = out.url;
         else part('voice').innerHTML = renderVoice(me, { returned, failed: out.error });
       } else if (t.dataset.pack) {
         drawBalance({ busy: t.dataset.pack });
         try {
-          const r = await api('/billing/checkout', { method: 'POST', body: { type: 'pack', packId: t.dataset.pack, origin: location.origin, returnPath: '/desk.html' } });
+          const r = await api('/billing/checkout', { method: 'POST', body: { type: 'pack', packId: t.dataset.pack, origin: location.origin, returnPath: '/home.html' } });
           if (r?.url) { location.href = r.url; return; }
           drawBalance({ refusal: checkoutWords('http_200') });
         } catch (err) {

@@ -299,12 +299,12 @@ export function renderPanel(s) {
   if (s.anonMode) return renderAnonymousPanel(s);
   if (!s.signedIn) {
     return open
-      ? `<div class="panel"><p>Only a person with a voice may respond. Sign in with your CommandAGI account; if you have no voice yet, your desk shows how to get one.</p><div class="form__act"><a class="btn primary" href="${esc(signInHref(id))}">Sign in to respond</a></div></div>`
+      ? `<div class="panel"><p>Only a person with a voice may respond. Sign in with your CommandAGI account; if you have no voice yet, your home page shows how to get one.</p><div class="form__act"><a class="btn primary" href="${esc(signInHref(id))}">Sign in to respond</a></div></div>`
       : `<div class="panel"><p>This proposal no longer takes responses. Sign in to see whether you answered it and how it was read.</p><div class="form__act"><a class="btn" href="${esc(signInHref(id))}">Sign in</a></div></div>`;
   }
   if (s.meFailed) return '<div class="panel"><p class="refusal">Your voice could not be read just now. Reload the page to try again.</p></div>';
   if (!s.voice) {
-    return `<div class="panel"><p><b>You cannot respond yet.</b> ${s.why ? esc(refusalText({ code: s.why })) : 'The contract does not know a voice for this account.'}</p><p class="note">A voice is what lets a person answer once, as one person. It is obtained at your desk.</p><div class="form__act"><a class="btn" href="desk.html">Go to your desk</a></div></div>`;
+    return `<div class="panel"><p><b>You cannot respond yet.</b> ${s.why ? esc(refusalText({ code: s.why })) : 'The contract does not know a voice for this account.'}</p><p class="note">A voice is what lets a person answer once, as one person. It is obtained at your desk.</p><div class="form__act"><a class="btn" href="home.html">Go to your desk</a></div></div>`;
   }
   if (s.anonymous && open) {
     const other = s.commitment ? ` It holds another identity (commitment <code>${esc(s.commitment.slice(0, 16))}…</code>).` : '';

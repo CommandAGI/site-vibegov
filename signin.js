@@ -12,9 +12,9 @@ const PAGE_NAME = /^[a-z0-9][a-z0-9-]*(?:\.html)?(?:[?#][^\\]*)?$/i;
  */
 export function safeNext(raw) {
   const next = typeof raw === 'string' ? raw.trim() : '';
-  if (!next || next.includes('//') || next.includes('\\') || /[\u0000-\u001f\u007f]/.test(next) || !PAGE_NAME.test(next)) return 'desk.html';
+  if (!next || next.includes('//') || next.includes('\\') || /[\u0000-\u001f\u007f]/.test(next) || !PAGE_NAME.test(next)) return 'home.html';
   // Back to this page would only send the person on again.
-  if (/^signin(?:\.html)?(?:[?#]|$)/i.test(next)) return 'desk.html';
+  if (/^signin(?:\.html)?(?:[?#]|$)/i.test(next)) return 'home.html';
   return next;
 }
 

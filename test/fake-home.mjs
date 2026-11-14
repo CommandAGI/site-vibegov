@@ -1,4 +1,4 @@
-// A fake of the routes the sign-in page and the desk call (`node test/serve.mjs --fake test/fake-desk.mjs`), with the
+// A fake of the routes the sign-in page and the desk call (`node test/serve.mjs --fake test/fake-home.mjs`), with the
 // shapes the CommandAGI routes answer: routes/oauth.ts (`/oauth/token`, `/oauth/signup`), routes/users.ts (`/me`,
 // `/users/:id`, `/me/credits`, `/signup/config`), routes/contract.ts (`/contract/me`, `/contract/awaiting`,
 // `/contract/notices`), routes/stripe.ts (`/identity/verify`, `/billing/checkout`). Two people: sign in as an email

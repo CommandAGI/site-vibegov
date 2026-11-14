@@ -51,7 +51,7 @@ page here is a port of the editor's surface to plain HTML and one JavaScript mod
 
 | this site | the editor's source |
 |---|---|
-| the desk: what needs you, your voice, notices | `NeedsPanel.tsx`, `Overview.tsx`, `ContractEditor.tsx` |
+| Home: what needs you, your voice, notices | `NeedsPanel.tsx`, `Overview.tsx`, `ContractEditor.tsx` |
 | proposals: the list, one RFC, respond, confirm, contest | `RfcView.tsx`, `RespondPanel.tsx`, `MediaAttach.tsx`, `DeterminationView.tsx` |
 | open a proposal | `RfcForm.tsx`, `words.ts` (`describeLawChange`, `PARAMETER_KEYS`) |
 | cases: the list, one case, file, answer, evidence, appeal | `CaseForm.tsx`, `CaseView.tsx`, `CaseActions.tsx`, `words.ts` (`reliefProblems`, `toRemedies`) |
@@ -65,7 +65,7 @@ Drive: `files.ts`, `code-source.ts`; the device stream picker: `StreamAttach.tsx
 | page | who | what |
 |---|---|---|
 | `signin.html` | a visitor | sign in, make an account, reset a password; then back to `?next=` |
-| `desk.html` | signed in | what needs you, your voice (and how to get one), notices, balance, sign out |
+| `home.html` (Home) | signed in | the four acts, what needs you, your voice (and how to get one), notices, balance, sign out |
 | `rfcs.html` | anyone | every proposal, open first; a signed-in person sees which ones wait for them |
 | `rfc.html?id=` | anyone reads; a voice acts | the options, the count or the tally, the decision; respond, confirm, contest |
 | `propose.html` | signed in | open a proposal: options, each a set of changes to the law or the engine |
@@ -106,9 +106,9 @@ Copy this frame. Change the title, the description, the canonical address, `aria
 <header class="runhead">
   <div class="runhead__in">
     <a class="wordmark" href="index.html" aria-label="VibeGov, home"><img src="mark.svg" alt="" width="26" height="26">VibeGov</a>
-    <button class="btn small contents-btn" type="button" popovertarget="contents" aria-controls="contents">Contents</button>
+    <button class="contents-btn" type="button" popovertarget="contents" aria-controls="contents" aria-label="Menu"><span aria-hidden="true"></span></button>
     <nav id="contents" class="contents" popover aria-label="Site">
-      <ol><li><a href="index.html">Home</a></li><li><a href="record.html">The record</a></li><li><a href="contract.html">The contract</a></li><li><a href="rfcs.html">Proposals</a></li><li><a href="cases.html">Cases</a></li><li><a href="credit.html">Credit</a></li></ol>
+      <ol><li><a href="record.html">The record</a></li><li><a href="contract.html">The contract</a></li><li><a href="rfcs.html">Proposals</a></li><li><a href="cases.html">Cases</a></li><li><a href="credit.html">Credit</a></li></ol>
     </nav>
     <span class="runhead__act" data-account></span>
   </div>

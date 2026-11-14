@@ -153,7 +153,7 @@ test('the panel: a person with no voice is told why and sent to the desk', () =>
   const html = P.renderPanel(panel({ voice: null, why: 'not_a_person' }));
   assert.match(html, /You cannot respond yet/);
   assert.match(html, /no personhood proof the law accepts/);
-  assert.match(html, /href="desk\.html"/);
+  assert.match(html, /href="home\.html"/);
   assert.ok(!html.includes('<textarea'));
   assert.match(P.renderPanel(panel({ meFailed: true })), /could not be read/);
 });

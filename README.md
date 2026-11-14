@@ -20,7 +20,7 @@ https://vibegov.commandagi.app serving the same site. The design and the reasons
   `node scripts/seed/vibegov-contract.mjs`. Do not edit that region here. The repository's
   `scripts/checks/check-generated-files.mjs` refuses a page that differs from the doc.
 - `legal.html`: who runs the site, where its words, figures and pictures come from, and the licences.
-- The signed-in pages (`redesign/APP.md`): `signin.html`, `desk.html`, `rfcs.html`, `rfc.html`, `propose.html`,
+- The signed-in pages (`redesign/APP.md`): `signin.html`, `home.html`, `rfcs.html`, `rfc.html`, `propose.html`,
   `cases.html`, `case.html`, `file.html`, `credit.html`, each with its module and its test under `test/`.
 - `live.js`: the live record as HTML (pure: data in, escaped markup out). `page.js` fetches the public API
   (`<meta name="vibegov-api">`, https://api.commandagi.com) and places each `data-live` part. `verify.js` recomputes

@@ -78,7 +78,7 @@ const acceptOffer = (id) => post(`/contract/offers/${encodeURIComponent(id)}/acc
 const withdrawOffer = (id) => post(`/contract/offers/${encodeURIComponent(id)}/withdraw`, {}, () => ({}));
 // Stripe Identity's hosted flow (a government ID and a live selfie); the person comes back to `returnPath` on this
 // origin. The contract keeps only a one-way voice key derived from the verified identity, never the identity.
-async function startIdentityVerification(returnPath = '/desk.html') {
+async function startIdentityVerification(returnPath = '/home.html') {
   try {
     const data = await api('/identity/verify', { method: 'POST', body: { origin: location.origin, returnPath } });
     return data?.url ? { url: data.url } : { error: data?.error ?? 'http_200' };

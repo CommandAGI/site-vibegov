@@ -168,7 +168,7 @@ def sign_up(page, name, email, password):
     page.fill('#up-email', email)
     page.fill('#up-password', password)
     page.click('#signup button[type=submit]')
-    page.wait_for_url(re.compile(r'desk\.html'))
+    page.wait_for_url(re.compile(r'home\.html'))
     page.wait_for_load_state('networkidle')
 
 
@@ -180,7 +180,7 @@ def sign_in(page, email, password, next_=None):
 
 
 def sign_out(page):
-    go(page, 'desk.html')
+    go(page, 'home.html')
     page.click('[data-signout]')
     expect(page).to_have_url(re.compile(r'/index\.html$'))
     expect(page.locator('[data-account] a')).to_have_text('Sign in')
@@ -239,20 +239,20 @@ def j2(a):
     # Five sign-ins in this journey: the platform allows five a minute per account (LOGIN_RL_ACCOUNT).
     for outside in ['https://evil.example/', '//evil.example']:
         sign_in(a, A['email'], A['password'], next_=outside)
-        expect(a).to_have_url(re.compile(r'/desk\.html$'))
+        expect(a).to_have_url(re.compile(r'/home\.html$'))
         sign_out(a)
     sign_in(a, A['email'], A['password'])
-    expect(a).to_have_url(re.compile(r'/desk\.html$'))
+    expect(a).to_have_url(re.compile(r'/home\.html$'))
 
 
 @journey(3, 'a voice (stood in for Stripe Identity), shown on the desk')
 def j3(a):
-    go(a, 'desk.html')
+    go(a, 'home.html')
     expect(a.locator('[data-part="voice"]')).not_to_contain_text('Reading')
     before = text(a, '[data-part="voice"]')
     shot(a, 'j3-desk-no-voice')
     give_voice(A['email'])
-    go(a, 'desk.html')
+    go(a, 'home.html')
     expect(a.locator('[data-part="voice"] code')).to_contain_text('human:')
     shot(a, 'j3-desk-voice')
     return f'before: {before[:120]!r}'
@@ -261,7 +261,7 @@ def j3(a):
 @journey(4, 'a balance for deposits (stood in for Stripe Checkout), shown exactly')
 def j4(a):
     credits = give_credits(A['email'], 2345)  # shown exactly below; journey 8 adds what a mandate escrows
-    go(a, 'desk.html')
+    go(a, 'home.html')
     expect(a.locator('[data-part="balance"] .desk__figure')).to_contain_text('$23.45')
     expect(a.locator('[data-part="balance"] .desk__figure')).to_contain_text('2,345 credits')
     shot(a, 'j4-desk-balance')
@@ -317,7 +317,7 @@ def j5(a):
 
 
 def balance_of(page):
-    go(page, 'desk.html')
+    go(page, 'home.html')
     loc = page.locator('[data-part="balance"] .desk__figure')
     expect(loc).to_be_visible()
     return loc.inner_text().replace('\n', ' ')
@@ -328,7 +328,7 @@ def j6(a, b):
     sign_up(b, B['name'], B['email'], B['password'])
     give_voice(B['email'])
     give_credits(B['email'], 1500)
-    go(b, 'desk.html')
+    go(b, 'home.html')
     expect(b.locator('[data-part="needs"]')).to_contain_text(RFC['title'])
     shot(b, 'j6-desk-b-needs')
     go(b, f'rfc.html?id={RFC["id"]}')
@@ -341,7 +341,7 @@ def j6(a, b):
     b.wait_for_timeout(1500)
     shot(b, 'j6-rfc-confirmed')
     expect(b.locator('main')).to_contain_text(re.compile('Confirmed', re.I))
-    go(b, 'desk.html')
+    go(b, 'home.html')
     expect(b.locator('[data-part="needs"]')).not_to_contain_text(RFC['title'])
     shot(b, 'j6-desk-b-after')
     # The window runs out (moved in the database), then the sweep reads the responses.
@@ -444,7 +444,7 @@ def j7(a, b):
     a.wait_for_load_state('networkidle')
     shot(a, 'j7-case-filed')
     stage = advance_case(cid, clocks=False)  # screened and served
-    go(b, 'desk.html')
+    go(b, 'home.html')
     b.wait_for_timeout(1000)
     shot(b, 'j7-desk-b-served')
     expect(b.locator('[data-part="notices"]')).to_contain_text(re.compile('case', re.I))
@@ -524,7 +524,7 @@ def j8(a, b):
     return text(b, '[data-slot="facility"]')[:400]
 
 
-PAGES = ['index.html', 'record.html', 'contract.html', 'join.html', 'signin.html', 'desk.html', 'rfcs.html', 'propose.html',
+PAGES = ['index.html', 'record.html', 'contract.html', 'join.html', 'signin.html', 'home.html', 'rfcs.html', 'propose.html',
          'cases.html', 'file.html', 'credit.html']
 
 
@@ -539,7 +539,7 @@ def j9(browser):
         page.watch.attach(page)
         if creds:
             sign_in(page, creds['email'], creds['password'])
-            expect(page).to_have_url(re.compile(r'/desk\.html$'))
+            expect(page).to_have_url(re.compile(r'/home\.html$'))
         for path in pages:
             go(page, path)
             page.wait_for_timeout(1200)
@@ -575,7 +575,7 @@ PHONES = []
 
 @journey(11, 'anonymous voice: an identity made and registered on the desk answers a later RFC with a real proof')
 def j11(a, b):
-    go(a, 'desk.html')
+    go(a, 'home.html')
     panel = a.locator('[data-slot="anonymity"]')
     expect(panel.locator('[data-anon="create"]')).to_be_visible(timeout=20000)
     panel.locator('[data-anon="create"]').click()

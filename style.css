@@ -45,7 +45,10 @@
 *, *::before, *::after { box-sizing: border-box; }
 /* `hidden` wins over a class that sets `display` (a form that is not this tab's). */
 [hidden] { display: none !important; }
-html { -webkit-text-size-adjust: 100%; scroll-padding-top: 4.5rem; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 4.5rem; overflow-x: clip; }
+/* A thing that scrolls sideways runs to the screen's edges: it starts on the page's left edge and is cut only by
+   the screen, never by an invisible column. (`--bleed` is the space from the content's edge to the screen's.) */
+.bleed, .strip { --bleed: calc(50vw - 50%); margin-inline: calc(-1 * var(--bleed)); padding-inline: var(--bleed); }
 body { margin: 0; background: var(--paper); color: var(--ink); font: 400 1.0625rem/1.6 var(--sans); font-kerning: normal; }
 img, svg, video { display: block; max-width: 100%; }
 h1, h2, h3, h4 { margin: 0; text-wrap: balance; }
@@ -80,7 +83,12 @@ code { font-family: var(--mono); font-size: 0.86em; overflow-wrap: anywhere; }
 .runhead__in { display: flex; align-items: center; gap: 1.25rem; min-height: 3.5rem; padding: 0 var(--gutter); max-width: var(--max); margin: 0 auto; }
 .wordmark { display: inline-flex; align-items: center; gap: 0.55rem; text-decoration: none; flex: none; color: var(--ink); font: 700 1.1rem var(--sans); letter-spacing: -0.01em; }
 .wordmark img { height: 1.5rem; width: 1.5rem; }
-.runhead .contents-btn { margin-left: auto; display: none; }
+/* the menu on a narrow screen: three bars */
+.contents-btn { margin-left: auto; display: none; width: 2.75rem; height: 2.75rem; padding: 0; border: 0; background: none; color: var(--ink); cursor: pointer; align-items: center; justify-content: center; }
+.contents-btn span, .contents-btn span::before, .contents-btn span::after { display: block; width: 1.35rem; height: 1.5px; background: currentColor; }
+.contents-btn span { position: relative; }
+.contents-btn span::before, .contents-btn span::after { content: ""; position: absolute; left: 0; }
+.contents-btn span::before { top: -0.42rem; } .contents-btn span::after { top: 0.42rem; }
 .contents { margin: 0 0 0 auto; padding: 0; border: 0; background: none; color: inherit; display: block; position: static; inset: auto; overflow: visible; }
 .contents ol { display: flex; gap: 0.25rem; list-style: none; margin: 0; padding: 0; }
 .contents a { display: block; padding: 0.4rem 0.7rem; text-decoration: none; color: var(--muted); font: 500 0.92rem var(--sans); white-space: nowrap; }
@@ -88,7 +96,8 @@ code { font-family: var(--mono); font-size: 0.86em; overflow-wrap: anywhere; }
 .contents a[aria-current="page"] { text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 0.45em; }
 .runhead__act { flex: none; }
 @media (max-width: 56rem) {
-  .runhead .contents-btn { display: inline-flex; }
+  .contents-btn { display: inline-flex; order: 3; margin-left: 0; }
+  .runhead__act { margin-left: auto; }
   .contents { position: fixed; inset: 3.75rem var(--gutter) auto auto; margin: 0; width: min(18rem, calc(100vw - 2rem)); padding: 0.5rem; background: var(--panel); border: 1px solid var(--ink); }
   .contents:not(:popover-open):not(.is-open) { display: none; }
   .contents ol { flex-direction: column; }
@@ -192,8 +201,9 @@ button.btn:disabled { opacity: 0.45; cursor: default; }
 /* the proposals: a row of cards under the section, scrolled sideways */
 .feature__strip { grid-column: 1 / -1; min-width: 0; }
 .feature__strip h3 { margin: 0 0 0.75rem; }
-.strip { list-style: none; margin: 0; padding: 0 0 0.75rem; display: flex; gap: 0.9rem; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: thin; }
-.card { flex: 0 0 min(17rem, 78vw); scroll-snap-align: start; display: flex; flex-direction: column; gap: 0.5rem; min-height: 10.5rem; padding: 1rem 1.1rem; border: 1px solid var(--rule); background: var(--panel); }
+.strip { list-style: none; margin-block: 0; padding-block: 0 0.75rem; display: flex; gap: 0.9rem; overflow-x: auto; scrollbar-width: none; }
+.strip::-webkit-scrollbar { display: none; }
+.card { flex: 0 0 min(17rem, 78vw); display: flex; flex-direction: column; gap: 0.5rem; min-height: 10.5rem; padding: 1rem 1.1rem; border: 1px solid var(--rule); background: var(--panel); }
 .card p { margin: 0; }
 .card__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; font: 600 0.72rem var(--sans); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
 .card h4 a { color: var(--ink); text-decoration: none; }
@@ -372,6 +382,8 @@ td.num { text-align: right; white-space: nowrap; }
   .clauses i, .part > summary i { grid-column: 2; }
   .clauses a::after, .part > summary::after { grid-row: 1; grid-column: 3; }
   .cols { grid-template-columns: minmax(0, 1fr); }
+  /* in one column every sideways scroller is centred on the screen, so each runs to its edges */
+  .table-wrap, .flow { --bleed: calc(50vw - 50%); margin-inline: calc(-1 * var(--bleed)); padding-inline: var(--bleed); }
   .acts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .acts a { min-height: 9.5rem; }
   .rows > li { grid-template-columns: minmax(0, 1fr) auto; }

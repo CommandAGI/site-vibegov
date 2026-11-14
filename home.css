@@ -1,5 +1,5 @@
 /* The sign-in page and the desk (redesign/APP.md § how a signed-in page looks): what style.css § the signed-in pages
-   does not have yet. Linked only from signin.html and desk.html; fold into style.css when it is shared. */
+   does not have yet. Linked only from signin.html and home.html; fold into style.css when it is shared. */
 
 /* No motion on a signed-in page: the buttons' frames and arrows appear, they do not grow or slide. */
 .desk .btn[data-ref]:hover::after { transform: none; }

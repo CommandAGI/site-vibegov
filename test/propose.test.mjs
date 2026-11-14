@@ -152,7 +152,7 @@ test('the frame: CSP, one module, no inline script, the contents line, its own s
   assert.deepEqual([...html.matchAll(/<script[^>]*>/g)].map(m => m[0]), ['<script src="gov.js" defer>', '<script type="module" src="shell.js">', '<script type="module" src="propose.js">']);
   assert.ok(!/<script>[^<]|\son[a-z]+="/.test(html), 'no inline script or handler');
   const contents = html.match(/<nav id="contents"[\s\S]*?<\/nav>/)[0];
-  assert.deepEqual([...contents.matchAll(/href="([^"]+)"/g)].map(m => m[1]), ['index.html', 'record.html', 'contract.html', 'rfcs.html', 'cases.html', 'credit.html']);
+  assert.deepEqual([...contents.matchAll(/href="([^"]+)"/g)].map(m => m[1]), ['record.html', 'contract.html', 'rfcs.html', 'cases.html', 'credit.html']);
   assert.match(html, /<link rel="stylesheet" href="propose\.css">/);
   assert.match(html, /<button class="btn primary" type="submit" id="open"/, 'one primary act');
   assert.equal([...html.matchAll(/btn primary/g)].length, 1);

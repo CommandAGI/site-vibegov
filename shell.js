@@ -1,5 +1,5 @@
 // What every page's frame holds (redesign/APP.md § the shell). The account control in the header: "Sign in" for a
-// visitor, "Your desk" for a signed-in person; a page marks the place with `<span data-account></span>`, and it
+// visitor, "Home" for a signed-in person; a page marks the place with `<span data-account></span>`, and it
 // follows the session as it changes. And the tape under the header (`[data-live="tape"]`): the contract's figures
 // from the public record, read again each 30 s while the page is seen.
 import { API, session, signedIn } from './session.js';
@@ -14,7 +14,7 @@ function draw() {
   for (const slot of document.querySelectorAll('[data-account]')) {
     const here = location.pathname.split('/').pop();
     slot.innerHTML = signedIn()
-      ? `<a class="btn small" href="desk.html" data-ref="you"${here === 'desk.html' ? ' aria-current="page"' : ''}>Your desk</a>`
+      ? `<a class="btn small" href="home.html" data-ref="you"${here === 'home.html' ? ' aria-current="page"' : ''}>Home</a>`
       : `<a class="btn small" href="signin.html${here && !['signin.html', 'index.html', ''].includes(here) ? `?next=${encodeURIComponent(here + location.search + location.hash)}` : ''}">Sign in</a>`;
   }
   document.documentElement.dataset.session = signedIn() ? 'in' : 'out';

@@ -5,28 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://api.commandagi.com; media-src 'self' blob: https://api.commandagi.com; connect-src 'self' https://api.commandagi.com; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="vibegov-api" content="https://api.commandagi.com">
-<title>Your desk · VibeGov</title>
-<meta name="description" content="Your desk at the Coordination Contract: what needs your voice, your voice and how to get one, your notices, your balance and your account.">
+<title>Home · VibeGov</title>
+<meta name="description" content="Your home at the Coordination Contract: what you can do, what needs your voice, your voice and how to get one, your notices, your balance and your account.">
 <meta name="robots" content="noindex">
-<link rel="canonical" href="https://vibegov.pro/desk.html">
+<link rel="canonical" href="https://vibegov.pro/home.html">
 <meta name="theme-color" content="#f7f4ed">
 <link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="desk.css">
+<link rel="stylesheet" href="home.css">
 <link rel="icon" href="mark.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script src="gov.js" defer></script>
 <script type="module" src="shell.js"></script>
-<script type="module" src="desk.js"></script>
+<script type="module" src="home.js"></script>
 </head>
 <body class="open">
 <a class="skip" href="#main">Skip to the content</a>
 <header class="runhead">
   <div class="runhead__in">
     <a class="wordmark" href="index.html" aria-label="VibeGov, home"><img src="mark.svg" alt="" width="26" height="26">VibeGov</a>
-    <button class="btn small contents-btn" type="button" popovertarget="contents" aria-controls="contents">Contents</button>
+    <button class="contents-btn" type="button" popovertarget="contents" aria-controls="contents" aria-label="Menu"><span aria-hidden="true"></span></button>
     <nav id="contents" class="contents" popover aria-label="Site">
-      <ol><li><a href="index.html">Home</a></li><li><a href="record.html">The record</a></li><li><a href="contract.html">The contract</a></li><li><a href="rfcs.html">Proposals</a></li><li><a href="cases.html">Cases</a></li><li><a href="credit.html">Credit</a></li></ol>
+      <ol><li><a href="record.html">The record</a></li><li><a href="contract.html">The contract</a></li><li><a href="rfcs.html">Proposals</a></li><li><a href="cases.html">Cases</a></li><li><a href="credit.html">Credit</a></li></ol>
     </nav>
     <span class="runhead__act" data-account></span>
   </div>
@@ -36,7 +36,7 @@
 <main id="main" class="sheet">
   <div class="desk" data-desk>
     <header class="desk__head">
-      <div><h1>Your desk</h1><p>What the contract waits on from you, your voice, your notices and the balance your deposits come from.</p></div>
+      <div><h1>Home</h1><p>What you can do, what the contract waits on from you, your voice, your notices and your balance.</p></div>
     </header>
     <nav class="acts" aria-label="What you can do">
       <a href="propose.html"><b>Open a proposal</b><span>Change the law or the engine. Every voice is asked.</span></a>
@@ -44,7 +44,7 @@
       <a href="rfcs.html"><b>Answer a proposal</b><span>Say what you think. You see how you were read.</span></a>
       <a href="credit.html"><b>Lend or borrow</b><span>Offer capital on your terms, or draw on someone’s.</span></a>
     </nav>
-    <noscript><p class="refusal">Your desk needs JavaScript: it reads your record from the API with your own token.</p></noscript>
+    <noscript><p class="refusal">This page needs JavaScript: it reads your record from the API with your own token.</p></noscript>
 
     <div class="cols">
       <div>

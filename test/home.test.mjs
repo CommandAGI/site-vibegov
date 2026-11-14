@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { safeNext, formProblem, signinWords } from '../signin.js';
-import { renderNeeds, renderVoice, renderNotices, renderBalance, renderAccount, checkoutOutcome, checkoutWords, subjectHref, needsCount, voiceKind } from '../desk.js';
+import { renderNeeds, renderVoice, renderNotices, renderBalance, renderAccount, checkoutOutcome, checkoutWords, subjectHref, needsCount, voiceKind } from '../home.js';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const read = f => readFileSync(ROOT + f, 'utf8');
@@ -32,9 +32,9 @@ const awaiting = {
 };
 
 test('next: only a page of this site, named relatively; anything else goes to the desk', () => {
-  for (const ok of ['rfc.html?id=rfc-1', 'case.html?id=a#record', 'desk.html', 'rfcs', 'propose.html']) assert.equal(safeNext(ok), ok, ok);
-  for (const bad of [null, '', 'https://evil.example/', '//evil.example', '/\\evil.example', 'rfc.html\\x', 'javascript:alert(1)', '/desk.html', 'a/b.html', 'rfc.html?x=//evil', 'signin.html?next=desk.html', 'desk.html\n', '../index.html'])
-    assert.equal(safeNext(bad), 'desk.html', String(bad));
+  for (const ok of ['rfc.html?id=rfc-1', 'case.html?id=a#record', 'home.html', 'rfcs', 'propose.html']) assert.equal(safeNext(ok), ok, ok);
+  for (const bad of [null, '', 'https://evil.example/', '//evil.example', '/\\evil.example', 'rfc.html\\x', 'javascript:alert(1)', '/home.html', 'a/b.html', 'rfc.html?x=//evil', 'signin.html?next=home.html', 'home.html\n', '../index.html'])
+    assert.equal(safeNext(bad), 'home.html', String(bad));
 });
 
 test('the forms refuse what they can before sending, and say the doors\' refusals plainly', () => {
@@ -155,8 +155,8 @@ test('account: the account id is shown, to give to someone who files a case or m
 });
 
 test('the pages\' frames: the CSP, one module each, no inline script, the contents line', () => {
-  const CONTENTS = ['index.html', 'record.html', 'contract.html', 'rfcs.html', 'cases.html', 'credit.html'];
-  for (const page of ['signin.html', 'desk.html']) {
+  const CONTENTS = ['record.html', 'contract.html', 'rfcs.html', 'cases.html', 'credit.html'];
+  for (const page of ['signin.html', 'home.html']) {
     const text = read(page);
     const csp = text.match(/http-equiv="Content-Security-Policy" content="([^"]+)"/)[1];
     for (const rule of ["default-src 'self'", "connect-src 'self' https://api.commandagi.com;", "object-src 'none'", "form-action 'none'"]) assert.ok(csp.includes(rule), `${page}: ${rule}`);
@@ -173,7 +173,7 @@ test('the pages\' frames: the CSP, one module each, no inline script, the conten
   assert.match(signin, /script-src 'self' https:\/\/challenges\.cloudflare\.com;/);
   assert.match(signin, /frame-src https:\/\/challenges\.cloudflare\.com;/);
   assert.equal((signin.match(/challenges\.cloudflare\.com/g) ?? []).length, 2);
-  const desk = read('desk.html').match(/content="(default-src[^"]+)"/)[1];
+  const desk = read('home.html').match(/content="(default-src[^"]+)"/)[1];
   assert.ok(!desk.includes('cloudflare') && desk.includes("script-src 'self';"), 'the desk loads no third party');
   assert.match(read('signin.html'), /CommandAGI account[\s\S]*own token/, 'the page says whose account and whose token');
   assert.match(read('signin.html'), /accepts CommandAGI’s <a href="https:\/\/commandagi\.com\/terms"/);

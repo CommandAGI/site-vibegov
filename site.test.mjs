@@ -16,8 +16,9 @@ const ROOT = dirname(fileURLToPath(import.meta.url));
 const ORIGIN = 'https://vibegov.pro';
 const PAGES = ['index.html', 'record.html', 'contract.html', 'legal.html'];
 // The signed-in pages (redesign/APP.md); each has its own test under test/.
-const APP = ['signin.html', 'desk.html', 'rfcs.html', 'rfc.html', 'propose.html', 'cases.html', 'case.html', 'file.html', 'credit.html'];
-const NAV = ['index.html', 'record.html', 'contract.html', 'rfcs.html', 'cases.html', 'credit.html'];
+const APP = ['signin.html', 'home.html', 'rfcs.html', 'rfc.html', 'propose.html', 'cases.html', 'case.html', 'file.html', 'credit.html'];
+// The wordmark is the way to the front door; the contents line is the rest.
+const NAV = ['record.html', 'contract.html', 'rfcs.html', 'cases.html', 'credit.html'];
 const read = path => readFileSync(join(ROOT, path), 'utf8');
 const NOW = Date.UTC(2026, 10, 2, 12, 0, 0);
 
@@ -137,7 +138,7 @@ test('the contract page is an opening, the contents and a closing; each entry of
   assert.match(text, /<script type="module" src="contract\.js"><\/script>/);
   assert.match(read('contract.js'), /closest\('details\.part'\)[\s\S]*part\.open = true/);
   const [before, after] = text.split(/<!-- contract:begin [\s\S]*<!-- contract:end -->/);
-  assert.match(before, /<p class="lede">[^<]+<\/p>\n\s*<div class="btn-row">\n\s*<a class="btn primary" href="desk\.html" data-ref="k2">Take your voice<\/a>/, 'one opening paragraph, then the acts');
+  assert.match(before, /<p class="lede">[^<]+<\/p>\n\s*<div class="btn-row">\n\s*<a class="btn primary" href="home\.html" data-ref="k2">Take your voice<\/a>/, 'one opening paragraph, then the acts');
   assert.equal(after.match(/<p class="lede">/g).length, 1, 'one closing paragraph');
   assert.doesNotMatch(text, /data-live="kernel"|class="btn-row"[\s\S]*class="btn-row"/, 'no kernel line, and the acts once');
   for (const f of ['coordination-contract.pdf', 'coordination-contract-short.pdf']) {
@@ -430,7 +431,7 @@ test('the front door: A World in Command, what the contract holds in the kernel\
     assert.ok(kernel[id].includes(words.replace(/^…|…$/g, '').replaceAll('’', "'")), `“${words}” is in ${id}`);
   }
   assert.equal([...text.matchAll(/<blockquote>/g)].length, quotes.length, 'no quotation that is not the kernel\'s');
-  assert.match(text, /<a class="btn primary" href="desk\.html" data-ref="k2">Take your voice<\/a>/, 'the one act the page asks for');
+  assert.match(text, /<a class="btn primary" href="home\.html" data-ref="k2">Take your voice<\/a>/, 'the one act the page asks for');
   assert.equal([...text.matchAll(/<ol class="clauses">[\s\S]*?<\/ol>/g)][0][0].match(/<li>/g).length, 5, 'five things to do today');
 });
 
@@ -500,7 +501,7 @@ test('what moves, and nothing else: the tape, a shimmer where something is being
   assert.deepEqual([...css.matchAll(/@keyframes (\w+)/g)].map(m => m[1]), ['shimmer'], 'one keyframe animation: the shimmer');
   assert.deepEqual([...css.matchAll(/([.\w# -]+) \{[^}]*animation: /g)].map(m => m[1].trim()), ['.loading'], 'on a thing that is being read, and nothing else');
   assert.deepEqual([...css.matchAll(/transition: ([^;]+);/g)].map(m => m[1]).filter(t => !/^opacity /.test(t)), ['transform 0.6s ease'], 'the one transition that moves a thing is the ledger\'s new block');
-  for (const f of ['rfcs.css', 'cases.css', 'desk.css', 'credit.css', 'propose.css']) assert.doesNotMatch(read(f), /@keyframes|animation:|transition:/, `${f}: no motion`);
+  for (const f of ['rfcs.css', 'cases.css', 'home.css', 'credit.css', 'propose.css']) assert.doesNotMatch(read(f), /@keyframes|animation:|transition:/, `${f}: no motion`);
   assert.doesNotMatch(read('scene.js'), /uTime|scrollY/, 'the stars do not twinkle or follow the scroll');
   assert.match(read('shell.js'), /calm\.matches/, 'the tape rests for a reader who asked for less motion');
   // A loading placeholder keeps its words for a screen reader.

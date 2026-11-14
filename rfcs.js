@@ -87,7 +87,7 @@ export function renderOpenAct(parameters, { signedIn = true } = {}) {
 /** What a signed-in person is told about their voice on this list, in the contract's words. */
 export function renderAwaitingNote(awaiting) {
   if (!awaiting) return 'Which proposals wait for your voice could not be read just now.';
-  if (!awaiting.voice) return `You have no voice yet, so no proposal waits for you. ${awaiting.why ? refusalText({ code: awaiting.why }) : ''} A voice is obtained at your desk.`.replace(/ +/g, ' ').trim();
+  if (!awaiting.voice) return `You have no voice yet, so no proposal waits for you. ${awaiting.why ? refusalText({ code: awaiting.why }) : ''} Your home page shows how to get one.`.replace(/ +/g, ' ').trim();
   const n = awaiting.rfcs.length;
   return n ? `${count(n)} open proposal${n === 1 ? ' waits' : 's wait'} for your voice, marked below.` : 'No open proposal waits for your voice.';
 }

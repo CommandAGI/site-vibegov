@@ -147,7 +147,7 @@ contract itself could use diagrams instead of ugly markdown."
 - **A button** is a rectangle with an ink outline; pointed at, it fills. The one act a page asks for is filled.
   No corner mark, no cut corner, no reference cell, no arrow, no pill. (The `data-ref` attribute stays in the markup:
   it names the kernel article an act stands on, for a reader of the source.)
-- **The desk's acts** (`.acts`) are four tall rectangles, first on the desk: open a proposal, file a case, answer a
+- **Home's acts** (`.acts`) are four tall rectangles, first on the page: open a proposal, file a case, answer a
   proposal, lend or borrow.
 - **A list of acts** (`.clauses`) and the contract's contents (`.toc`): reference, title, one sentence, between
   hairlines.
@@ -161,6 +161,9 @@ contract itself could use diagrams instead of ugly markdown."
 - **Colour has one meaning each.** Ochre: a reference. Blue: a link. Green: a check that holds. Amber: not done.
   Red: a check that failed. Emphasis is italic, never a colour.
 - **Two boxes deep at most**, and one where possible. A section is never inside a section.
+- **A sideways scroller kisses the screen's edge** (owner, 2026-11-13: "so that it doesn't feel unnecessarily
+  containerized"). A row of cards, a wide table or a flow starts on the page's left edge and runs to the screen's
+  edges; it is never cut by an invisible column (`.strip`, `.bleed`; on a narrow screen `.table-wrap` and `.flow`).
 
 ## type
 
@@ -196,6 +199,13 @@ picture of `redesign/og.html` at 1200 × 630, on a GPU: the title over the earth
 
 `index.html` (the front door), `record.html` (the ledger and what stands on it), `contract.html` (the text),
 `legal.html` (about the site), and the signed-in pages (`APP.md`). One contents line on each.
+
+## names (owner, 2026-11-13)
+
+"Think seriously about the copy. 'Desk' is a bad word for what you might call 'Home'." A page is named by the word a
+person would say, not by a figure of speech. The signed-in person's page is **Home** (`home.html`); the header's
+control says "Sign in" or "Home". The wordmark is the way to the front door, so the contents line does not repeat
+it. On a narrow screen the contents line is behind three bars, with no word on the button.
 
 ## to address later
 
