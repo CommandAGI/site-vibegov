@@ -1,0 +1,27 @@
+/* the credit desk (credit.html only): what style.css's signed-in pages do not have. No motion. */
+.rows--credit > li > .more { grid-column: 2 / -1; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 0.6rem 0.9rem; }
+.rows--credit > li > .more:empty { display: none; }
+.rows--credit > li > .more .hint { flex-basis: 100%; margin: 0; color: var(--muted); font-size: 0.86rem; }
+.rows--credit > li > .more .form { flex-basis: 100%; }
+.rows--credit > li > div:nth-child(2) b { font-weight: 600; }
+.two, .three { display: grid; gap: 1rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+fieldset.field { border: 0; padding: 0; margin: 0; min-width: 0; }
+fieldset.field > legend { margin-bottom: 0.35rem; }
+.choice { display: flex; align-items: center; gap: 0.6rem; min-height: 2.4rem; font-size: 1rem; }
+.choice input { width: 1.1rem; height: 1.1rem; min-height: 0; accent-color: var(--sun); }
+.binds { border-left: 3px solid var(--act); padding: 0.2rem 0 0.2rem 1rem; }
+.binds p, .binds .hint { margin: 0; }
+.plain { list-style: none; margin: 0 0 1rem; padding: 0; display: grid; gap: 0.4rem; overflow-wrap: anywhere; }
+.sched table { min-width: 36rem; }
+.sched .num, .sched td.num, .sched th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.sched tfoot th, .sched tfoot td { border-top: 1px solid var(--rule); font-weight: 600; padding: 0.65rem 1rem; text-align: left; }
+.sched tfoot td.num { text-align: right; }
+.refusal .code { font: 500 0.72rem var(--mono); color: var(--muted); margin-left: 0.4rem; }
+.desk code { overflow-wrap: anywhere; font: 0.86rem var(--mono); }
+.rows--credit > li > span:first-child { max-width: 100%; }
+@media (max-width: 40rem) {
+  .two, .three { grid-template-columns: minmax(0, 1fr); }
+  .rows--credit > li > .more { grid-column: 1 / -1; }
+}
+.sched th, .sched td { white-space: nowrap; padding-left: 0.7rem; padding-right: 0.7rem; }
