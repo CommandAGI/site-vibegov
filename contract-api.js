@@ -19,13 +19,17 @@ async function post(path, body, pick) {
     if (!(e instanceof ApiError) || e.status === 0) return { ok: false, refusals: [{ code: 'network' }] };
     const refused = Array.isArray(e.body?.refused) ? e.body.refused : null;
     const error = typeof e.body?.error === 'string' ? e.body.error : e.status === 401 ? 'unauthorized' : `http_${e.status}`;
-    return { ok: false, refusals: refused ?? error.split(/,\s*/).map(code => ({ code })) };
+    // What the API says beside the code goes with it (`until` of an exclusion, `min` of a limit).
+    const { error: _e, message: _m, refused: _r, ...more } = e.body ?? {};
+    return { ok: false, refusals: refused ?? error.split(/,\s*/).map(code => ({ code, ...more })) };
   }
 }
 const loadOverview = () => get("/public/contract");
 const loadAwaiting = () => get("/contract/awaiting");
 const listRfcs = async () => (await get("/public/contract/rfcs"))?.rfcs ?? [];
 const loadMe = () => get("/contract/me");
+// One RFC as anyone reads it (no session): the same view without the caller's own responses and reading.
+const loadPublicRfc = (id) => get(`/public/contract/rfcs/${encodeURIComponent(id)}`);
 const loadRfc = (id) => get(`/contract/rfcs/${encodeURIComponent(id)}`);
 const loadDetermination = async (id) => (await get(`/public/contract/determinations/${encodeURIComponent(id)}`))?.determination ?? null;
 const listMyCases = async () => (await get("/contract/cases"))?.cases ?? [];
@@ -94,6 +98,7 @@ export {
   loadMyCommitment,
   loadMyCredit,
   loadOverview,
+  loadPublicRfc,
   loadRfc,
   markNoticeRead,
   offerTransfer,

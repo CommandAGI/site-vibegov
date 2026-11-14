@@ -93,14 +93,11 @@ async function alive() {
   return !!r && r.status !== 401;
 }
 
-/** Sign out: revoke this client's grant on the account, then forget the token. */
+/** Sign out: revoke the token at the API (`POST /oauth/revoke`), then forget it here. */
 export async function signOut() {
+  const s = session();
   try {
-    if (session()?.access) {
-      const { grants = [] } = await api('/me/oauth/grants').catch(() => ({ grants: [] }));
-      const mine = grants.find(g => g.clientId === CLIENT || g.client?.id === CLIENT);
-      if (mine) await api(`/me/oauth/grants/${encodeURIComponent(mine.id)}`, { method: 'DELETE' }).catch(() => null);
-    }
+    if (s?.access) await fetch(`${API}/oauth/revoke`, { method: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ client_id: CLIENT, token: s.refresh ?? s.access }).toString() }).catch(() => null);
   } finally { keepSession(null); }
 }
 

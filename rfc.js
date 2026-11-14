@@ -13,7 +13,11 @@
 //   GET  /contract/me, GET /contract/awaiting  the person's voice (or why none) and whether this proposal needs it anonymously
 // Acts (contract-api.js): POST /contract/media, POST /contract/rfcs/:id/responses → { receipt: { id, digest } },
 // POST /contract/rfcs/:id/responses/:rid/confirm { digest }, POST /contract/rfcs/:id/contest.
-import { esc, count, money, date, countdown, editorHref } from './live.js';
+import { esc, count, money, date, countdown } from './live.js';
+
+// The one act this site cannot do yet: an anonymous response. Its proof is made from an identity that the
+// workbench's own origin holds, so the page links there for that act only (redesign/APP.md § anonymous voice).
+const editorHref = (kind, id) => `https://commandagi.com/app?open=${encodeURIComponent(`/app/contract?${kind}=${id}`)}`;
 import { words, describeLawChange, parameterValue, scoreKey, days } from './contract-words.js';
 import { at, refusalText } from './rfcs.js';
 
